@@ -1,0 +1,31 @@
+{
+  "properties": [
+    {
+      "name": "era.log.level",
+      "type": "java.lang.String",
+      "description": "日志级别",
+      "values": [
+        {
+          "value": "info"
+        },
+        {
+          "value": "debug"
+        },
+        {
+          "value": "error"
+        },
+        {
+          "value": "warn"
+        },
+        {
+          "value": "all"
+        }
+      ]
+    },
+    {
+      "name": "era.log.file.path",
+      "type": "java.lang.String",
+      "description": "日志路径"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "properties": [
+    {
+      "name": "era.swagger2.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用swagger2"
+    },
+    {
+      "name": "era.swagger2.api.title",
+      "type": "java.lang.String",
+      "description": "服务标题"
+    },
+    {
+      "name": "era.swagger2.api.description",
+      "type": "java.lang.String",
+      "description": "服务描述"
+    },
+    {
+      "name": "era.swagger2.api.serviceUrl",
+      "type": "java.lang.String",
+      "description": "服务地址"
+    },
+    {
+      "name": "era.swagger2.api.version",
+      "type": "java.lang.String",
+      "description": "接口版本"
+    },
+    {
+      "name": "era.swagger2.api.contact_url",
+      "type": "java.lang.String",
+      "description": "接口联系人"
+    },
+    {
+      "name": "era.swagger2.api.contact_email",
+      "type": "java.lang.String",
+      "description": "接口联系人电子邮箱"
+    },
+    {
+      "name": "era.security.cors.allowed_origins",
+      "type": "java.util.List<String>",
+      "description": "允许跨域请求的地址",
+      "defaultValue": "{*}"
+    },
+    {
+      "name": "era.security.cors.allowed_methods",
+      "type": "java.util.List<String>",
+      "description": "允许跨域请求的方法",
+      "defaultValue": "{\"GET\", \"POST\", \"DELETE\", \"PUT\", \"OPTIONS\"}"
+    },
+    {
+      "name": "era.security.cors.allowed_headers",
+      "type": "java.util.List<String>",
+      "description": "允许在请求中携带的头信息",
+      "defaultValue": "{*}"
+    },
+    {
+      "name": "era.security.cors.allowCredentials",
+      "type": "java.lang.Boolean",
+      "description": "是否允许携带cookie",
+      "defaultValue": true
+    }
+  ]
+}

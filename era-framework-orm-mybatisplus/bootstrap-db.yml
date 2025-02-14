@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${mysql_host}/${mysql_db}?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8&generateSimpleParameterMetadata=true&autoReconnect=true&useSSL=false&serverTimezone=GMT%2b8&allowMultiQueries=true
+    username: ${mysql_username}
+    password: ${mysql_password}
+
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:mappers/**/**.xml
+  type-aliases-package: com.ourexists.ylcloud.iot.uemc.*.pojo
+  global-config:
+    banner: false

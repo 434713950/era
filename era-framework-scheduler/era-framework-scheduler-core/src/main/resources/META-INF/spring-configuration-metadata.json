@@ -1,0 +1,36 @@
+{
+  "properties": [
+    {
+      "name": "era.scheduler.url",
+      "type": "java.lang.String",
+      "description": "任务调度远程访问地址."
+    },
+    {
+      "name": "era.scheduler.app_id",
+      "type": "java.lang.String",
+      "description": "任务调度认证用户."
+    },
+    {
+      "name": "era.scheduler.app_secret",
+      "type": "java.lang.String",
+      "description": "任务调度认证密码."
+    },
+    {
+      "name": "era.scheduler.retry",
+      "type": "java.lang.Integer",
+      "description": "任务调度连接重试次数.",
+      "defaultValue": 3
+    },
+    {
+      "name": "era.scheduler.token_expire_in",
+      "type": "java.lang.Integer",
+      "description": "任务调度token过期时长."
+    },
+    {
+      "name": "era.scheduler.refresh_enable",
+      "type": "java.lang.Boolean",
+      "description": "任务令牌是否刷新.",
+      "defaultValue": true
+    }
+  ]
+}

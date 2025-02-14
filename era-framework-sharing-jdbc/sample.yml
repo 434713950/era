@@ -1,0 +1,20 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: ds0
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://${mysql_host}/${mysql_db}?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8&generateSimpleParameterMetadata=true&autoReconnect=true&useSSL=false&serverTimezone=GMT%2b8&allowMultiQueries=true
+        username: ${mysql_username}
+        password: ${mysql_username}
+
+    sharding:
+      default-data-source-name: ds0
+      tables:
+        t_event_spot:
+          actual-data-nodes: ds0.t_event_spot
+          table-strategy:
+            standard:
+              sharding-column: created_time
+              precise-algorithm-class-name: com.ourexists.era.framework.sharingjdbc.algorithm.MonthPreciseShardingAlgorithm

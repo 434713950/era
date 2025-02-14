@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2025  ChengPeng
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published
+  ~     by the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  ~
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>era-parent</artifactId>
+        <groupId>com.ourexists.era</groupId>
+        <version>1.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>era-framework-dependencies</artifactId>
+    <packaging>pom</packaging>
+
+    <description>Era Framework Dependencies</description>
+
+    <properties>
+        <era-framework-core.version>1.1.0-SNAPSHOT</era-framework-core.version>
+        <era-framework-orm-mybatisplus.version>1.1.0-SNAPSHOT</era-framework-orm-mybatisplus.version>
+        <era-framework-scheduler-xxljob.version>1.1.0-SNAPSHOT</era-framework-scheduler-xxljob.version>
+        <era-framework-webmvc.version>1.1.0-SNAPSHOT</era-framework-webmvc.version>
+        <era-framework-aliyun-oss.version>1.1.0-SNAPSHOT</era-framework-aliyun-oss.version>
+        <era-framework-cache.version>1.1.0-SNAPSHOT</era-framework-cache.version>
+        <era-framework-oauth2.version>1.1.0-SNAPSHOT</era-framework-oauth2.version>
+        <era-boot-starter-web.version>1.1.0-SNAPSHOT</era-boot-starter-web.version>
+        <era-framework-mq-rocketmq.version>1.1.0-SNAPSHOT</era-framework-mq-rocketmq.version>
+        <era-framework-distribution.version>1.1.0-SNAPSHOT</era-framework-distribution.version>
+        <era-framework-sharing-jdbc.version>1.1.0-SNAPSHOT</era-framework-sharing-jdbc.version>
+        <era-framework-orm-mongodb.version>1.1.0-SNAPSHOT</era-framework-orm-mongodb.version>
+        <era-framework-rpc-feign.version>1.1.0-SNAPSHOT</era-framework-rpc-feign.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-core</artifactId>
+                <version>${era-framework-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-orm-mybatisplus</artifactId>
+                <version>${era-framework-orm-mybatisplus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-scheduler-xxljob</artifactId>
+                <version>${era-framework-scheduler-xxljob.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-webmvc</artifactId>
+                <version>${era-framework-webmvc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-aliyun-oss</artifactId>
+                <version>${era-framework-aliyun-oss.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-cache</artifactId>
+                <version>${era-framework-cache.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-oauth2</artifactId>
+                <version>${era-framework-oauth2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-boot-starter-web</artifactId>
+                <version>${era-boot-starter-web.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-mq-rocketmq</artifactId>
+                <version>${era-framework-mq-rocketmq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-distribution</artifactId>
+                <version>${era-framework-distribution.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-sharing-jdbc</artifactId>
+                <version>${era-framework-sharing-jdbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-orm-mongodb</artifactId>
+                <version>${era-framework-orm-mongodb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-rpc-feign</artifactId>
+                <version>${era-framework-rpc-feign.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
