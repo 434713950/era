@@ -37,7 +37,7 @@ import java.nio.charset.StandardCharsets;
  * @date 2022/2/21 15:51
  * @since 1.0.0
  */
-@Import({Swagger2Configurer.class,
+@Import({OpenApiConfigurer.class,
         LocaleConfigurer.class,
         WebMvcConfiguration.class,
         EraSecurityConfigurer.class,

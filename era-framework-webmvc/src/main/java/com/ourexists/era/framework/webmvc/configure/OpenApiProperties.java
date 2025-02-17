@@ -30,8 +30,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2018/12/12
  */
 @Data
-@ConfigurationProperties(prefix = "era.swagger2.api")
-public class Swagger2Properties {
+@ConfigurationProperties(prefix = "era.openapi")
+public class OpenApiProperties {
 
     private String title;
 

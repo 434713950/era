@@ -1,37 +1,32 @@
 {
   "properties": [
     {
-      "name": "era.swagger2.enabled",
-      "type": "java.lang.Boolean",
-      "description": "是否启用swagger2"
-    },
-    {
-      "name": "era.swagger2.api.title",
+      "name": "era.openapi.title",
       "type": "java.lang.String",
       "description": "服务标题"
     },
     {
-      "name": "era.swagger2.api.description",
+      "name": "era.openapi.description",
       "type": "java.lang.String",
       "description": "服务描述"
     },
     {
-      "name": "era.swagger2.api.serviceUrl",
+      "name": "era.openapi.serviceUrl",
       "type": "java.lang.String",
       "description": "服务地址"
     },
     {
-      "name": "era.swagger2.api.version",
+      "name": "era.openapi.version",
       "type": "java.lang.String",
       "description": "接口版本"
     },
     {
-      "name": "era.swagger2.api.contact_url",
+      "name": "era.openapi.contact_url",
       "type": "java.lang.String",
       "description": "接口联系人"
     },
     {
-      "name": "era.swagger2.api.contact_email",
+      "name": "era.openapi.contact_email",
       "type": "java.lang.String",
       "description": "接口联系人电子邮箱"
     },
