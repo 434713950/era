@@ -34,18 +34,12 @@ public class UserInfo implements Serializable {
 
     private String id;
 
-    private String uid;
-
     private String email;
 
-    private String nickname;
     private String nickName;
-
-    private String tel;
 
     private String accName;
 
-    private String username;
     private String userName;
 
     /**
@@ -78,9 +72,8 @@ public class UserInfo implements Serializable {
     private String city;
 
     private String language;
-    private Integer sex;
 
-    private Integer gender;
+    private Integer sex;
 
     private String source;
 
@@ -99,24 +92,10 @@ public class UserInfo implements Serializable {
      */
     private Map<String, String> tenantRoles;
 
-    public String getUid() {
-        return this.id;
-    }
 
-    public String getNickname() {
-        return this.nickName;
-    }
 
     public String getUsername() {
         return this.userName;
-    }
-
-    public Integer getGender() {
-        return this.sex;
-    }
-
-    public String getTel() {
-        return this.mobile;
     }
 
     public String getId() {
