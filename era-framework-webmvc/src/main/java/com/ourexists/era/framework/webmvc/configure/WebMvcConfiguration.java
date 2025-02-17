@@ -41,9 +41,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 //swagger相关路径不走拦截器
                 .excludePathPatterns("/swagger-resources/**")
-                .excludePathPatterns("/swagger-ui.html/**")
+                .excludePathPatterns("/swagger-ui/**")
                 .excludePathPatterns("/webjars/**")
-                .excludePathPatterns("/swagger-ui.html")
-                .excludePathPatterns("/v2/**");
+                .excludePathPatterns("/v3/**");
     }
 }

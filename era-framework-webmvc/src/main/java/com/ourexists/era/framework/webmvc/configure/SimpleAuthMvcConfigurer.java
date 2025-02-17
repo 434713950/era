@@ -75,7 +75,7 @@ public class SimpleAuthMvcConfigurer implements WebMvcConfigurer {
      * 系统相关的白名单path
      */
     public static List<String> SYSTEM_WHITE_PATH = Arrays.asList("/swagger-resources/**", "/swagger-ui/**",
-            "/webjars/**",  "/v2/**", "/oauth/**", "/refresh", AUTHENTICATION_API_PREFIX + "/**",
+            "/webjars/**",  "/v3/**", "/oauth/**", "/refresh", AUTHENTICATION_API_PREFIX + "/**",
             OPEN_PREFIX + "/**", WHITE_PREFIX + "/**", "/error", "/health");
 
     @Override

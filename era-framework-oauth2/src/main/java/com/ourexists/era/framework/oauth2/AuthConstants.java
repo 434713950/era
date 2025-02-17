@@ -57,15 +57,15 @@ public interface AuthConstants {
      */
     String LICENSE = "made by ourexists";
 
-    List<String> HEADER_WHITE_PATH = Arrays.asList("/swagger-resources/**", "/swagger-ui.html/**",
+    List<String> HEADER_WHITE_PATH = Arrays.asList("/swagger-resources/**", "/swagger-ui/**",
             OPEN_PREFIX + "/**",
-            "/webjars/**", "/swagger-ui.html", "/v2/**", "/oauth/**", "/refresh", "/error", "/health");
+            "/webjars/**",  "/v3/**", "/oauth/**", "/refresh", "/error", "/health");
 
     /**
      * 系统相关的白名单path
      */
-    List<String> SYSTEM_WHITE_PATH = Arrays.asList("/swagger-resources/**", "/swagger-ui.html/**",
-            "/webjars/**", "/swagger-ui.html", "/v2/**", "/oauth/**", "/refresh", AUTHENTICATION_API_PREFIX + "/**",
+    List<String> SYSTEM_WHITE_PATH = Arrays.asList("/swagger-resources/**", "/swagger-ui/**",
+            "/webjars/**",  "/v3/**", "/oauth/**", "/refresh", AUTHENTICATION_API_PREFIX + "/**",
             OPEN_PREFIX + "/**", WHITE_PREFIX + "/**", "/error", "/health");
 
 
