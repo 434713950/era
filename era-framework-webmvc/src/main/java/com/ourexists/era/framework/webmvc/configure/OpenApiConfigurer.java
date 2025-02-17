@@ -19,15 +19,18 @@
 package com.ourexists.era.framework.webmvc.configure;
 
 import com.ourexists.era.framework.core.utils.AuthUtils;
-import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.method.HandlerMethod;
 
 /**
  * @Author: PengCheng
@@ -46,20 +49,41 @@ public class OpenApiConfigurer {
         contact.setName(openApiProperties.getContactName());
         contact.setUrl(openApiProperties.getContactUrl());
         contact.setEmail(openApiProperties.getContactEmail());
-
-        Components components = new Components()
-                .addSecuritySchemes(AuthUtils.AUTH_HEADER, new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"))
-                .addSchemas(AuthUtils.PLATFORM_HEADER, new Schema<>().type("string"))
-                .addSchemas(AuthUtils.TENANT_ROUTE, new Schema<>().type("string"))
-                .addSchemas(SimpleAuthUtils.REAL_TENANT_ROUTE, new Schema<>().type("string"));
-
         return new OpenAPI()
                 .info(new Info()
                         .title(openApiProperties.getTitle())
                         .description(openApiProperties.getDescription())
                         .contact(contact)
                         .version(openApiProperties.getVersion())
-                )
-                .components(components);
+                );
+    }
+
+    @Bean
+    public OperationCustomizer customGlobalHeaders() {
+
+        return (Operation operation, HandlerMethod handlerMethod) -> {
+            operation.addParametersItem(new Parameter()
+                            .in(ParameterIn.HEADER.toString())
+                            .schema(new StringSchema())
+                            .name(AuthUtils.PLATFORM_HEADER)
+                            .description("归属平台")
+                            .required(true))
+                    .addParametersItem(new Parameter()
+                            .in(ParameterIn.HEADER.toString())
+                            .schema(new StringSchema())
+                            .name(AuthUtils.TENANT_ROUTE)
+                            .description("归属租户"))
+                    .addParametersItem(new Parameter()
+                            .in(ParameterIn.HEADER.toString())
+                            .schema(new StringSchema())
+                            .name(AuthUtils.AUTH_HEADER)
+                            .description("认证头"))
+                    .addParametersItem(new Parameter()
+                            .in(ParameterIn.HEADER.toString())
+                            .schema(new StringSchema())
+                            .name(SimpleAuthUtils.REAL_TENANT_ROUTE)
+                            .description("使用的租户"));
+            return operation;
+        };
     }
 }
