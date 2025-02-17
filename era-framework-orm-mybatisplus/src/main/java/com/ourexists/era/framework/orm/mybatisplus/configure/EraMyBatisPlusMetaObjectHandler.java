@@ -55,13 +55,13 @@ public class EraMyBatisPlusMetaObjectHandler implements MetaObjectHandler {
                 createdBy = userInfo.getAccName();
             }
             if (getFieldValByName(EraMybatisConstants.FIELD_CREATE_ID, metaObject) == null) {
-                createdId = userInfo.getUid();
+                createdId = userInfo.getId();
             }
             if (getFieldValByName(EraMybatisConstants.FIELD_UPDATE_BY, metaObject) == null) {
                 updateBy = userInfo.getAccName();
             }
             if (getFieldValByName(EraMybatisConstants.FIELD_UPDATE_ID, metaObject) == null) {
-                updateId = userInfo.getUid();
+                updateId = userInfo.getId();
             }
         }
         //兼容框架處理
@@ -104,7 +104,7 @@ public class EraMyBatisPlusMetaObjectHandler implements MetaObjectHandler {
                 updateBy = userInfo.getUsername();
             }
             if (getFieldValByName(EraMybatisConstants.FIELD_UPDATE_ID, metaObject) == null) {
-                updateId = userInfo.getUid();
+                updateId = userInfo.getId();
             }
         }
         setFieldValByName(EraMybatisConstants.FIELD_UPDATE_BY, updateBy, metaObject);

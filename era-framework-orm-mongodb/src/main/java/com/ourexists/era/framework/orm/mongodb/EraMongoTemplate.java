@@ -171,7 +171,7 @@ public class EraMongoTemplate extends MongoTemplate {
     private void updateCommonHandle(Document update) {
         UserInfo userInfo = UserContext.getUser();
         if (userInfo != null) {
-            update.append("updatedId", userInfo.getUid())
+            update.append("updatedId", userInfo.getId())
                     .append("updatedBy", userInfo.getUsername());
 
         }
@@ -192,10 +192,10 @@ public class EraMongoTemplate extends MongoTemplate {
         if (userInfo != null) {
             if (isInsert) {
                 fillField(objectToSave, "createdBy", userInfo.getUsername());
-                fillField(objectToSave, "createdId", userInfo.getUid());
+                fillField(objectToSave, "createdId", userInfo.getId());
             }
             fillField(objectToSave, "updatedBy", userInfo.getUsername());
-            fillField(objectToSave, "updatedId", userInfo.getUid());
+            fillField(objectToSave, "updatedId", userInfo.getId());
         }
         if (isInsert) {
             fillField(objectToSave, "createdTime", new Date());

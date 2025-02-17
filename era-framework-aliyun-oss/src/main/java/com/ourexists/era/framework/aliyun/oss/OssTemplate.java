@@ -19,14 +19,15 @@
 package com.ourexists.era.framework.aliyun.oss;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -224,27 +225,6 @@ public abstract class OssTemplate implements DisposableBean {
     }
 
     protected abstract void upload_0(InputStream is, String uploadFileName) throws UploadException;
-
-    public String upload(Workbook workbook, String fileName) throws UploadException {
-        ByteArrayOutputStream fos = null;
-        ByteArrayInputStream fis = null;
-        try {
-            fos = new ByteArrayOutputStream();
-            workbook.write(fos);
-            fis = new ByteArrayInputStream(fos.toByteArray());
-            return upload(fis, fileName);
-        } catch (IOException e) {
-            throw new UploadException("【excel工具】导出失败!");
-        } finally {
-            IOUtils.closeQuietly(fis);
-            IOUtils.closeQuietly(fos);
-            try {
-                workbook.close();
-            } catch (IOException e) {
-                //nothing
-            }
-        }
-    }
 
     public abstract void delete(String fileName) throws UploadException;
 

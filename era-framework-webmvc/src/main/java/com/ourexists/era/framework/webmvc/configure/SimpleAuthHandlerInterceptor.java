@@ -79,7 +79,7 @@ public class SimpleAuthHandlerInterceptor implements HandlerInterceptor {
             UserInfo userInfo = new UserInfo();
             userInfo.setId("0");
             userInfo.setAccName("UNKNOW");
-            userInfo.setUserName("UNKNOW");
+            userInfo.setUsername("UNKNOW");
             userInfo.setNickName("UNKNOW");
             UserContext.setUser(userInfo);
         }

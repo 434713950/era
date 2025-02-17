@@ -76,7 +76,7 @@ public class UserContext {
 
     public static void defaultUser() {
         UserInfo userInfo = new UserInfo();
-        userInfo.setUserName("system");
+        userInfo.setUsername("system");
         userInfo.setNickName("system");
         userInfo.setAccName("system");
         userInfo.setId("0");

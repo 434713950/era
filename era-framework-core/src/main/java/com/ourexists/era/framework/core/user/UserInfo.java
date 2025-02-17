@@ -18,6 +18,10 @@
 
 package com.ourexists.era.framework.core.user;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
@@ -28,6 +32,9 @@ import java.util.Map;
  * @author pengcheng
  * @date 2020/4/23 23:21
  */
+@Getter
+@Setter
+@Accessors(chain = true)
 public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = -6314495604422944703L;
@@ -40,7 +47,7 @@ public class UserInfo implements Serializable {
 
     private String accName;
 
-    private String userName;
+    private String username;
 
     /**
      * 身份证号
@@ -91,186 +98,4 @@ public class UserInfo implements Serializable {
      * 所有的租戶及角色
      */
     private Map<String, String> tenantRoles;
-
-
-
-    public String getUsername() {
-        return this.userName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getAccName() {
-        return accName;
-    }
-
-    public void setAccName(String accName) {
-        this.accName = accName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
-    }
-
-    public Integer getLoginType() {
-        return loginType;
-    }
-
-    public void setLoginType(Integer loginType) {
-        this.loginType = loginType;
-    }
-
-    public Date getSettledTime() {
-        return settledTime;
-    }
-
-    public void setSettledTime(Date settledTime) {
-        this.settledTime = settledTime;
-    }
-
-    public Date getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Date expireTime) {
-        this.expireTime = expireTime;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(String sourceId) {
-        this.sourceId = sourceId;
-    }
-
-    public String getUnionId() {
-        return unionId;
-    }
-
-    public void setUnionId(String unionId) {
-        this.unionId = unionId;
-    }
-
-    public Integer getPerfection() {
-        return perfection;
-    }
-
-    public void setPerfection(Integer perfection) {
-        this.perfection = perfection;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public Map<String, String> getTenantRoles() {
-        return tenantRoles;
-    }
-
-    public void setTenantRoles(Map<String, String> tenantRoles) {
-        this.tenantRoles = tenantRoles;
-    }
 }
