@@ -72,7 +72,7 @@
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-aliyun-oss</artifactId>
+                <artifactId>era-framework-oss</artifactId>
                 <version>${era-framework-aliyun-oss.version}</version>
             </dependency>
             <dependency>

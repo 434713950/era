@@ -1,4 +1,4 @@
-# 1.0.0
+# 1.1.0
 ## 2022/05/13
 * 描述
 > 1. 基于spring-cloud-stream-binder-rocketmq框架基础封装
