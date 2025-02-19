@@ -46,6 +46,7 @@
         <era-framework-sharing-jdbc.version>1.1.0-SNAPSHOT</era-framework-sharing-jdbc.version>
         <era-framework-orm-mongodb.version>1.1.0-SNAPSHOT</era-framework-orm-mongodb.version>
         <era-framework-rpc-feign.version>1.1.0-SNAPSHOT</era-framework-rpc-feign.version>
+        <era-framework-excel.version>1.1.0-SNAPSHOT</era-framework-excel.version>
     </properties>
 
     <dependencyManagement>
@@ -114,6 +115,11 @@
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-rpc-feign</artifactId>
                 <version>${era-framework-rpc-feign.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-excel</artifactId>
+                <version>${era-framework-excel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
