@@ -19,7 +19,6 @@
 package com.ourexists.era.framework.core.utils.tree;
 
 
-
 import com.ourexists.era.framework.core.utils.CollectionUtil;
 
 import java.util.ArrayList;
@@ -38,6 +37,18 @@ public class TreeUtil {
 
     public static final String ROOT_CODE = "0";
 
+    public static String generateCode(String pcode, String otherMaxCode) {
+        if (otherMaxCode == null) {
+            String pre = pcode;
+            if (pcode.equals(ROOT_CODE)) {
+                pre = "";
+            }
+            return pre + "001";
+        } else {
+            int num = otherMaxCode.length();
+            return String.format("%0" + num, Integer.parseInt(otherMaxCode) + 1);
+        }
+    }
 
     /**
      * 挂载子节点,形成树结构 （所有可挂载的子节点已确定）
