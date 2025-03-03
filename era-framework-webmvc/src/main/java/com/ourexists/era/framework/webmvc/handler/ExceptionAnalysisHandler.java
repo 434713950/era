@@ -62,7 +62,7 @@ public class ExceptionAnalysisHandler {
 
     @ExceptionHandler(AuthorityException.class)
     public JsonResponseEntity handleAuthorityException(AuthorityException e){
-        log.error("认证异常!", e);
+        log.error("Unable to authenticate!", e);
         return new JsonResponseEntity(ResultMsgEnum.PERMISSION_DENIED);
     }
 
@@ -77,7 +77,7 @@ public class ExceptionAnalysisHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public JsonResponseEntity handleException(Exception e){
-        log.error("系统异常!", e);
+        log.error("system error!", e);
         return JsonResponseEntity.systemError();
     }
 
