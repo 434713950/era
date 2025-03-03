@@ -67,11 +67,6 @@ public class SimpleAuthMvcConfigurer implements WebMvcConfigurer {
     public static String LIMIT_PATH = LIMIT_PREFIX + "/**";
 
     /**
-     * 许可信息
-     */
-    public static String LICENSE = "made by wondersgroup";
-
-    /**
      * 系统相关的白名单path
      */
     public static List<String> SYSTEM_WHITE_PATH = Arrays.asList("/swagger-resources/**", "/swagger-ui/**",
