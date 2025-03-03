@@ -60,5 +60,6 @@ public class EraSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
         http.headers().cacheControl();
+        http.headers().frameOptions().sameOrigin();
     }
 }
