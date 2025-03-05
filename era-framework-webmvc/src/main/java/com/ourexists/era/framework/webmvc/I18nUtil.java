@@ -16,7 +16,7 @@
  *
  */
 
-package com.ourexists.era.framework.core.utils.spring;
+package com.ourexists.era.framework.webmvc;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
@@ -30,7 +30,6 @@ import org.springframework.util.StringUtils;
  * @author pengCheng
  * @date 2018/5/20
  */
-@Component
 public class I18nUtil {
 
     private static MessageSource messageSource;
@@ -41,9 +40,9 @@ public class I18nUtil {
 
     public static String i18nParser(String i18nMsg, String... text) {
         String msg = i18nMsg;
-        if (messageSource != null) {
+        if (messageSource != null && msg.contains("${")) {
             try {
-                msg = messageSource.getMessage(i18nMsg.substring(1, i18nMsg.length() - 1), null, LocaleContextHolder.getLocale());
+                msg = messageSource.getMessage(i18nMsg.substring(2, i18nMsg.length() - 1), null, LocaleContextHolder.getLocale());
             } catch (NoSuchMessageException x) {
                 //nothing
             }

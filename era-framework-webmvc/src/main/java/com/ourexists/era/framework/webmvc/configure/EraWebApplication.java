@@ -18,10 +18,12 @@
 
 package com.ourexists.era.framework.webmvc.configure;
 
+import com.ourexists.era.framework.webmvc.I18nUtil;
 import com.ourexists.era.framework.webmvc.handler.ExceptionAnalysisHandler;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -46,6 +48,12 @@ public class EraWebApplication {
 
     @Value("${spring.messages.basename:messages}")
     private String i18nProp;
+
+
+    @Bean
+    public I18nUtil i18nUtil(MessageSource messageSource) {
+        return new I18nUtil(messageSource);
+    }
 
     /**
      * 将validation文件和国际化文件合并

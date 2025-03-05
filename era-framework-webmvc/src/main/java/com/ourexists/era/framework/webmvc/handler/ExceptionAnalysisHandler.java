@@ -24,7 +24,7 @@ import com.ourexists.era.framework.core.exceptions.BusinessException;
 import com.ourexists.era.framework.core.exceptions.InitialPasswordException;
 import com.ourexists.era.framework.core.exceptions.LoginNotException;
 import com.ourexists.era.framework.core.model.vo.JsonResponseEntity;
-import com.ourexists.era.framework.core.utils.spring.I18nUtil;
+import com.ourexists.era.framework.webmvc.I18nUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
