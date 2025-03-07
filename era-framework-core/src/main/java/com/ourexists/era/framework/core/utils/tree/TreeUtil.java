@@ -46,7 +46,7 @@ public class TreeUtil {
             return pre + "001";
         } else {
             int num = otherMaxCode.length();
-            return String.format("%0" + num, Integer.parseInt(otherMaxCode) + 1);
+            return String.format("%0" + num + "d", Integer.parseInt(otherMaxCode) + 1);
         }
     }
 
@@ -105,7 +105,7 @@ public class TreeUtil {
      * 提取所有与传入节点相关的下层节点
      *
      * @param treeNodes   所有的数据
-     * @param code         节点code
+     * @param code        节点code
      * @param container   存储数据的容器
      * @param <T>rootNode
      */
@@ -122,9 +122,9 @@ public class TreeUtil {
     /**
      * 铺平树结构
      *
-     * @param pNode             父节点
-     * @param storageContainer  存储容器
-     * @param isRetainChildren  是否展示子节点信息
+     * @param pNode            父节点
+     * @param storageContainer 存储容器
+     * @param isRetainChildren 是否展示子节点信息
      * @param <T>
      */
     private static <T extends TreeNode<T>> void openChildrenNode(T pNode, List<T> storageContainer, boolean isRetainChildren) {
