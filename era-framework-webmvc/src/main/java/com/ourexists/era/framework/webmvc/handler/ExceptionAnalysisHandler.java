@@ -70,7 +70,7 @@ public class ExceptionAnalysisHandler {
     public JsonResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
         List<ObjectError> errors =e.getBindingResult().getAllErrors();
         StringBuffer errorMsg=new StringBuffer();
-        errors.forEach(x -> errorMsg.append(x.getDefaultMessage()).append("\r\n"));
+        errors.forEach(x -> errorMsg.append(I18nUtil.i18nParser(x.getDefaultMessage())).append("\r\n"));
         return new JsonResponseEntity(ResultMsgEnum.VALIDATION_ERROR.getResultCode(),errorMsg.toString());
     }
 
