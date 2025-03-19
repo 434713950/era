@@ -34,6 +34,8 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import({ResourceServerConfiguration.class, TokenConfigurer.class})
+@Import({PublicServerConfigurer.class,
+        TokenConfigurer.class,
+        ResourceServerConfiguration.class})
 public @interface EnableEraResourceServer {
 }

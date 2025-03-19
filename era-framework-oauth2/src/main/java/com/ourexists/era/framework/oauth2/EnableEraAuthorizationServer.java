@@ -34,6 +34,8 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import({AuthorizationServerConfigurer.class, TokenConfigurer.class})
+@Import({PublicServerConfigurer.class,
+        TokenConfigurer.class,
+        AuthorizationServerConfigurer.class})
 public @interface EnableEraAuthorizationServer {
 }

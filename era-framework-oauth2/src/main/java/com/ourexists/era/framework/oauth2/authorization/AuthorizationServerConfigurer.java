@@ -18,9 +18,7 @@
 
 package com.ourexists.era.framework.oauth2.authorization;
 
-import com.ourexists.era.framework.oauth2.PublicServerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,12 +37,12 @@ import javax.sql.DataSource;
 
 /**
  * 认证服务配置
+ *
  * @author PengCheng
  * @date 2018/8/28
  */
 @Order(Integer.MIN_VALUE)
 @EnableAuthorizationServer
-@Import({PublicServerConfigurer.class})
 public class AuthorizationServerConfigurer extends AuthorizationServerConfigurerAdapter {
 
     @Autowired

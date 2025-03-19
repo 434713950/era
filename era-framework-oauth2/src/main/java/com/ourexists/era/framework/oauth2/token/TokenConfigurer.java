@@ -21,12 +21,15 @@ package com.ourexists.era.framework.oauth2.token;
 import com.ourexists.era.framework.oauth2.AuthConstants;
 import com.ourexists.era.framework.oauth2.EraUser;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +68,7 @@ public class TokenConfigurer {
             "P9JvuNQSFSqrwvwxD0Z27okiQRtH5Witgc03HRhv2Hw42eCElqpiUJaEwSwogORg" +
             "eoIb53tLStwhCrUbTKCHtvQZblVkrhHMxCeRdR02r2Lkh//64wsKO+tHT7Dv6RGr" +
             "BU2YdA/9kIE11pw8bp3gOro=")
-    private String privateKey ;
+    private String privateKey;
 
 
     @Value("${era.authorization.publicKey:" +
@@ -80,19 +83,9 @@ public class TokenConfigurer {
             "-----END PUBLIC KEY-----}")
     private String publicKey;
 
-
-    /**
-     * tokenstore 定制化处理
-     * 这里使用自定义的redis令牌存储做处理
-     * @return TokenStore
-     */
-    @Bean
-    public TokenStore redisTokenStore(RedisTemplate redisTemplate) {
-        return new RedisTemplateTokenStore(redisTemplate);
-    }
-
     /**
      * token增强器
+     *
      * @return
      */
     @Bean

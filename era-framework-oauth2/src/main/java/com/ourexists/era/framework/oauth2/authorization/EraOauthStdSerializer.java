@@ -21,6 +21,7 @@ package com.ourexists.era.framework.oauth2.authorization;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -31,6 +32,7 @@ import java.io.IOException;
  * @date 2023/5/22 15:33
  * @since 1.0.0
  */
+@Slf4j
 public class EraOauthStdSerializer extends StdSerializer<EraOauthException> {
 
     protected EraOauthStdSerializer() {
@@ -39,6 +41,7 @@ public class EraOauthStdSerializer extends StdSerializer<EraOauthException> {
 
     @Override
     public void serialize(EraOauthException e, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        log.error(e.getMessage(), e);
         String msg = e.getMessage();
         if (!StringUtils.isEmpty(msg) && msg.contains(":")) {
             msg = msg.split(":")[1];

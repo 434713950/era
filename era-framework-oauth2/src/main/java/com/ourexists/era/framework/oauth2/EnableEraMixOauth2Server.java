@@ -35,6 +35,9 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import({AuthorizationServerConfigurer.class, ResourceServerConfiguration.class, TokenConfigurer.class})
+@Import({PublicServerConfigurer.class,
+        TokenConfigurer.class,
+        AuthorizationServerConfigurer.class,
+        ResourceServerConfiguration.class})
 public @interface EnableEraMixOauth2Server {
 }

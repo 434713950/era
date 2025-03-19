@@ -18,10 +18,13 @@
 
 package com.ourexists.era.framework.oauth2;
 
+import com.ourexists.era.framework.oauth2.handler.EmptyEraAccessDeniedHandler;
+import com.ourexists.era.framework.oauth2.handler.EmptyEraAuthenticationEntryPoint;
+import com.ourexists.era.framework.oauth2.handler.EraAccessDeniedHandler;
+import com.ourexists.era.framework.oauth2.handler.EraAuthenticationEntryPoint;
+import com.ourexists.era.framework.oauth2.resource.permission.store.InMemoryPermissionStore;
 import com.ourexists.era.framework.oauth2.resource.permission.store.PermissionStore;
-import com.ourexists.era.framework.oauth2.resource.permission.store.RedisPermissionStore;
 import com.ourexists.era.framework.oauth2.security.EraPasswordEncoder;
-import org.redisson.api.RedissonClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,12 +38,24 @@ public class PublicServerConfigurer {
 
     @Bean
     @ConditionalOnMissingBean(PermissionStore.class)
-    public PermissionStore permissionStore(RedissonClient redissonClient) {
-        return new RedisPermissionStore(redissonClient);
+    public PermissionStore permissionStore() {
+        return new InMemoryPermissionStore();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new EraPasswordEncoder();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(EraAuthenticationEntryPoint.class)
+    public EraAuthenticationEntryPoint eraAuthenticationEntryPoint() {
+        return new EmptyEraAuthenticationEntryPoint();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(EraAccessDeniedHandler.class)
+    public EraAccessDeniedHandler eraAccessDeniedHandler() {
+        return new EmptyEraAccessDeniedHandler();
     }
 }
