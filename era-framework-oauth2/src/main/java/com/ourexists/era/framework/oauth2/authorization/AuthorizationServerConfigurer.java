@@ -58,9 +58,6 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     private TokenStore tokenStore;
 
     @Autowired
-    private TokenEnhancer tokenEnhancer;
-
-    @Autowired
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     /**
@@ -80,7 +77,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
                 .tokenStore(tokenStore)
                 .accessTokenConverter(jwtAccessTokenConverter)
                 .exceptionTranslator(new EraWebResponseExceptionTranslator())
-                .tokenEnhancer(tokenEnhancer)
+                .tokenEnhancer(jwtAccessTokenConverter)
                 //用户信息服务
                 .userDetailsService(userDetailsService)
                 .authenticationManager(authenticationManager);

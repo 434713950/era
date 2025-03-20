@@ -43,14 +43,14 @@ public interface AuthConstants {
      */
     String OVERALL_PREFIX = "/overall";
 
-    String OVERALL_PATH  = OVERALL_PREFIX+"/**";
+    String OVERALL_PATH = OVERALL_PREFIX + "/**";
 
     /**
      * 限定数据接口前缀。即主租户的数据将会限制自身
      */
     String LIMIT_PREFIX = "/limit";
 
-    String LIMIT_PATH  = LIMIT_PREFIX+"/**";
+    String LIMIT_PATH = LIMIT_PREFIX + "/**";
 
     /**
      * 许可信息
@@ -59,14 +59,14 @@ public interface AuthConstants {
 
     List<String> HEADER_WHITE_PATH = Arrays.asList("/swagger-resources/**", "/swagger-ui/**",
             OPEN_PREFIX + "/**",
-            "/webjars/**",  "/v3/**", "/oauth/**", "/refresh", "/error", "/health");
+            "/webjars/**", "/v3/**", "/oauth/**", "/refresh", "/error", "/health", "/static/**");
 
     /**
      * 系统相关的白名单path
      */
     List<String> SYSTEM_WHITE_PATH = Arrays.asList("/swagger-resources/**", "/swagger-ui/**",
-            "/webjars/**",  "/v3/**", "/oauth/**", "/refresh", AUTHENTICATION_API_PREFIX + "/**",
-            OPEN_PREFIX + "/**", WHITE_PREFIX + "/**", "/error", "/health");
+            "/webjars/**", "/v3/**", "/oauth/**", "/refresh", AUTHENTICATION_API_PREFIX + "/**",
+            OPEN_PREFIX + "/**", WHITE_PREFIX + "/**", "/error", "/health", "/static/**");
 
 
 }
