@@ -19,6 +19,7 @@
 package com.ourexists.era.framework.oauth2.authorization;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,7 +30,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
@@ -60,6 +60,12 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     @Autowired
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
+    @Value("${era.token.validity:2592000}")
+    private Integer tokenValiditySeconds;
+
+    @Value("${era.token.refresh.validity:7776000}")
+    private Integer refreshTokenValiditySeconds;
+
     /**
      * 数据库模式配置
      */
@@ -74,13 +80,9 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 //token存入redis缓存中
-                .tokenStore(tokenStore)
-                .accessTokenConverter(jwtAccessTokenConverter)
-                .exceptionTranslator(new EraWebResponseExceptionTranslator())
-                .tokenEnhancer(jwtAccessTokenConverter)
+                .tokenStore(tokenStore).accessTokenConverter(jwtAccessTokenConverter).exceptionTranslator(new EraWebResponseExceptionTranslator())
                 //用户信息服务
-                .userDetailsService(userDetailsService)
-                .authenticationManager(authenticationManager);
+                .userDetailsService(userDetailsService).authenticationManager(authenticationManager);
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(endpoints.getTokenStore());
         tokenServices.setSupportRefreshToken(true);
@@ -88,17 +90,14 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
         //token有效期设置30天
-        tokenServices.setAccessTokenValiditySeconds(2592000);
+        tokenServices.setAccessTokenValiditySeconds(tokenValiditySeconds);
         //Refresh_token:90天
-        tokenServices.setRefreshTokenValiditySeconds(7776000);
+        tokenServices.setRefreshTokenValiditySeconds(refreshTokenValiditySeconds);
         endpoints.tokenServices(tokenServices);
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security
-                .allowFormAuthenticationForClients()
-                .tokenKeyAccess("isAuthenticated()")
-                .checkTokenAccess("permitAll()");
+        security.allowFormAuthenticationForClients().tokenKeyAccess("isAuthenticated()").checkTokenAccess("permitAll()");
     }
 }

@@ -30,6 +30,7 @@ import com.ourexists.era.framework.oauth2.AccRole;
 import com.ourexists.era.framework.oauth2.EraUser;
 import com.ourexists.era.framework.oauth2.authority.ApiPermission;
 import com.ourexists.era.framework.oauth2.resource.permission.store.PermissionStore;
+import com.ourexists.era.framework.oauth2.token.EraAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
@@ -85,56 +86,55 @@ public class PermissionHandlerInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        if (!(principal instanceof EraUser)) {
-            output(response, ResultMsgEnum.UN_LOGIN);
-            return false;
-        }
-        authentication.getCredentials();
-        EraUser eraUser = (EraUser) principal;
-        UserContext.setUser(eraUser.getUserInfo());
+        if (authentication instanceof EraAuthenticationToken) {
+            Object principal = authentication.getPrincipal();
+            if (!(principal instanceof EraUser)) {
+                output(response, ResultMsgEnum.UN_LOGIN);
+                return false;
+            }
+            EraUser eraUser = (EraUser) principal;
+            UserContext.setUser(eraUser.getUserInfo());
 
-        String tenantId = AuthUtils.extractTenant(request);
-        if (StringUtils.isEmpty(tenantId)) {
-            output(response, ResultMsgEnum.PERMISSION_DENIED);
-            return false;
-        }
+            String tenantId = AuthUtils.extractTenant(request);
+            if (StringUtils.isEmpty(tenantId)) {
+                output(response, ResultMsgEnum.PERMISSION_DENIED);
+                return false;
+            }
 
-        //api权限白名单
-        for (String tenantCheck : authWhiteListProperties.getTenantCheck()) {
-            if (antPathMatcher.match(tenantCheck, request.getServletPath())) {
+            //api权限白名单
+            for (String tenantCheck : authWhiteListProperties.getTenantCheck()) {
+                if (antPathMatcher.match(tenantCheck, request.getServletPath())) {
+                    return true;
+                }
+            }
+
+            TenantInfo tenantInfo = eraUser.getTenantInfoMap().get(tenantId);
+            if (tenantInfo == null) {
+                output(response, ResultMsgEnum.PERMISSION_DENIED);
+                return false;
+            }
+            UserContext.setTenant(tenantInfo);
+
+            //租戶管理员不需要判断api权限
+            if (AccRole.ADMIN.name().equals(tenantInfo.getRole())) {
                 return true;
             }
-        }
 
-        TenantInfo tenantInfo = eraUser.getTenantInfoMap().get(tenantId);
-        if (tenantInfo == null) {
-            output(response, ResultMsgEnum.PERMISSION_DENIED);
-            return false;
-        }
-        UserContext.setTenant(tenantInfo);
-
-        //租戶管理员不需要判断api权限
-        if (AccRole.ADMIN.name().equals(tenantInfo.getRole())) {
-            return true;
-        }
-
-        //api权限白名单
-        for (String authCheck : authWhiteListProperties.getApiCheck()) {
-            if (antPathMatcher.match(authCheck, request.getServletPath())) {
-                return true;
+            //api权限白名单
+            for (String authCheck : authWhiteListProperties.getApiCheck()) {
+                if (antPathMatcher.match(authCheck, request.getServletPath())) {
+                    return true;
+                }
+            }
+            Collection<? extends ApiPermission> allApiPermissions = this.permissionStore.apiPermissions();
+            if (!checkApiPermission(request,
+                    allApiPermissions,
+                    eraUser.getApiPermissions())) {
+                output(response, ResultMsgEnum.PERMISSION_DENIED);
+                return false;
             }
         }
-        Collection<? extends ApiPermission> allApiPermissions = this.permissionStore.apiPermissions();
-        if (!checkApiPermission(request,
-                allApiPermissions,
-                eraUser.getApiPermissions())) {
-            output(response, ResultMsgEnum.PERMISSION_DENIED);
-            return false;
-        }
-
         return true;
     }
 

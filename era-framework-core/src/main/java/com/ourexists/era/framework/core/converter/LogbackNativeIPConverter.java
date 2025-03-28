@@ -20,7 +20,6 @@ package com.ourexists.era.framework.core.converter;
 
 import ch.qos.logback.classic.pattern.ClassicConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -32,7 +31,6 @@ import java.util.List;
  * @date 2022/2/21
  * @since 1.0.0
  **/
-@Slf4j
 public class LogbackNativeIPConverter extends ClassicConverter {
     private static final List<String> IP_CACHE = new ArrayList<>(2);
 
@@ -46,9 +44,8 @@ public class LogbackNativeIPConverter extends ClassicConverter {
             }
             return IP_CACHE.get(0);
         } catch (UnknownHostException e) {
-            log.error("日志ip转换错误!", e);
+            //日志配置,这里日志不输出
         }
         return "0.0.0.0";
-
     }
 }
