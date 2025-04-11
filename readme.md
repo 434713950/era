@@ -3,7 +3,7 @@ era  分布式集成框架
 
 [![AUR](https://img.shields.io/badge/license-AGPL%203.0-blue.svg)]()
 [![](https://img.shields.io/badge/Author-ourexists-orange.svg)]()
-[![](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)]()
+[![](https://img.shields.io/badge/version-1.1.0-brightgreen.svg)]()
 
 介绍
 -----------------------------------
