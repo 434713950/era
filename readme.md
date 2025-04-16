@@ -56,6 +56,10 @@ era  分布式集成框架
 │ ├─[era-framework-scheduler-schedulerx2](era-framework-scheduler/era-framework-scheduler-schedulerx2) 阿里schedulerx2调度集成（暂未实现）
 │ └─[era-framework-scheduler-xxljob](era-framework-scheduler/era-framework-scheduler-xxljob) xxljob调度集成
 │
+├─[era-framework-tms](era-framework-tms) 三方票据管理器
+│ ├─[era-framework-tms-core](era-framework-tms/era-framework-tms-core) 票据管理器核心包
+│ └─[era-framework-tms-redission](era-framework-tms/era-framework-tms-redission) 票据管理器redission管理包
+│
 ├─[era-framework-sharing-jdbc](era-framework-sharing-jdbc) 基于sharingjdbc的数据库分片
 │
 └─[era-framework-webmvc](era-framework-webmvc)  mvc相关规范扩展框架

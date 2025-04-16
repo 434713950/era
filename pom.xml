@@ -43,6 +43,9 @@
         <module>era-framework-orm-mongodb</module>
         <module>era-framework-idempotent</module>
         <module>era-framework-excel</module>
+        <module>era-framework-tms</module>
+        <module>era-framework-tms/era-framework-tms-core</module>
+        <module>era-framework-tms/era-framework-tms-redission</module>
     </modules>
 
     <properties>
