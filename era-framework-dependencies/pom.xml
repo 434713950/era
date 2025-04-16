@@ -47,6 +47,7 @@
         <era-framework-orm-mongodb.version>1.1.0-SNAPSHOT</era-framework-orm-mongodb.version>
         <era-framework-rpc-feign.version>1.1.0-SNAPSHOT</era-framework-rpc-feign.version>
         <era-framework-excel.version>1.1.0-SNAPSHOT</era-framework-excel.version>
+        <era-framework-tms.version>1.1.0-SNAPSHOT</era-framework-tms.version>
     </properties>
 
     <dependencyManagement>
@@ -120,6 +121,16 @@
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-excel</artifactId>
                 <version>${era-framework-excel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-tms-core</artifactId>
+                <version>${era-framework-tms.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-tms-redission</artifactId>
+                <version>${era-framework-tms.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
