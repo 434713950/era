@@ -25,9 +25,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * 微信AccessToken定时获取
- *
- * @author linzhihao
- * @date 2020/9/4 10:40
  */
 @Slf4j
 public class JobAccessTokenTimer {
