@@ -108,6 +108,18 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>com.github.johnrengelman</groupId>
+                    <artifactId>shadow</artifactId>
+                    <version>7.0.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>shadow</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.2.0</version>
