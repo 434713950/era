@@ -12,4 +12,6 @@ public interface ExportExecutor<T> {
      * @param excelType 导出的文件类型
      */
     void export(String exportId, T condition, String fileName, ExcelTypeEnum excelType);
+
+    String filePath();
 }

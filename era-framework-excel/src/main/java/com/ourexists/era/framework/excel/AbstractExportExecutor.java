@@ -49,11 +49,6 @@ public abstract class AbstractExportExecutor<T, R> implements ExportExecutor<T> 
         }
     }
 
-    /**
-     * @return 文件路径名
-     */
-    protected abstract String filePath();
-
 
     /**
      * 样式处理器，不对csv生效
