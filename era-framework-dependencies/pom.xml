@@ -122,16 +122,6 @@
                 <artifactId>era-framework-excel</artifactId>
                 <version>${era-framework-excel.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-tms-core</artifactId>
-                <version>${era-framework-tms.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-tms-redission</artifactId>
-                <version>${era-framework-tms.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

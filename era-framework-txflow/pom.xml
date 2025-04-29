@@ -3,20 +3,19 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ourexists.era</groupId>
-        <artifactId>era-framework-tms</artifactId>
+        <artifactId>era-parent</artifactId>
         <version>1.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>era-framework-tms-core</artifactId>
+    <artifactId>era-framework-txflow</artifactId>
+
+    <name>era-framework-txflow</name>
+
     <dependencies>
         <dependency>
             <groupId>com.ourexists.era</groupId>
             <artifactId>era-framework-core</artifactId>
             <version>1.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
     </dependencies>
 </project>

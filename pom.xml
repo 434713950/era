@@ -44,8 +44,7 @@
         <module>era-framework-idempotent</module>
         <module>era-framework-excel</module>
         <module>era-framework-tms</module>
-        <module>era-framework-tms/era-framework-tms-core</module>
-        <module>era-framework-tms/era-framework-tms-redission</module>
+        <module>era-framework-txflow</module>
     </modules>
 
     <properties>
@@ -107,18 +106,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>com.github.johnrengelman</groupId>
-                    <artifactId>shadow</artifactId>
-                    <version>7.0.0</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>shadow</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>

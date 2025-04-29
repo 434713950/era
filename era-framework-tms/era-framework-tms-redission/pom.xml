@@ -3,19 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ourexists.era</groupId>
-        <artifactId>era-parent</artifactId>
+        <artifactId>era-framework-tms</artifactId>
         <version>1.1.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>era-framework-tms-redission</artifactId>
-    <packaging>jar</packaging>
-
-    <name>era-framework-tms-redission</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
