@@ -2,16 +2,18 @@ package com.ourexists.era.framework.excel;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.handler.WriteHandler;
+import com.ourexists.era.framework.excel.style.ExcelTitleStrategy;
 import com.ourexists.era.framework.oss.OssTemplate;
 import com.ourexists.era.framework.oss.UploadPartR;
 import com.ourexists.era.framework.core.exceptions.EraCommonException;
 import com.ourexists.era.framework.core.utils.CollectionUtil;
+import com.ourexists.era.framework.oss.exception.UploadException;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -91,27 +93,38 @@ public abstract class AbstractExportExecutor<T, R> implements ExportExecutor<T> 
     }
 
 
-    protected void exportOssMultipart(T condition, Class<R> dataClass, String fileName, ExcelTypeEnum excelType) throws EraCommonException {
-        String uploadId = ossTemplate.initiateMultipartUpload(fileName);
+    protected void exportOssMultipart(T condition, Class<R> head, String fileName, ExcelTypeEnum excelType) throws EraCommonException {
         ExportPartDataResult exportPartDataResult = new ExportPartDataResult()
-                .setUploadId(uploadId)
+//                .setUploadId(uploadId)
                 .setPartNum(1)
                 .setIsEnd(false)
                 .setIncludeColumnIndexes(includeColumnIndexes(condition))
                 .setFileName(fileName);
         List<WriteHandler> writeHandlers = loadWriteHandlers(condition);
-        List<UploadPartR> uploadPartRS = new ArrayList<>();
+        File file = null;
         while (!exportPartDataResult.getIsEnd()) {
-            beforePartHandle(condition, dataClass, excelType, exportPartDataResult, writeHandlers);
-            uploadPartExportData(condition, dataClass, excelType, exportPartDataResult, writeHandlers);
-            if (exportPartDataResult.getUploadPartR() != null) {
-                uploadPartRS.add(exportPartDataResult.getUploadPartR());
-            }
-            Integer nextPartNum = exportPartDataResult.getPartNum() + 1;
-            exportPartDataResult.setPartNum(nextPartNum);
-            afterPartHandle(condition, dataClass, excelType, exportPartDataResult, writeHandlers);
+            file = partExportData(condition, head, excelType, exportPartDataResult, writeHandlers);
+            exportPartDataResult.setPartNum(exportPartDataResult.getPartNum() + 1);
         }
-        ossTemplate.completeMultipartUpload(fileName, uploadId, uploadPartRS);
+        if (file != null && file.exists()) {
+            FileInputStream fileInputStream = null;
+            try {
+                fileInputStream = new FileInputStream(file);
+                ossTemplate.upload(fileInputStream, fileName);
+            } catch (IOException e) {
+                log.error("临时文件异常！", e);
+            } catch (UploadException e) {
+                log.error("文件上传失败！", e);
+            } finally {
+                if (fileInputStream != null) {
+                    try {
+                        fileInputStream.close();
+                    } catch (IOException ignored) {
+                    }
+                }
+                file.delete();
+            }
+        }
     }
 
     /**
@@ -200,5 +213,50 @@ public abstract class AbstractExportExecutor<T, R> implements ExportExecutor<T> 
      * @param writeHandlers        样式处理器
      */
     protected void afterPartHandle(T condition, Class<R> dataClass, ExcelTypeEnum excelType, ExportPartDataResult exportPartDataResult, List<WriteHandler> writeHandlers) {
+    }
+
+    protected File partExportData(T condition, Class<R> head, ExcelTypeEnum excelType, ExportPartDataResult exportPartDataResult, List<WriteHandler> writeHandlers) throws EraCommonException {
+        List<R> ossList = exportData(condition, exportPartDataResult);
+        String[] fileNames = exportPartDataResult.getFileName().split("/");
+        String sourceFileName = fileNames[fileNames.length - 1] + "-" + (exportPartDataResult.getPartNum() - 1);
+        String targetFileName = fileNames[fileNames.length - 1] + "-" + exportPartDataResult.getPartNum();
+        ExcelWriterBuilder excelWriterBuilder;
+        if (exportPartDataResult.getPartNum() < 2) {
+            //导出文件输出流
+            excelWriterBuilder = EasyExcel
+                    .write(targetFileName, head)
+                    .relativeHeadRowIndex(1)
+                    .includeColumnIndexes(exportPartDataResult.getIncludeColumnIndexes())
+                    .orderByIncludeColumn(true)
+                    .excelType(excelType);
+            if (!excelType.equals(ExcelTypeEnum.CSV) && CollectionUtil.isNotBlank(writeHandlers)) {
+                for (WriteHandler writeHandler : writeHandlers) {
+                    excelWriterBuilder.registerWriteHandler(writeHandler);
+                }
+            }
+        } else {
+            excelWriterBuilder = EasyExcel
+                    .write()
+                    .includeColumnIndexes(exportPartDataResult.getIncludeColumnIndexes())
+                    .orderByIncludeColumn(true)
+                    .withTemplate(sourceFileName).file(targetFileName).needHead(false);
+            if (!excelType.equals(ExcelTypeEnum.CSV) && CollectionUtil.isNotBlank(writeHandlers)) {
+                for (WriteHandler writeHandler : writeHandlers) {
+                    if (writeHandler instanceof ExcelTitleStrategy) {
+                        continue;
+                    }
+                    excelWriterBuilder.registerWriteHandler(writeHandler);
+                }
+            }
+        }
+
+        excelWriterBuilder.sheet().doWrite(ossList);
+
+        File sourceFile = new File(sourceFileName);
+        File targetFile = new File(targetFileName);
+        if (sourceFile.exists()) {
+            sourceFile.delete();
+        }
+        return targetFile;
     }
 }
