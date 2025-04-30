@@ -13,4 +13,4 @@
 3. `TxManager`中的`execute`方法为启用入口, `breakpointProcess`为断点重入方法
 
 框架模型
-> 待补充    
+![txflow.png](txflow.png)  
