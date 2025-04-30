@@ -11,6 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class DefaultThirdAccessTokenManager extends AbstractThirdAccessTokenManager {
 
+    private final Map<String, Connection> propertiesMap = new ConcurrentHashMap<>();
+
     private final Map<String, EraThirdAccessToken> thirdAccessTokenMap = new ConcurrentHashMap<>();
 
     public DefaultThirdAccessTokenManager(List<RemoteTokenRequester> remoteTokenRequester) {
