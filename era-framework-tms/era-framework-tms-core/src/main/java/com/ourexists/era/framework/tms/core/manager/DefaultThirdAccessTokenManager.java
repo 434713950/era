@@ -24,48 +24,62 @@ public class DefaultThirdAccessTokenManager extends AbstractThirdAccessTokenMana
             List<RemoteTokenRequester> remoteTokenRequester) {
         super(remoteTokenRequester);
         connections.forEach(properties -> {
-            propertiesMap.put(properties.getAppId(), properties);
+            propertiesMap.put(properties.getName(), properties);
         });
     }
 
     @Override
-    public EraThirdAccessToken accessToken(String appId) {
-        return thirdAccessTokenMap.get(appId);
+    public EraThirdAccessToken accessToken(String connectName) {
+        return thirdAccessTokenMap.get(connectName);
     }
 
     @Override
-    public EraThirdAccessToken refresh(String appId) {
-        return refreshAccessToken(appId);
+    public EraThirdAccessToken refresh(String connectName) {
+        return refreshAccessToken(connectName);
     }
 
     @Override
-    public EraThirdAccessToken forceRefresh(String appId) {
-        return refreshAccessToken(appId);
+    public void refreshAll() {
+        for (String key : this.propertiesMap.keySet()) {
+            refresh(key);
+        }
     }
 
     @Override
-    public void addApp(Connection properties) {
-        propertiesMap.put(properties.getAppId(), properties);
-        refreshAccessToken(properties.getAppId());
+    public void forceRefreshAll() {
+        for (String key : this.propertiesMap.keySet()) {
+            forceRefresh(key);
+        }
     }
 
     @Override
-    public void removeApp(String appId) {
-        propertiesMap.remove(appId);
-        thirdAccessTokenMap.remove(appId);
+    public EraThirdAccessToken forceRefresh(String connectName) {
+        return refreshAccessToken(connectName);
     }
 
-    private EraThirdAccessToken refreshAccessToken(String appId) {
-        Connection connection = getProperties(appId);
+    @Override
+    public void addApp(Connection connection) {
+        propertiesMap.put(connection.getName(), connection);
+        refreshAccessToken(connection.getName());
+    }
+
+    @Override
+    public void removeApp(String connectName) {
+        propertiesMap.remove(connectName);
+        thirdAccessTokenMap.remove(connectName);
+    }
+
+    private EraThirdAccessToken refreshAccessToken(String connectName) {
+        Connection connection = getProperties(connectName);
         if (connection == null) {
-            log.error("【Token Manager】appId[{}]not exists", appId);
+            log.error("【Token Manager】connect[{}]not exists", connectName);
             return null;
         }
         if (!connection.getRefreshEnable()) {
             log.info("【Token Manager】Access Token refresh capability not enabled!");
             return null;
         }
-        String token = getRemoteTokenRequester(connection.getRequester()).gainToken(
+        String token = getRemoteTokenRequester(connection.getName()).gainToken(
                 connection.getAppId(),
                 connection.getAppSecret(),
                 connection.getTokenUri());
@@ -75,7 +89,7 @@ public class DefaultThirdAccessTokenManager extends AbstractThirdAccessTokenMana
                 .setExpiresIn(connection.getTokenExpireIn());
     }
 
-    private Connection getProperties(String appId) {
-        return propertiesMap.get(appId);
+    private Connection getProperties(String connectName) {
+        return propertiesMap.get(connectName);
     }
 }

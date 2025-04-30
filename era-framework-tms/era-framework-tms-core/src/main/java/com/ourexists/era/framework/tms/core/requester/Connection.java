@@ -20,6 +20,7 @@ package com.ourexists.era.framework.tms.core.requester;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * @author pengcheng
@@ -29,17 +30,18 @@ import lombok.Setter;
  */
 @Setter
 @Getter
+@Accessors(chain = true)
 public class Connection {
+
+    /**
+     * 连接名
+     */
+    private String name;
 
     /**
      * token请求路径
      */
     private String tokenUri;
-
-    /**
-     * 刷新请求路径
-     */
-    private String refreshUri;
 
     /**
      * 应用id
@@ -51,10 +53,6 @@ public class Connection {
      */
     private String appSecret;
 
-    /**
-     * 请求方法，对应请求器的名称
-     */
-    private String requester;
 
     /**
      * token过期时间

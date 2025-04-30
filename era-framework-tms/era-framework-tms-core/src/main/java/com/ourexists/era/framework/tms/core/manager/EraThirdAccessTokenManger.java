@@ -34,23 +34,28 @@ public interface EraThirdAccessTokenManger {
      *
      * @return accesstoken
      */
-    EraThirdAccessToken accessToken(String appId);
+    EraThirdAccessToken accessToken(String connectName);
 
     /**
      * 刷新。与已存token进行判断
      *
      * @return accesstoken
      */
-    EraThirdAccessToken refresh(String appId);
+    EraThirdAccessToken refresh(String connectName);
+
+
+    void refreshAll();
+
+    void forceRefreshAll();
 
     /**
      * 强制刷新。无视已存的token
      *
      * @return
      */
-    EraThirdAccessToken forceRefresh(String appId);
+    EraThirdAccessToken forceRefresh(String connectName);
 
-    void addApp(Connection properties);
+    void addApp(Connection connect);
 
-    void removeApp(String appId);
+    void removeApp(String connectName);
 }

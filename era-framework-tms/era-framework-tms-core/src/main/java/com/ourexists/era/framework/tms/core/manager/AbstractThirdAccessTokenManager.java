@@ -13,9 +13,9 @@ public abstract class AbstractThirdAccessTokenManager implements EraThirdAccessT
         this.remoteTokenRequester.addAll(remoteTokenRequester);
     }
 
-    protected RemoteTokenRequester getRemoteTokenRequester(String name) {
+    protected RemoteTokenRequester getRemoteTokenRequester(String connectName) {
         for (RemoteTokenRequester tokenRequester : remoteTokenRequester) {
-            if (tokenRequester.name().equals(name)) {
+            if (tokenRequester.connectName().equals(connectName)) {
                 return tokenRequester;
             }
         }

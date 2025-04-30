@@ -63,7 +63,7 @@ public class RedisThirdAccessTokenManager extends AbstractThirdAccessTokenManage
         super(remoteTokenRequester);
         this.redisson = redisson;
         connections.forEach(properties -> {
-            propertiesMap.put(properties.getAppId(), properties);
+            propertiesMap.put(properties.getName(), properties);
         });
     }
 
@@ -73,11 +73,11 @@ public class RedisThirdAccessTokenManager extends AbstractThirdAccessTokenManage
      * @return 令牌
      */
     @Override
-    public EraThirdAccessToken accessToken(String appId) {
-        RBucket<EraThirdAccessToken> rBucket = redisson.getBucket(CACHE_KEY + appId);
+    public EraThirdAccessToken accessToken(String connectName) {
+        RBucket<EraThirdAccessToken> rBucket = redisson.getBucket(CACHE_KEY + connectName);
         EraThirdAccessToken redisAccessToken = rBucket.get();
         if (redisAccessToken == null) {
-            redisAccessToken = refreshAccessToken(appId, rBucket, false);
+            redisAccessToken = refreshAccessToken(connectName, rBucket, false);
         }
         return redisAccessToken;
     }
@@ -88,9 +88,23 @@ public class RedisThirdAccessTokenManager extends AbstractThirdAccessTokenManage
      * @return 令牌
      */
     @Override
-    public EraThirdAccessToken refresh(String appId) {
-        RBucket<EraThirdAccessToken> rBucket = redisson.getBucket(CACHE_KEY + appId);
-        return refreshAccessToken(appId, rBucket, true);
+    public EraThirdAccessToken refresh(String connectName) {
+        RBucket<EraThirdAccessToken> rBucket = redisson.getBucket(CACHE_KEY + connectName);
+        return refreshAccessToken(connectName, rBucket, true);
+    }
+
+    @Override
+    public void refreshAll() {
+        for (String key : this.propertiesMap.keySet()) {
+            refresh(key);
+        }
+    }
+
+    @Override
+    public void forceRefreshAll() {
+        for (String key : this.propertiesMap.keySet()) {
+            forceRefresh(key);
+        }
     }
 
     /**
@@ -99,21 +113,21 @@ public class RedisThirdAccessTokenManager extends AbstractThirdAccessTokenManage
      * @return 令牌
      */
     @Override
-    public EraThirdAccessToken forceRefresh(String appId) {
-        RBucket<EraThirdAccessToken> rBucket = redisson.getBucket(CACHE_KEY + appId);
-        return refreshAccessToken(appId, rBucket, false);
+    public EraThirdAccessToken forceRefresh(String connectName) {
+        RBucket<EraThirdAccessToken> rBucket = redisson.getBucket(CACHE_KEY + connectName);
+        return refreshAccessToken(connectName, rBucket, false);
     }
 
     @Override
     public void addApp(Connection properties) {
-        propertiesMap.put(properties.getAppId(), properties);
-        refresh(properties.getAppId());
+        propertiesMap.put(properties.getName(), properties);
+        refresh(properties.getName());
     }
 
     @Override
-    public void removeApp(String appId) {
-        propertiesMap.remove(appId);
-        redisson.getBucket(CACHE_KEY + appId).deleteAsync();
+    public void removeApp(String connectName) {
+        propertiesMap.remove(connectName);
+        redisson.getBucket(CACHE_KEY + connectName).deleteAsync();
     }
 
     /**
@@ -144,7 +158,7 @@ public class RedisThirdAccessTokenManager extends AbstractThirdAccessTokenManage
                         return jobAccessToken;
                     }
                 }
-                RemoteTokenRequester remoteTokenRequester = getRemoteTokenRequester(connection.getRequester());
+                RemoteTokenRequester remoteTokenRequester = getRemoteTokenRequester(connection.getName());
                 if (remoteTokenRequester == null) {
                     log.debug("【Token Manager】Connect lock of requester");
                     return null;
@@ -174,7 +188,7 @@ public class RedisThirdAccessTokenManager extends AbstractThirdAccessTokenManage
         return jobAccessToken;
     }
 
-    private Connection getProperties(String appId) {
-        return propertiesMap.get(appId);
+    private Connection getProperties(String connectName) {
+        return propertiesMap.get(connectName);
     }
 }

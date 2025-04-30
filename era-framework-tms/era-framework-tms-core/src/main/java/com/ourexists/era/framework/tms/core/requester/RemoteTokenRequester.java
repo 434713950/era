@@ -37,9 +37,9 @@ public interface RemoteTokenRequester {
     String gainToken(String appId, String appSecret, String uri);
 
     /**
-     * 请求器名称
+     * 连接名称
      *
      * @return
      */
-    String name();
+    String connectName();
 }
