@@ -44,14 +44,11 @@ public class RedisThirdAccessTokenManager extends AbstractThirdAccessTokenManage
 
     private final RedissonClient redisson;
 
-    private final Map<String, Connection> propertiesMap = new ConcurrentHashMap<>();
-
     private static final String CACHE_KEY = "era:tms:access_key:";
 
     private static final String CACHE_LOCK = "era:tms:access_lock:";
 
     private static final Integer LOCK_TIME = 60;
-
 
     public RedisThirdAccessTokenManager(RedissonClient redisson, List<RemoteTokenRequester> remoteTokenRequester) {
         super(remoteTokenRequester);
