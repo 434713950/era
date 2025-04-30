@@ -47,7 +47,7 @@ public class EraThirdAccessToken implements Serializable {
     private Long time;
 
     /**
-     * 有效时间
+     * 有效时长
      */
     private Long expiresIn;
 }
