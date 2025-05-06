@@ -1,5 +1,11 @@
-# 1.0.0 
-## 2022/05/23
-* 使用说明
-> 集成包采用sharing-jdbc为主体框架。额外提供了对应时间切割的分片算法`MonthPreciseShardingAlgorithm`,`DayPreciseShardingAlgorithm`,`YearPreciseShardingAlgorithm`
-> 配置参考文件sample.yml
+# 数据库分片组件
+
+## 介绍
+基于`sharding-jdbc`框架核心，提供了常用的时间分片算法
+
+#### 使用方法
+> 参考[sample.yml](sample.yml)文件
+
+
+#### 使用场景
+> 1. 日志类大型数据量级库的分片

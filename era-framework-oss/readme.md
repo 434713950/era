@@ -1,14 +1,13 @@
-# 说明
+# oss相关工具的继承适配化框架
 
-OSS集成适配器，支持minio和AliOss的一键化配置
+## 介绍
 
-# 1.1.0
+OSS集成适配器，支持minio和AliOss的一键化配置切换
 
-## 使用规则
+#### 使用方法
 
-1. 使用[OssTemplate.java](src/main/java/com/ourexists/era/framework/oss/OssTemplate.java)模板进行方法调用。
-2. 配置见文件[spring-configuration-metadata.json](src/main/resources/META-INF/spring-configuration-metadata.json)
+> 1. 使用[OssTemplate.java](src/main/java/com/ourexists/era/framework/oss/OssTemplate.java)模板进行方法调用。
+> 2. 配置见文件[spring-configuration-metadata.json](src/main/resources/META-INF/spring-configuration-metadata.json)
 
-### 2024/04/08
-
-* 提供访问签名模式支持
+#### 使用场景
+> 1. oss使用
