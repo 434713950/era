@@ -19,6 +19,10 @@
 package com.ourexists.era.boot.starter.autoconfigure;
 
 import com.ourexists.era.framework.oauth2.EnableEraResourceServer;
+import com.ourexists.era.framework.oauth2.token.RedisTemplateTokenStore;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
  * @author pengcheng
@@ -27,4 +31,9 @@ import com.ourexists.era.framework.oauth2.EnableEraResourceServer;
  */
 @EnableEraResourceServer
 public class WebAutoConfiguration {
+
+    @Bean
+    public TokenStore tokenStore(RedisTemplate redisTemplate) {
+        return new RedisTemplateTokenStore(redisTemplate);
+    }
 }
