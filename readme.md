@@ -16,9 +16,9 @@ era  分布式集成框架
 
 版本对应表  
 
-| Era Framework Version | 变更内容 | Spring Cloud Version | Spring Cloud Alibaba Version | Spring Boot Version |  
-| :-----                |:-----| :----                |  :----                       | :----               |   
-| 1.1.0                 | 无    | Hoxton.SR12          |  2.2.7.RELEASE               | 2.3.12.RELEASE      |
+| Era Framework Version | 变更内容 | Spring Cloud Version | Spring Cloud Alibaba Version | Spring Boot Version | JAVA Version |
+| :-----                |:-----| :----                |  :----                       | :----               |:-------------|           
+| 1.1.0                 | 无    | Hoxton.SR12          |  2.2.7.RELEASE               | 2.3.12.RELEASE      | 8+           |
 
 
 框架结构
