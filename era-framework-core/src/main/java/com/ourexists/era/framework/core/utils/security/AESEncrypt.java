@@ -18,16 +18,12 @@
 
 package com.ourexists.era.framework.core.utils.security;
 
-import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
-/**
- * @author xutengfei
- * @date 2020/2/5 11:01
- */
 public class AESEncrypt {
 
     private static final String DEFAULT_CHARSET = "UTF-8";
@@ -62,7 +58,7 @@ public class AESEncrypt {
         byte[] encrypted = cipher.doFinal(dataBytes);
 
 
-        return Base64.encodeBase64String(encrypted);
+        return Base64.getEncoder().encodeToString(encrypted);
     }
 
     /**
@@ -75,7 +71,7 @@ public class AESEncrypt {
      */
     private static String desEncrypt(String data, String key, String iv) throws Exception {
 
-        byte[] encrypted1 = Base64.decodeBase64(data);
+        byte[] encrypted1 = Base64.getDecoder().decode(data);
 
 
         Cipher cipher = Cipher.getInstance(CBC_CIPHER_NOPADDING);

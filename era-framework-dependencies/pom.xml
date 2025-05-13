@@ -56,71 +56,85 @@
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-core</artifactId>
                 <version>${era-framework-core.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-orm-mybatisplus</artifactId>
                 <version>${era-framework-orm-mybatisplus.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-scheduler-xxljob</artifactId>
                 <version>${era-framework-scheduler-xxljob.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-webmvc</artifactId>
                 <version>${era-framework-webmvc.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-oss</artifactId>
                 <version>${era-framework-aliyun-oss.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-cache</artifactId>
                 <version>${era-framework-cache.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-oauth2</artifactId>
                 <version>${era-framework-oauth2.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-boot-starter-web</artifactId>
                 <version>${era-boot-starter-web.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-mq-rocketmq</artifactId>
                 <version>${era-framework-mq-rocketmq.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-distribution</artifactId>
                 <version>${era-framework-distribution.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-sharing-jdbc</artifactId>
                 <version>${era-framework-sharing-jdbc.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-orm-mongodb</artifactId>
                 <version>${era-framework-orm-mongodb.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-rpc-feign</artifactId>
                 <version>${era-framework-rpc-feign.version}</version>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-excel</artifactId>
                 <version>${era-framework-excel.version}</version>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

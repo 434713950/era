@@ -43,7 +43,7 @@
 
         <dependency>
             <groupId>com.ourexists.era</groupId>
-            <artifactId>era-framework-oauth2</artifactId>
+            <artifactId>era-framework-oauth2-resource</artifactId>
             <version>2024.0.1</version>
         </dependency>
 

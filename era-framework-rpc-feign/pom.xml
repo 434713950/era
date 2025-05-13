@@ -29,17 +29,6 @@
 
     <artifactId>era-framework-rpc-feign</artifactId>
 
-    <properties>
-
-        <feign.version>10.8</feign.version>
-        <feign-slf4j.version>${feign.version}</feign-slf4j.version>
-        <feign-jackson.version>${feign.version}</feign-jackson.version>
-        <feign-gson.version>${feign.version}</feign-gson.version>
-        <feign-okhttp.version>${feign.version}</feign-okhttp.version>
-        <okhttp.version>4.4.1</okhttp.version>
-        <spring-cloud-starter-openfeign.version>2.2.2.RELEASE</spring-cloud-starter-openfeign.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -52,9 +41,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

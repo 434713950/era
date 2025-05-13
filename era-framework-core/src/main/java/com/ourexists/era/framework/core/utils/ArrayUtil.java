@@ -18,15 +18,8 @@
 
 package com.ourexists.era.framework.core.utils;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Transformer;
-import org.apache.commons.lang3.StringUtils;
-
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @Author: PengCheng
@@ -96,20 +89,4 @@ public class ArrayUtil {
     public static boolean isArray(Object obj) {
         return obj != null && obj.getClass().isArray();
     }
-
-    /**
-     * 以 conjunction 为分隔符将字符串转换为数组
-     * @param sourceStr
-     * @param conjunction
-     * @return
-     */
-    public static List<Long> strToArray(String sourceStr, String conjunction) {
-        List idsList = new ArrayList<>();
-        if (StringUtils.isNotBlank(sourceStr)) {
-            List idsStringList = Arrays.asList(StringUtils.split(sourceStr,conjunction));
-            CollectionUtils.collect(idsStringList, (Transformer) o -> Long.valueOf(o.toString()), idsList);
-        }
-        return idsList;
-    }
-
 }

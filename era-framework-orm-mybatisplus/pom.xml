@@ -29,13 +29,6 @@
 
     <artifactId>era-framework-orm-mybatisplus</artifactId>
 
-    <properties>
-        <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
-        <mybatis.version>3.5.6</mybatis.version>
-        <mysql.version>8.0.19</mysql.version>
-        <mybatis-plus-starter.version>3.5.2</mybatis-plus-starter.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.ourexists.era</groupId>
@@ -44,14 +37,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis-spring-boot.version}</version>
+            <version>3.0.4</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.logging.log4j</groupId>
@@ -75,31 +63,13 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus-starter.version}</version>
+            <version>3.5.12</version>
         </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
+            <version>8.0.33</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

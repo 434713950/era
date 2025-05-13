@@ -19,10 +19,10 @@
 package com.ourexists.era.framework.core.utils.net;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class HttpUtil {
      * @param otherIpHeaderNames    需要多加的ip请求头
      * @return
      */
-    public static String getRequestIPAddress(HttpServletRequest request,String... otherIpHeaderNames){
+    public static String getRequestIPAddress(HttpServletRequest request, String... otherIpHeaderNames){
         List<String> ipHeaderNames = Arrays.asList("x-forwarded-for","Proxy-Client-IP","WL-Proxy-Client-IP","X-Real-IP","HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR");
         if (ArrayUtils.isNotEmpty(otherIpHeaderNames)){
             ipHeaderNames.addAll(Arrays.asList(otherIpHeaderNames));
