@@ -142,8 +142,7 @@ public class XxlJobOperateTemplate extends AbstractJobOperateTemplate {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.put("Cookie", cookies());
         HttpEntity<T> requestEntity = new HttpEntity<>(body, requestHeaders);
-        return restTemplate.exchange(uri() + path,
-                HttpMethod.POST, requestEntity, respClass).getBody();
+        return restTemplate.exchange(uri() + path, HttpMethod.POST, requestEntity, respClass).getBody();
     }
 
     private List<String> cookies() {

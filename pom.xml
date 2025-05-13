@@ -30,14 +30,12 @@
         <module>era-framework-scheduler</module>
         <module>era-framework-orm-mybatisplus</module>
         <module>era-framework-core</module>
-        <module>era-framework-webmvc</module>
         <module>era-framework-dependencies</module>
         <module>era-framework-rpc-feign</module>
         <module>era-framework-oss</module>
         <module>era-framework-cache</module>
         <module>era-framework-oauth2</module>
         <module>era-boot-starter-web</module>
-        <module>era-framework-mq-rocketmq</module>
         <module>era-framework-distribution</module>
         <module>era-framework-sharing-jdbc</module>
         <module>era-framework-orm-mongodb</module>

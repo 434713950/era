@@ -16,19 +16,27 @@
  *
  */
 
-package com.ourexists.era.framework.core.user;
+package com.ourexists.era.oauth2.core.store;
+
+
+import com.ourexists.era.oauth2.core.authority.ApiPermission;
+
+import java.util.Collection;
 
 /**
- * 层级管理模式
- *
  * @author pengcheng
- * @date 2022/7/25 17:18
- * @since 1.1.0
+ * @date 2022/4/15 17:53
+ * @since 1.0.0
  */
-public enum OperatorModel {
+public interface PermissionStore {
 
-    QUERY,
-    DELETE,
-    UPDATE,
-    INSERT,
+    void setPermission(Collection<ApiPermission> apiPermissions);
+
+
+    Collection<ApiPermission> apiPermissions();
+
+
+    void clear();
+
+    void insert(ApiPermission apiPermission);
 }

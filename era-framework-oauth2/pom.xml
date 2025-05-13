@@ -27,9 +27,11 @@
     </parent>
     <packaging>pom</packaging>
     <modules>
-        <module>era-framework-oauth2-authorization</module>
+        <module>era-framework-web-authorization</module>
         <module>era-framework-oauth2-core</module>
-        <module>era-framework-oauth2-resource</module>
+        <module>era-framework-web-resource</module>
+        <module>era-framework-web-foundation</module>
+        <module>era-framework-web-common</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

@@ -16,19 +16,31 @@
  *
  */
 
-package com.ourexists.era.framework.core.user;
+package com.ourexists.era.oauth2.resource.permission;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 层级管理模式
+ * <p>白名单配置</p>
  *
- * @author pengcheng
- * @date 2022/7/25 17:18
- * @since 1.1.0
+ * @author PengCheng
+ * @date 2018/8/3
  */
-public enum OperatorModel {
+@Getter
+@Setter
+@RefreshScope
+@ConditionalOnExpression("!'${era.permission.ignore}'.isEmpty()")
+@ConfigurationProperties(prefix = "era.permission.ignore")
+public class PermissionWhiteListProperties {
 
-    QUERY,
-    DELETE,
-    UPDATE,
-    INSERT,
+    private List<String> authCheck = new ArrayList<>();
+
+    private List<String> apiCheck = new ArrayList<>();
 }

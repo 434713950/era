@@ -72,7 +72,7 @@
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-webmvc</artifactId>
+                <artifactId>era-framework-web-common</artifactId>
                 <version>${era-framework-webmvc.version}</version>
                 <scope>import</scope>
             </dependency>

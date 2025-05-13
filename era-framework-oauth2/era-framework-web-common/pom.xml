@@ -21,39 +21,63 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>era-parent</artifactId>
+        <artifactId>era-framework-oauth2</artifactId>
         <groupId>com.ourexists.era</groupId>
         <version>2024.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>era-boot-starter-web</artifactId>
+    <artifactId>era-framework-web-common</artifactId>
+
+    <properties>
+        <openapi.version>1.8.0</openapi.version>
+    </properties>
+
 
     <dependencies>
         <dependency>
             <groupId>com.ourexists.era</groupId>
-            <artifactId>era-framework-web-common</artifactId>
-            <version>2024.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ourexists.era</groupId>
-            <artifactId>era-framework-cache</artifactId>
+            <artifactId>era-framework-core</artifactId>
             <version>2024.0.1</version>
         </dependency>
 
         <dependency>
-            <groupId>com.ourexists.era</groupId>
-            <artifactId>era-framework-web-resource</artifactId>
-            <version>2024.0.1</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${openapi.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

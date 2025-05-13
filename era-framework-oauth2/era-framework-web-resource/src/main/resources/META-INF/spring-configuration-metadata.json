@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "era.permission.ignore.auth_check",
+      "type": "java.util.List<java.lang.String>",
+      "description": "用户认证校验白名单"
+    },
+    {
+      "name": "era.permission.ignore.api_check",
+      "type": "java.util.List<java.lang.String>",
+      "description": "api权限白名单"
+    }
+  ]
+}

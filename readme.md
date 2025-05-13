@@ -17,10 +17,10 @@ era  分布式集成框架
 
 版本对应表
 
-| Era Framework Version | 变更内容     | Spring Cloud Version | Spring Cloud Alibaba Version | Spring Boot Version | JAVA Version |
-|:----------------------|:---------|:---------------------|:-----------------------------|:--------------------|:-------------|           
-| 1.1.0                 | 无        | Hoxton.SR12          | 2.2.7.RELEASE                | 2.3.12.RELEASE      | 8+           |
-| 2024.0.1              | 升级生态核心版本 | 2024.0.1             | 2024.0.1                     | 3.4.5               | 21           |
+| Era Framework Version | 变更内容               | Spring Cloud Version | Spring Cloud Alibaba Version | Spring Boot Version | JAVA Version |
+|:----------------------|:-------------------|:---------------------|:-----------------------------|:--------------------|:-------------|           
+| 1.1.0                 | 无                  | Hoxton.SR12          | 2.2.7.RELEASE                | 2.3.12.RELEASE      | 8+           |
+| 2024.0.1              | 升级生态核心版本（不兼容1.1.0） | 2024.0.1             | 2024.0.1                     | 3.4.5               | 21           |
 
 框架结构
 -----------------------------------
@@ -65,9 +65,7 @@ era  分布式集成框架
 │    
 ├─[era-framework-txflow](era-framework-txflow) 事务工作流 [readme.md](era-framework-txflow/readme.md)    
 │   
-├─[era-framework-sharing-jdbc](era-framework-sharing-jdbc) 基于sharingjdbc的数据库分片 [readme.md](era-framework-sharing-jdbc/readme.md)   
-│   
-└─[era-framework-webmvc](era-framework-webmvc)  mvc相关规范扩展框架 [readme.md](era-framework-webmvc/readme.md)
+└─[era-framework-sharing-jdbc](era-framework-sharing-jdbc) 基于sharingjdbc的数据库分片 [readme.md](era-framework-sharing-jdbc/readme.md)
 
 ![era整体生态.png](era%E6%95%B4%E4%BD%93%E7%94%9F%E6%80%81.png)
 

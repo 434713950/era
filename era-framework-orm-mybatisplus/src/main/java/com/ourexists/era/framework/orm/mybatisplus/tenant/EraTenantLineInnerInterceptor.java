@@ -18,30 +18,25 @@
 
 package com.ourexists.era.framework.orm.mybatisplus.tenant;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
-import com.ourexists.era.framework.core.user.OperatorModel;
 import com.ourexists.era.framework.core.user.EraDataAccessAuth;
+import com.ourexists.era.framework.core.user.OperatorModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.Parenthesis;
 import net.sf.jsqlparser.expression.StringValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
-import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.LikeExpression;
+import net.sf.jsqlparser.expression.operators.relational.ParenthesedExpressionList;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.delete.Delete;
+import net.sf.jsqlparser.statement.insert.Insert;
+import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.update.Update;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author pengcheng
@@ -61,15 +56,15 @@ public class EraTenantLineInnerInterceptor extends TenantLineInnerInterceptor {
         this.tenantLineHandler = tenantLineHandler;
     }
 
-    protected BinaryExpression andLikeExpression(Table table, Expression where, OperatorModel operatorModel) {
-        if (!EraDataAccessAuth.checkTenantControlPower(operatorModel)){
-            return super.andExpression(table, where);
+    protected Expression andLikeExpression(Table table, Expression where, final String whereSegment, OperatorModel operatorModel) {
+        if (!EraDataAccessAuth.checkTenantControlPower(operatorModel)) {
+            return super.andExpression(table, where, whereSegment);
         } else {
             return likeExpression(table, where);
         }
     }
 
-    protected BinaryExpression likeExpression(Table table, Expression where) {
+    protected Expression likeExpression(Table table, Expression where) {
         StringValue tenantIdStr = (StringValue) tenantLineHandler.getTenantId();
         StringValue like = new StringValue(tenantIdStr.getValue() + "%");
         //获得where条件表达式
@@ -78,7 +73,7 @@ public class EraTenantLineInnerInterceptor extends TenantLineInnerInterceptor {
         likeExpression.setRightExpression(like);
         if (null != where) {
             if (where instanceof OrExpression) {
-                return new AndExpression(likeExpression, new Parenthesis(where));
+                return new ParenthesedExpressionList(new AndExpression(likeExpression, where));
             } else {
                 return new AndExpression(likeExpression, where);
             }
@@ -87,76 +82,38 @@ public class EraTenantLineInnerInterceptor extends TenantLineInnerInterceptor {
     }
 
     @Override
-    protected void processUpdate(Update update, int index, String sql, Object obj) {
-        final Table table = update.getTable();
-        if (tenantLineHandler.ignoreTable(table.getName())) {
-            // 过滤退出执行
-            return;
-        }
-        update.setWhere(this.andLikeExpression(table, update.getWhere(), OperatorModel.UPDATE));
+    protected void processSelect(Select select, int index, String sql, Object obj) {
+        obj = (String) obj + "_" + OperatorModel.QUERY.name();
+        super.processSelect(select, index, sql, obj);
+    }
 
+    @Override
+    protected void processInsert(Insert insert, int index, String sql, Object obj) {
+        obj = (String) obj + "_" + OperatorModel.INSERT.name();
+        super.processInsert(insert, index, sql, obj);
+    }
+
+    @Override
+    protected void processUpdate(Update update, int index, String sql, Object obj) {
+        obj = (String) obj + "_" + OperatorModel.UPDATE.name();
+        super.processUpdate(update, index, sql, obj);
     }
 
     @Override
     protected void processDelete(Delete delete, int index, String sql, Object obj) {
-        if (tenantLineHandler.ignoreTable(delete.getTable().getName())) {
-            // 过滤退出执行
-            return;
-        }
-        delete.setWhere(this.andLikeExpression(delete.getTable(), delete.getWhere(), OperatorModel.DELETE));
+        obj = (String) obj + "_" + OperatorModel.DELETE.name();
+        super.processDelete(delete, index, sql, obj);
     }
 
-    @Override
-    protected Expression builderExpression(Expression currentExpression, List<Table> tables) {
-        // 没有表需要处理直接返回
-        if (CollectionUtils.isEmpty(tables)) {
-            return currentExpression;
+    public Expression buildTableExpression(final Table table, final Expression where, final String whereSegment) {
+        if (this.tenantLineHandler.ignoreTable(table.getName())) {
+            return null;
         }
-        // 构造每张表的条件
-        List<Table> tempTables = tables.stream()
-                .filter(x -> !tenantLineHandler.ignoreTable(x.getName()))
-                .collect(Collectors.toList());
-
-        // 没有表需要处理直接返回
-        if (CollectionUtils.isEmpty(tempTables)) {
-            return currentExpression;
+        String[] d = whereSegment.split("_");
+        if (d.length < 2) {
+            return null;
         }
-
-        List<BinaryExpression> equalsTos = new ArrayList<>();
-        Expression tenantId = tenantLineHandler.getTenantId();
-
-        if (!EraDataAccessAuth.checkTenantControlPower(OperatorModel.QUERY)) {
-            equalsTos = tempTables.stream()
-                    .map(item -> new EqualsTo(getAliasColumn(item), tenantId))
-                    .collect(Collectors.toList());
-        } else {
-            for (Table item : tempTables) {
-                StringValue tenantIdStr = (StringValue) tenantId;
-                StringValue like = new StringValue(tenantIdStr.getValue() + "%");
-                LikeExpression likeExpression = new LikeExpression();
-                likeExpression.setLeftExpression(getAliasColumn(item));
-                likeExpression.setRightExpression(like);
-                equalsTos.add(likeExpression);
-            }
-        }
-
-        // 注入的表达式
-        Expression injectExpression = equalsTos.get(0);
-        // 如果有多表，则用 and 连接
-        if (equalsTos.size() > 1) {
-            for (int i = 1; i < equalsTos.size(); i++) {
-                injectExpression = new AndExpression(injectExpression, equalsTos.get(i));
-            }
-        }
-
-        if (currentExpression == null) {
-            return injectExpression;
-        }
-        if (currentExpression instanceof OrExpression) {
-            return new AndExpression(new Parenthesis(currentExpression), injectExpression);
-        } else {
-            return new AndExpression(currentExpression, injectExpression);
-        }
+        OperatorModel operatorModel = OperatorModel.valueOf(d[1]);
+        return andLikeExpression(table, where, d[0], operatorModel);
     }
-
 }
