@@ -20,10 +20,10 @@ package com.ourexists.era.framework.core.utils;
 
 import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.exceptions.BusinessException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 
 /**
@@ -55,7 +55,6 @@ public class AuthUtils {
     public static final String TENANT_ROUTE = "x-route-tenant";
 
 
-
     public static final String PLATFORM_HEADER = "x-era-platform";
 
 
@@ -72,10 +71,11 @@ public class AuthUtils {
 
     /**
      * 从header 请求中的clientId/clientSecret
+     *
      * @param header header信息
      * @return 内容顺序依次为：clientId、
      */
-    public static String[] extractAndDecodeHeader(String header){
+    public static String[] extractAndDecodeHeader(String header) {
         String headerInfo = header.substring(AUTH_HEADER_PREFIX.length());
         byte[] decoded = Base64.getDecoder().decode(headerInfo);
 
@@ -87,7 +87,7 @@ public class AuthUtils {
                 return new String[]{token.substring(0, delimit), token.substring(delimit + 1)};
             }
         } catch (Exception e) {
-            log.error("Failed to decode authentication authorization\r\n",e);
+            log.error("Failed to decode authentication authorization\r\n", e);
             throw new BusinessException("Failed to decode authentication authorization");
         }
         return null;
@@ -95,7 +95,8 @@ public class AuthUtils {
 
     /**
      * 从请求中获取clientId/clientSecret
-     * @param request  请求
+     *
+     * @param request 请求
      * @return
      */
     public static String[] extractAndDecodeHeader(HttpServletRequest request) {
@@ -107,7 +108,6 @@ public class AuthUtils {
         }
         return extractAndDecodeHeader(header);
     }
-
 
 
 }

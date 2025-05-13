@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "era.jwt.privateKey",
+      "type": "java.lang.String",
+      "description": "jwt签名私钥"
+    },
+    {
+      "name": "era.jwt.publicKey",
+      "type": "java.lang.String",
+      "description": "jwt签名公钥"
+    },
+    {
+      "name": "era.token.expire",
+      "type": "java.lang.Long",
+      "description": "token过期时长"
+    }
+  ]
+}

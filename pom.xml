@@ -25,7 +25,7 @@
     <groupId>com.ourexists.era</groupId>
     <artifactId>era-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>2024.0.1</version>
     <modules>
         <module>era-framework-scheduler</module>
         <module>era-framework-orm-mybatisplus</module>
@@ -48,18 +48,16 @@
     </modules>
 
     <properties>
-        <spring-cloud-dependencies.version>Hoxton.SR12</spring-cloud-dependencies.version>
-        <spring-cloud-alibaba-dependencies.version>2.2.9.RELEASE</spring-cloud-alibaba-dependencies.version>
-        <tomcat.version>9.0.31</tomcat.version>
+        <spring-cloud-dependencies.version>2024.0.1</spring-cloud-dependencies.version>
+        <spring-cloud-alibaba-dependencies.version>2023.0.1.0</spring-cloud-alibaba-dependencies.version>
         <lombok.version>1.18.12</lombok.version>
-        <log4j2.version>2.17.0</log4j2.version>
         <slf4j.version>1.7.30</slf4j.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.12.RELEASE</version>
+        <version>3.4.5</version>
     </parent>
 
     <dependencies>
@@ -91,12 +89,6 @@
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
                 <version>${spring-cloud-alibaba-dependencies.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.seata</groupId>
-                        <artifactId>seata-spring-boot-starter</artifactId>
-                    </exclusion>
-                </exclusions>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -127,11 +119,10 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>3.11.2</version>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
-                            <phase>package</phase>
                             <goals>
                                 <goal>jar</goal>
                             </goals>
