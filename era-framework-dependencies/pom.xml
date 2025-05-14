@@ -77,6 +77,12 @@
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-oauth2-core</artifactId>
+                <version>${era-framework-oauth2.version}</version>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-web-authorization</artifactId>
                 <version>${era-framework-oauth2.version}</version>
                 <scope>import</scope>
