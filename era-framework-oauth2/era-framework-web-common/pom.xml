@@ -39,6 +39,7 @@
             <groupId>com.ourexists.era</groupId>
             <artifactId>era-framework-core</artifactId>
             <version>2024.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
