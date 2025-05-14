@@ -72,12 +72,6 @@
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-web-common</artifactId>
-                <version>${era-framework-webmvc.version}</version>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-oss</artifactId>
                 <version>${era-framework-aliyun-oss.version}</version>
                 <scope>import</scope>
@@ -90,20 +84,20 @@
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-oauth2</artifactId>
+                <artifactId>era-framework-web-authorization</artifactId>
                 <version>${era-framework-oauth2.version}</version>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-boot-starter-web</artifactId>
-                <version>${era-boot-starter-web.version}</version>
+                <artifactId>era-framework-web-foundation</artifactId>
+                <version>${era-framework-oauth2.version}</version>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-mq-rocketmq</artifactId>
-                <version>${era-framework-mq-rocketmq.version}</version>
+                <artifactId>era-framework-web-resource</artifactId>
+                <version>${era-framework-oauth2.version}</version>
                 <scope>import</scope>
             </dependency>
             <dependency>
@@ -128,12 +122,6 @@
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-rpc-feign</artifactId>
                 <version>${era-framework-rpc-feign.version}</version>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-excel</artifactId>
-                <version>${era-framework-excel.version}</version>
                 <scope>import</scope>
             </dependency>
         </dependencies>
