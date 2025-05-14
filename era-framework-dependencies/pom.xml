@@ -23,7 +23,7 @@
     <parent>
         <artifactId>era-parent</artifactId>
         <groupId>com.ourexists.era</groupId>
-        <version>2024.0.1</version>
+        <version>2024.0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -33,21 +33,21 @@
     <description>Era Framework Dependencies</description>
 
     <properties>
-        <era-framework-core.version>2024.0.1</era-framework-core.version>
-        <era-framework-orm-mybatisplus.version>2024.0.1</era-framework-orm-mybatisplus.version>
-        <era-framework-scheduler-xxljob.version>2024.0.1</era-framework-scheduler-xxljob.version>
-        <era-framework-webmvc.version>2024.0.1</era-framework-webmvc.version>
-        <era-framework-aliyun-oss.version>2024.0.1</era-framework-aliyun-oss.version>
-        <era-framework-cache.version>2024.0.1</era-framework-cache.version>
-        <era-framework-oauth2.version>2024.0.1</era-framework-oauth2.version>
-        <era-boot-starter-web.version>2024.0.1</era-boot-starter-web.version>
-        <era-framework-mq-rocketmq.version>2024.0.1</era-framework-mq-rocketmq.version>
-        <era-framework-distribution.version>2024.0.1</era-framework-distribution.version>
-        <era-framework-sharing-jdbc.version>2024.0.1</era-framework-sharing-jdbc.version>
-        <era-framework-orm-mongodb.version>2024.0.1</era-framework-orm-mongodb.version>
-        <era-framework-rpc-feign.version>2024.0.1</era-framework-rpc-feign.version>
-        <era-framework-excel.version>2024.0.1</era-framework-excel.version>
-        <era-framework-tms.version>2024.0.1</era-framework-tms.version>
+        <era-framework-core.version>2024.0.1.0-SNAPSHOT</era-framework-core.version>
+        <era-framework-orm-mybatisplus.version>2024.0.1.0-SNAPSHOT</era-framework-orm-mybatisplus.version>
+        <era-framework-scheduler-xxljob.version>2024.0.1.0-SNAPSHOT</era-framework-scheduler-xxljob.version>
+        <era-framework-webmvc.version>2024.0.1.0-SNAPSHOT</era-framework-webmvc.version>
+        <era-framework-aliyun-oss.version>2024.0.1.0-SNAPSHOT</era-framework-aliyun-oss.version>
+        <era-framework-cache.version>2024.0.1.0-SNAPSHOT</era-framework-cache.version>
+        <era-framework-oauth2.version>2024.0.1.0-SNAPSHOT</era-framework-oauth2.version>
+        <era-boot-starter-web.version>2024.0.1.0-SNAPSHOT</era-boot-starter-web.version>
+        <era-framework-mq-rocketmq.version>2024.0.1.0-SNAPSHOT</era-framework-mq-rocketmq.version>
+        <era-framework-distribution.version>2024.0.1.0-SNAPSHOT</era-framework-distribution.version>
+        <era-framework-sharing-jdbc.version>2024.0.1.0-SNAPSHOT</era-framework-sharing-jdbc.version>
+        <era-framework-orm-mongodb.version>2024.0.1.0-SNAPSHOT</era-framework-orm-mongodb.version>
+        <era-framework-rpc-feign.version>2024.0.1.0-SNAPSHOT</era-framework-rpc-feign.version>
+        <era-framework-excel.version>2024.0.1.0-SNAPSHOT</era-framework-excel.version>
+        <era-framework-tms.version>2024.0.1.0-SNAPSHOT</era-framework-tms.version>
     </properties>
 
     <dependencyManagement>

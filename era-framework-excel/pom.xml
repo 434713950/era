@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.ourexists.era</groupId>
         <artifactId>era-parent</artifactId>
-        <version>2024.0.1</version>
+        <version>2024.0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>era-framework-excel</artifactId>
@@ -17,12 +17,12 @@
         <dependency>
             <groupId>com.ourexists.era</groupId>
             <artifactId>era-framework-core</artifactId>
-            <version>2024.0.1</version>
+            <version>2024.0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ourexists.era</groupId>
             <artifactId>era-framework-oss</artifactId>
-            <version>2024.0.1</version>
+            <version>2024.0.1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

@@ -25,7 +25,7 @@
     <groupId>com.ourexists.era</groupId>
     <artifactId>era-parent</artifactId>
     <packaging>pom</packaging>
-    <version>2024.0.1</version>
+    <version>2024.0.1.0-SNAPSHOT</version>
     <modules>
         <module>era-framework-scheduler</module>
         <module>era-framework-orm-mybatisplus</module>

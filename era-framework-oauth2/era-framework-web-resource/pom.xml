@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.ourexists.era</groupId>
         <artifactId>era-framework-oauth2</artifactId>
-        <version>2024.0.1</version>
+        <version>2024.0.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>era-framework-web-resource</artifactId>
@@ -20,12 +20,12 @@
         <dependency>
             <groupId>com.ourexists.era</groupId>
             <artifactId>era-framework-oauth2-core</artifactId>
-            <version>2024.0.1</version>
+            <version>2024.0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ourexists.era</groupId>
             <artifactId>era-framework-web-common</artifactId>
-            <version>2024.0.1</version>
+            <version>2024.0.1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
