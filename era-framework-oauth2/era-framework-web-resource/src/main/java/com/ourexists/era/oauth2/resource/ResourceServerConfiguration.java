@@ -23,7 +23,6 @@ import com.ourexists.era.oauth2.core.handler.EmptyEraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAuthenticationEntryPoint;
 import com.ourexists.era.oauth2.core.handler.EraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EraAuthenticationEntryPoint;
-import com.ourexists.era.oauth2.resource.permission.AuthHeaderWhiteHandleFilter;
 import com.ourexists.era.oauth2.resource.permission.PermissionMvcConfigurer;
 import com.ourexists.era.oauth2.resource.permission.PermissionWhiteListProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -45,7 +44,7 @@ import java.util.List;
  */
 @EnableWebSecurity
 @Import({PermissionMvcConfigurer.class,
-        AuthHeaderWhiteHandleFilter.class,
+//        AuthHeaderWhiteHandleFilter.class,
         PermissionWhiteListProperties.class})
 public class ResourceServerConfiguration {
 

@@ -38,7 +38,6 @@
         <era-framework-scheduler-xxljob.version>2024.0.1.0-SNAPSHOT</era-framework-scheduler-xxljob.version>
         <era-framework-webmvc.version>2024.0.1.0-SNAPSHOT</era-framework-webmvc.version>
         <era-framework-aliyun-oss.version>2024.0.1.0-SNAPSHOT</era-framework-aliyun-oss.version>
-        <era-framework-cache.version>2024.0.1.0-SNAPSHOT</era-framework-cache.version>
         <era-framework-oauth2.version>2024.0.1.0-SNAPSHOT</era-framework-oauth2.version>
         <era-boot-starter-web.version>2024.0.1.0-SNAPSHOT</era-boot-starter-web.version>
         <era-framework-mq-rocketmq.version>2024.0.1.0-SNAPSHOT</era-framework-mq-rocketmq.version>
@@ -48,6 +47,8 @@
         <era-framework-rpc-feign.version>2024.0.1.0-SNAPSHOT</era-framework-rpc-feign.version>
         <era-framework-excel.version>2024.0.1.0-SNAPSHOT</era-framework-excel.version>
         <era-framework-tms.version>2024.0.1.0-SNAPSHOT</era-framework-tms.version>
+        <openapi.version>1.8.0</openapi.version>
+        <redission.version>3.45.1</redission.version>
     </properties>
 
     <dependencyManagement>
@@ -74,12 +75,6 @@
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-oss</artifactId>
                 <version>${era-framework-aliyun-oss.version}</version>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-cache</artifactId>
-                <version>${era-framework-cache.version}</version>
                 <scope>import</scope>
             </dependency>
             <dependency>
@@ -123,6 +118,16 @@
                 <artifactId>era-framework-rpc-feign</artifactId>
                 <version>${era-framework-rpc-feign.version}</version>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redission.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -33,7 +33,6 @@
         <module>era-framework-dependencies</module>
         <module>era-framework-rpc-feign</module>
         <module>era-framework-oss</module>
-        <module>era-framework-cache</module>
         <module>era-framework-oauth2</module>
         <module>era-framework-distribution</module>
         <module>era-framework-sharing-jdbc</module>
@@ -90,14 +89,26 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>com.github.johnrengelman</groupId>
+                    <artifactId>shadow</artifactId>
+                    <version>7.0.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>shadow</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.4.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>3.3.1</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -106,6 +117,14 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>21</source>
+                        <target>21</target>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

@@ -24,9 +24,6 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * @author pengcheng
  * @date 2022/4/12 22:37

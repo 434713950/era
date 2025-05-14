@@ -18,13 +18,11 @@
 
 package com.ourexists.era.oauth2.foundation;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.constants.ResultMsgEnum;
-import com.ourexists.era.framework.core.model.vo.JsonResponseEntity;
+import com.ourexists.era.framework.core.user.TenantInfo;
 import com.ourexists.era.framework.core.user.UserContext;
 import com.ourexists.era.framework.core.user.UserInfo;
-import com.ourexists.era.framework.core.user.TenantInfo;
 import com.ourexists.era.framework.core.utils.EraStandardUtils;
 import com.ourexists.era.oauth2.core.PathRule;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,9 +30,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * 权限认证拦截器

@@ -1,9 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "era.cache.config",
-      "type": "java.lang.String",
-      "description": "缓存配置文件位置."
-    }
-  ]
-}
