@@ -19,22 +19,17 @@
 package com.ourexists.era.framework.orm.mongodb;
 
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.model.Collation;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.user.*;
 import org.bson.Document;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.CursorPreparer;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
-import org.springframework.data.mongodb.core.FindAndReplaceOptions;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.*;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoWriter;
-import org.springframework.data.mongodb.core.mapreduce.GroupBy;
-import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
+import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.UpdateDefinition;
@@ -68,14 +63,6 @@ public class EraMongoTemplate extends MongoTemplate {
         super(mongoDbFactory, mongoConverter);
     }
 
-    public EraMongoTemplate(MongoDbFactory mongoDbFactory) {
-        super(mongoDbFactory);
-    }
-
-    public EraMongoTemplate(MongoDbFactory mongoDbFactory, MongoConverter mongoConverter) {
-        super(mongoDbFactory, mongoConverter);
-    }
-
     @Override
     public <T> List<T> find(Query query, Class<T> entityClass, String collectionName) {
         return super.find(tenantCriteriaHandle(query, entityClass, OperatorModel.QUERY), entityClass, collectionName);
@@ -93,24 +80,24 @@ public class EraMongoTemplate extends MongoTemplate {
     }
 
     @Override
-    protected <T> T doFindAndRemove(String collectionName, Document query, Document fields, Document sort, org.springframework.data.mongodb.core.query.Collation collation, Class<T> entityClass) {
-        return super.doFindAndRemove(collectionName, tenantCriteriaHandle(query, entityClass, OperatorModel.DELETE), fields, sort, collation, entityClass);
+    protected <T> T doFindAndRemove(CollectionPreparer collectionPreparer, String collectionName, Document query, Document fields, Document sort, Collation collation, Class<T> entityClass) {
+        return super.doFindAndRemove(collectionPreparer, collectionName, tenantCriteriaHandle(query, entityClass, OperatorModel.DELETE), fields, sort, collation, entityClass);
     }
 
     @Override
-    protected <T> T doFindAndModify(String collectionName, Document query, Document fields, Document sort, Class<T> entityClass, UpdateDefinition update, FindAndModifyOptions options) {
+    protected <T> T doFindAndModify(CollectionPreparer collectionPreparer, String collectionName, Document query, Document fields, Document sort, Class<T> entityClass, UpdateDefinition update, FindAndModifyOptions options) {
         updateCommonHandle(update.getUpdateObject());
-        return super.doFindAndModify(collectionName, tenantCriteriaHandle(query, entityClass, OperatorModel.UPDATE), fields, sort, entityClass, update, options);
+        return super.doFindAndModify(collectionPreparer, collectionName, tenantCriteriaHandle(query, entityClass, OperatorModel.UPDATE), fields, sort, entityClass, update, options);
     }
 
     @Override
-    protected <T> T doFindAndReplace(String collectionName, Document mappedQuery, Document mappedFields, Document mappedSort, Collation collation, Class<?> entityType, Document replacement, FindAndReplaceOptions options, Class<T> resultType) {
-        return super.doFindAndReplace(collectionName, tenantCriteriaHandle(mappedQuery, entityType, OperatorModel.UPDATE), mappedFields, mappedSort, collation, entityType, replacement, options, resultType);
+    protected <T> T doFindAndReplace(CollectionPreparer collectionPreparer, String collectionName, Document mappedQuery, Document mappedFields, Document mappedSort, com.mongodb.client.model.Collation collation, Class<?> entityType, Document replacement, FindAndReplaceOptions options, Class<T> resultType) {
+        return super.doFindAndReplace(collectionPreparer, collectionName, tenantCriteriaHandle(mappedQuery, entityType, OperatorModel.UPDATE), mappedFields, mappedSort, collation, entityType, replacement, options, resultType);
     }
 
     @Override
-    protected <T> T doFindOne(String collectionName, Document query, Document fields, CursorPreparer preparer, Class<T> entityClass) {
-        return super.doFindOne(collectionName, tenantCriteriaHandle(query, entityClass, OperatorModel.QUERY), fields, preparer, entityClass);
+    protected <T> T doFindOne(String collectionName, CollectionPreparer<MongoCollection<Document>> collectionPreparer, Document query, Document fields, CursorPreparer preparer, Class<T> entityClass) {
+        return super.doFindOne(collectionName, collectionPreparer, tenantCriteriaHandle(query, entityClass, OperatorModel.QUERY), fields, preparer, entityClass);
     }
 
 
@@ -157,15 +144,9 @@ public class EraMongoTemplate extends MongoTemplate {
     }
 
     @Override
-    protected UpdateResult doUpdate(String collectionName, Query query, UpdateDefinition update, Class<?> entityClass, boolean upsert, boolean multi) {
+    protected UpdateResult doUpdate(String collectionName, Query query, UpdateDefinition update, @Nullable Class<?> entityClass, boolean upsert, boolean multi) {
         updateCommonHandle(update.getUpdateObject());
         return super.doUpdate(collectionName, tenantCriteriaHandle(query, entityClass, OperatorModel.UPDATE), update, entityClass, upsert, multi);
-    }
-
-
-    @Override
-    public <T> GroupByResults<T> group(Criteria criteria, String inputCollectionName, GroupBy groupBy, Class<T> entityClass) {
-        return super.group(tenantCriteriaHandle(criteria, entityClass, OperatorModel.QUERY), inputCollectionName, groupBy, entityClass);
     }
 
     private void updateCommonHandle(Document update) {
@@ -181,7 +162,7 @@ public class EraMongoTemplate extends MongoTemplate {
     private <T> void fillTenantId(T objectToSave) {
         String tenantId = null;
         TenantInfo tenantInfo = UserContext.getTenant();
-        if (tenantInfo!=null) {
+        if (tenantInfo != null) {
             tenantId = tenantInfo.getTenantId();
         }
         fillField(objectToSave, TENANT_FIELD_NAME, tenantId);
