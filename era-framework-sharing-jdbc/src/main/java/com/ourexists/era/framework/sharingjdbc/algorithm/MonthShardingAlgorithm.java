@@ -19,8 +19,9 @@
 package com.ourexists.era.framework.sharingjdbc.algorithm;
 
 import com.google.common.collect.Range;
-import org.apache.shardingsphere.api.sharding.standard.RangeShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.standard.RangeShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.PreciseShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.RangeShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.StandardShardingAlgorithm;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,9 +33,16 @@ import java.util.*;
  * @date 2023/7/25 9:53
  * @since 1.0.0
  */
-public class MonthRangeShardingAlgorithm implements RangeShardingAlgorithm<Date> {
+public class MonthShardingAlgorithm implements StandardShardingAlgorithm<Date> {
 
     private DateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyyMM");
+
+    @Override
+    public String doSharding(Collection<String> collection, PreciseShardingValue<Date> preciseShardingValue) {
+        String time = STANDARD_DATE_FORMAT.format(preciseShardingValue.getValue());
+        return preciseShardingValue.getLogicTableName() +
+                "_" + time;
+    }
 
     @Override
     public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<Date> rangeShardingValue) {
@@ -49,6 +57,11 @@ public class MonthRangeShardingAlgorithm implements RangeShardingAlgorithm<Date>
             }
         }
         return list;
+    }
+
+    @Override
+    public String getType() {
+        return "MONTH";
     }
 
     private List<String> getSuffixListForRange(Date lowerSuffix, Date upperSuffix) {
