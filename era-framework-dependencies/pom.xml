@@ -47,8 +47,6 @@
         <era-framework-rpc-feign.version>2024.0.1.0-SNAPSHOT</era-framework-rpc-feign.version>
         <era-framework-excel.version>2024.0.1.0-SNAPSHOT</era-framework-excel.version>
         <era-framework-tms.version>2024.0.1.0-SNAPSHOT</era-framework-tms.version>
-        <openapi.version>1.8.0</openapi.version>
-        <redission.version>3.45.1</redission.version>
     </properties>
 
     <dependencyManagement>

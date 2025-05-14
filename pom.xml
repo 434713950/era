@@ -46,6 +46,8 @@
     <properties>
         <spring-cloud-dependencies.version>2024.0.1</spring-cloud-dependencies.version>
         <spring-cloud-alibaba-dependencies.version>2023.0.1.0</spring-cloud-alibaba-dependencies.version>
+        <openapi.version>1.8.0</openapi.version>
+        <redission.version>3.45.1</redission.version>
     </properties>
 
     <parent>
@@ -68,6 +70,7 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>

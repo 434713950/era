@@ -29,11 +29,6 @@
 
     <artifactId>era-framework-web-common</artifactId>
 
-    <properties>
-        <openapi.version>1.8.0</openapi.version>
-    </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>com.ourexists.era</groupId>
