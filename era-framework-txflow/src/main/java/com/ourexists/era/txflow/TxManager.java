@@ -15,7 +15,7 @@ import java.util.*;
 @Slf4j
 public abstract class TxManager {
 
-    private List<TxBranchFlow> txBranchFlows = new ArrayList<>();
+    private final List<TxBranchFlow> txBranchFlows = new ArrayList<>();
 
     protected TxStore txStore;
 

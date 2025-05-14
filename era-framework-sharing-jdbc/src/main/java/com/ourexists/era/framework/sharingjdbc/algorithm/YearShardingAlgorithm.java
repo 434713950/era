@@ -33,7 +33,7 @@ import java.util.*;
  */
 public class YearShardingAlgorithm implements StandardShardingAlgorithm<Date> {
 
-    private DateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyy");
+    private final DateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyy");
 
     @Override
     public String getType() {

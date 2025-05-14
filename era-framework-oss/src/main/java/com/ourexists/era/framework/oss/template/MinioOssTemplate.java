@@ -39,7 +39,7 @@ import java.util.List;
 @Slf4j
 public class MinioOssTemplate extends OssTemplate {
 
-    private MinioClient client;
+    private final MinioClient client;
 
     public MinioOssTemplate(OssProperties ossProperties) {
         super(ossProperties);

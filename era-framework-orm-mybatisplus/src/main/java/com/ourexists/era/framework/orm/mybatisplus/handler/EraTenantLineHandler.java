@@ -53,9 +53,6 @@ public class EraTenantLineHandler implements TenantLineHandler {
         if (StringUtils.isEmpty(tenantId)) {
             return true;
         }
-        if (tenantInfo.avoidTenantCondition()) {
-            return true;
-        }
-        return false;
+        return tenantInfo.avoidTenantCondition();
     }
 }

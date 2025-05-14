@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractTxBranchFlow implements TxBranchFlow {
 
-    private TxStore txStore;
+    private final TxStore txStore;
 
     public AbstractTxBranchFlow(TxStore txStore) {
         this.txStore = txStore;

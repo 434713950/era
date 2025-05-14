@@ -83,25 +83,25 @@ public class EraTenantLineInnerInterceptor extends TenantLineInnerInterceptor {
 
     @Override
     protected void processSelect(Select select, int index, String sql, Object obj) {
-        obj = (String) obj + "_" + OperatorModel.QUERY.name();
+        obj = obj + "_" + OperatorModel.QUERY.name();
         super.processSelect(select, index, sql, obj);
     }
 
     @Override
     protected void processInsert(Insert insert, int index, String sql, Object obj) {
-        obj = (String) obj + "_" + OperatorModel.INSERT.name();
+        obj = obj + "_" + OperatorModel.INSERT.name();
         super.processInsert(insert, index, sql, obj);
     }
 
     @Override
     protected void processUpdate(Update update, int index, String sql, Object obj) {
-        obj = (String) obj + "_" + OperatorModel.UPDATE.name();
+        obj = obj + "_" + OperatorModel.UPDATE.name();
         super.processUpdate(update, index, sql, obj);
     }
 
     @Override
     protected void processDelete(Delete delete, int index, String sql, Object obj) {
-        obj = (String) obj + "_" + OperatorModel.DELETE.name();
+        obj = obj + "_" + OperatorModel.DELETE.name();
         super.processDelete(delete, index, sql, obj);
     }
 

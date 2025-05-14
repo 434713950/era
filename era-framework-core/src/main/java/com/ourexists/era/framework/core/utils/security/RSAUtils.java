@@ -179,8 +179,7 @@ public class RSAUtils {
                 i++;
                 offset = i * MAX_DECRYPT_BLOCK;
             }
-            byte[] decryptedData = out.toByteArray();
-            return new String(decryptedData, StandardCharsets.UTF_8);
+            return out.toString(StandardCharsets.UTF_8);
         }
     }
 }

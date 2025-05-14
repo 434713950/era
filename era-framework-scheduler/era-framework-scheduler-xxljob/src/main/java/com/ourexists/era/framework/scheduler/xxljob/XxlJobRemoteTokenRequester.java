@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class XxlJobRemoteTokenRequester implements JobRemoteTokenRequester {
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public XxlJobRemoteTokenRequester(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

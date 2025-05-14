@@ -267,8 +267,7 @@ public class EraMongoTemplate extends MongoTemplate {
         String tenantIdName = getTenantIdName(entityType);
         Object o = query.getQueryObject().get(tenantIdName);
         if (o != null) {
-            if (o instanceof String) {
-                String val = (String) o;
+            if (o instanceof String val) {
                 //tenantId为0时去除条件
                 if (val.equals(CommonConstant.SYSTEM_TENANT)) {
                     query.getQueryObject().remove(tenantIdName);

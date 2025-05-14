@@ -96,7 +96,7 @@ public class CookieUtil {
 	public static void deleteCookie(String key, HttpServletRequest request,
 			HttpServletResponse response) {
 		Cookie[] cookies = request.getCookies();
-		if (cookies != null && cookies.length > 0) {
+		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals(key)) {
 					cookie.setValue("");

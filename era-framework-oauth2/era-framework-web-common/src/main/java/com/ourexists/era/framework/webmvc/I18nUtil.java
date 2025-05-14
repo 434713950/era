@@ -35,7 +35,7 @@ public class I18nUtil {
     private static MessageSource messageSource;
 
     public I18nUtil(MessageSource messageSource) {
-        this.messageSource = messageSource;
+        I18nUtil.messageSource = messageSource;
     }
 
     public static String i18nParser(String i18nMsg, String... text) {

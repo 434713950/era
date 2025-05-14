@@ -78,12 +78,10 @@ public class PermissionHandlerInterceptor implements HandlerInterceptor {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof EraAuthenticationToken) {
             Object principal = authentication.getPrincipal();
-            if (!(principal instanceof EraUser)) {
+            if (!(principal instanceof EraUser eraUser)) {
                 EraStandardUtils.exceptionView(response, ResultMsgEnum.UN_LOGIN);
-                ;
                 return false;
             }
-            EraUser eraUser = (EraUser) principal;
             UserContext.setUser(eraUser.getUserInfo());
 
             String tenantId = EraSystemHeader.extractTenantId(request);

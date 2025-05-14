@@ -51,7 +51,7 @@ import java.util.Map;
 @Slf4j
 public class XxlJobOperateTemplate extends AbstractJobOperateTemplate {
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public XxlJobOperateTemplate(RestTemplate restTemplate,
                                  JobAccessTokenManger jobAccessTokenManger,

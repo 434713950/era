@@ -40,7 +40,7 @@ public interface SimpleAuthRequestManager {
 
     default String platform() {
         return "UNKNOW";
-    };
+    }
 
 
     default Boolean skipMain() {

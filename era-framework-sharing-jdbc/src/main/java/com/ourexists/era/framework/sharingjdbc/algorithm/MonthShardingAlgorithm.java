@@ -35,7 +35,7 @@ import java.util.*;
  */
 public class MonthShardingAlgorithm implements StandardShardingAlgorithm<Date> {
 
-    private DateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyyMM");
+    private final DateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyyMM");
 
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<Date> preciseShardingValue) {
