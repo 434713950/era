@@ -16,14 +16,21 @@
  *
  */
 
-package com.ourexists.era.framework.core.utils;
+package com.ourexists.era.framework.core;
 
+import com.alibaba.fastjson2.JSON;
 import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.exceptions.BusinessException;
+import com.ourexists.era.framework.core.user.OperatorModel;
+import com.ourexists.era.framework.core.user.TenantDataAuth;
+import com.ourexists.era.framework.core.user.TenantInfo;
+import com.ourexists.era.framework.core.user.UserInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Base64;
 
 /**
@@ -32,7 +39,7 @@ import java.util.Base64;
  * @since 1.0.0
  */
 @Slf4j
-public class AuthUtils {
+public class EraSystemHeader {
 
     /**
      * 认证头信息前缀
@@ -54,20 +61,88 @@ public class AuthUtils {
      */
     public static final String TENANT_ROUTE = "x-route-tenant";
 
+    /**
+     * 真实路由头
+     */
+    public static final String REAL_TENANT_ROUTE = "x-route-tenant-id";
 
+    /**
+     * 平台路由头
+     */
     public static final String PLATFORM_HEADER = "x-era-platform";
 
 
+    /**
+     * 内部流转用户信息头
+     */
+    public static final String AUTH_CONTRO_USER_HEADER = "x-route-user";
+
+    /**
+     * 内部流转用户数据权限头
+     */
+    public static final String AUTH_CONTRO_DATA_AUTH_HEADER = "x-route-tenant-data-auth";
+
+    /**
+     *  内部流转用户角色权限头
+     */
+    public static final String AUTH_CONTRO_ROLE_HEADER = "x-tenant-role";
+
+    /**
+     * 内部流转隔离主租户信息头
+     */
+    public static final String AUTH_CONTRO_SKIPMAIN = "x-tenant-skipmain";
+
+
     public static String extractPlatform(HttpServletRequest request) {
-        String platform = request.getHeader(PLATFORM_HEADER);
-        return StringUtils.isEmpty(platform) ? "YLOMS" : platform;
+        return request.getHeader(PLATFORM_HEADER);
     }
 
-
-    public static String extractTenant(HttpServletRequest request) {
-
-        return request.getHeader(TENANT_ROUTE);
+    public static UserInfo extractUserInfo(HttpServletRequest request) {
+        String userStr = request.getHeader(AUTH_CONTRO_USER_HEADER);
+        try {
+            if (!StringUtils.hasText(userStr)) {
+                return null;
+            }
+            String u = URLDecoder.decode(userStr, CommonConstant.CONTENT_ENCODE);
+            return JSON.parseObject(u, UserInfo.class);
+        } catch (UnsupportedEncodingException e) {
+            //nothing;
+            return null;
+        }
     }
+
+    public static String extractTenantId(HttpServletRequest request) {
+        String tenantId = request.getHeader(REAL_TENANT_ROUTE);
+        if (!StringUtils.hasText(tenantId)) {
+            tenantId = request.getHeader(TENANT_ROUTE);
+        }
+        return tenantId;
+    }
+
+    public static TenantInfo extractTenant(HttpServletRequest request) {
+        String tenantId = extractTenantId(request);
+        if (tenantId == null) {
+            return null;
+        }
+        TenantInfo tenantInfo = new TenantInfo()
+                .setTenantId(tenantId)
+                .setRole(request.getHeader(AUTH_CONTRO_ROLE_HEADER));
+        String skim = request.getHeader(AUTH_CONTRO_SKIPMAIN);
+        if (StringUtils.hasText(skim)) {
+            tenantInfo.setSkipMain(Boolean.parseBoolean(skim));
+        }
+        String r = request.getHeader(AUTH_CONTRO_DATA_AUTH_HEADER);
+        if (StringUtils.hasText(r)) {
+            TenantDataAuth tenantDataAuth = new TenantDataAuth();
+            String[] operateNames = r.split(";");
+            for (String operateName : operateNames) {
+                tenantDataAuth.addLowControlPower(OperatorModel.valueOf(operateName));
+            }
+            tenantInfo.setTenantDataAuth(tenantDataAuth);
+        }
+        return tenantInfo;
+    }
+
 
     /**
      * 从header 请求中的clientId/clientSecret
@@ -108,6 +183,5 @@ public class AuthUtils {
         }
         return extractAndDecodeHeader(header);
     }
-
 
 }

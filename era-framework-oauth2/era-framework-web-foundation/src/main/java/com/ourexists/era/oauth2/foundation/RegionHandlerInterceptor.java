@@ -18,8 +18,8 @@
 
 package com.ourexists.era.oauth2.foundation;
 
+import com.ourexists.era.framework.core.EraSystemHeader;
 import com.ourexists.era.framework.core.user.UserContext;
-import com.ourexists.era.framework.core.utils.AuthUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -41,9 +41,9 @@ public class RegionHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //先默认获取请求头的租户信息用于白名单路径
-        UserContext.setPlatform(AuthUtils.extractPlatform(request));
-        UserContext.setTenant(SimpleAuthUtils.extractTenant(request));
-        UserContext.setUser(SimpleAuthUtils.extractUserInfo(request));
+        UserContext.setPlatform(EraSystemHeader.extractPlatform(request));
+        UserContext.setTenant(EraSystemHeader.extractTenant(request));
+        UserContext.setUser(EraSystemHeader.extractUserInfo(request));
         return true;
     }
 

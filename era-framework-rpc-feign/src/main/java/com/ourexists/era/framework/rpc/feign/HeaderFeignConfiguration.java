@@ -18,12 +18,12 @@
 
 package com.ourexists.era.framework.rpc.feign;
 
+import com.ourexists.era.framework.core.EraSystemHeader;
 import com.ourexists.era.framework.core.user.UserContext;
-import com.ourexists.era.framework.core.utils.AuthUtils;
 import feign.RequestInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -58,10 +58,10 @@ public class HeaderFeignConfiguration {
                 }
             }
             if (UserContext.getTenant() != null) {
-                requestTemplate.header(AuthUtils.TENANT_ROUTE, UserContext.getTenant().getTenantId());
+                requestTemplate.header(EraSystemHeader.TENANT_ROUTE, UserContext.getTenant().getTenantId());
             }
-            if (!StringUtils.isEmpty(UserContext.getPlatForm())) {
-                requestTemplate.header(AuthUtils.PLATFORM_HEADER, UserContext.getPlatForm());
+            if (StringUtils.hasText(UserContext.getPlatForm())) {
+                requestTemplate.header(EraSystemHeader.PLATFORM_HEADER, UserContext.getPlatForm());
             }
         };
     }

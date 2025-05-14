@@ -18,13 +18,12 @@
 
 package com.ourexists.era.oauth2.resource.permission;
 
-import com.alibaba.fastjson2.JSON;
+import com.ourexists.era.framework.core.EraSystemHeader;
 import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.constants.ResultMsgEnum;
-import com.ourexists.era.framework.core.model.vo.JsonResponseEntity;
 import com.ourexists.era.framework.core.user.TenantInfo;
 import com.ourexists.era.framework.core.user.UserContext;
-import com.ourexists.era.framework.core.utils.AuthUtils;
+import com.ourexists.era.framework.core.utils.EraStandardUtils;
 import com.ourexists.era.oauth2.core.PathRule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,9 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * @author pengcheng
@@ -64,18 +60,21 @@ public class RegionHandlerInterceptor implements HandlerInterceptor {
             }
         }
         //先默认获取请求头的租户信息用于白名单路径
-        String platform = AuthUtils.extractPlatform(request);
-        if (StringUtils.isEmpty(platform) && !ignore) {
-            output(response, ResultMsgEnum.UNRECOGNIZED_HEADER, "unrecognized platform");
+        String platform = EraSystemHeader.extractPlatform(request);
+        if (!StringUtils.hasText(platform) && !ignore) {
+            EraStandardUtils.exceptionView(response, ResultMsgEnum.UNRECOGNIZED_HEADER, "unrecognized platform");
             return false;
         }
         UserContext.setPlatform(platform);
-        String tenantId = AuthUtils.extractTenant(request);
-        if (StringUtils.isEmpty(tenantId) && !ignore) {
-            output(response, ResultMsgEnum.UNRECOGNIZED_HEADER, "unrecognized tenant");
-            return false;
+        TenantInfo tenantInfo = EraSystemHeader.extractTenant(request);
+        if (tenantInfo == null) {
+            if (!ignore) {
+                EraStandardUtils.exceptionView(response, ResultMsgEnum.UNRECOGNIZED_HEADER, "unrecognized tenant");
+                return false;
+            } else {
+                tenantInfo = new TenantInfo();
+            }
         }
-        TenantInfo tenantInfo = new TenantInfo().setTenantId(tenantId);
         if (antPathMatcher.match(PathRule.OVERALL_PREFIX + "/**", request.getServletPath())) {
             tenantInfo.setTenantId(CommonConstant.SYSTEM_TENANT);
         }
@@ -89,18 +88,5 @@ public class RegionHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         UserContext.remove();
-    }
-
-    private void output(HttpServletResponse response, ResultMsgEnum resultMsgEnum, String message) {
-        JsonResponseEntity jo = new JsonResponseEntity(resultMsgEnum.getResultCode(), message);
-        String json = JSON.toJSONString(jo);
-        response.setContentType(CommonConstant.CONTENT_TYPE);
-        response.setStatus(resultMsgEnum.getResultCode());
-        try (PrintWriter out = response.getWriter()) {
-            out.write(json);
-            out.flush();
-        } catch (IOException e) {
-            log.error("PermissionHandlerInterceptor output error", e);
-        }
     }
 }

@@ -34,89 +34,89 @@ public class JsonResponseEntity<T> {
      *
      * (0：系统内部错误；1：成功；2：外部错误；3：未登录；4：权限不足)
      */
-	private int code;
+    private int code;
 
     /**
      * 返回的消息
      */
-	private String msg;
+    private String msg;
 
     /**
      * 返回的数据
      */
-	private T data;
+    private T data;
 
-	private Pagination pagination;
+    private Pagination pagination;
 
     public JsonResponseEntity() {
     }
 
     public JsonResponseEntity(int code, String message, T data, Pagination pagination) {
-		this(code,message);
-		this.data = data;
-		this.pagination = pagination;
-	}
+        this(code, message);
+        this.data = data;
+        this.pagination = pagination;
+    }
 
-	public JsonResponseEntity(int code, String message) {
-		this.code = code;
-		this.msg = message;
-	}
+    public JsonResponseEntity(int code, String message) {
+        this.code = code;
+        this.msg = message;
+    }
 
-	public JsonResponseEntity(ResultMsgEnum resultMsgEnum) {
-		this(resultMsgEnum.getResultCode(),resultMsgEnum.getResultMsg());
-	}
+    public JsonResponseEntity(ResultMsgEnum resultMsgEnum) {
+        this(resultMsgEnum.getResultCode(), resultMsgEnum.getResultMsg());
+    }
 
-	public JsonResponseEntity(ResultMsgEnum resultMsgEnum, T data, Pagination pagination) {
-		this(resultMsgEnum);
-		this.data = data;
-		this.pagination = pagination;
-	}
+    public JsonResponseEntity(ResultMsgEnum resultMsgEnum, T data, Pagination pagination) {
+        this(resultMsgEnum);
+        this.data = data;
+        this.pagination = pagination;
+    }
 
-	/**
-	 * 返回成功信息
-	 * @return			ResponseParam<K>
-	 */
-	public static JsonResponseEntity success() {
-		return new JsonResponseEntity(ResultMsgEnum.SUCCESS);
-	}
+    /**
+     * 返回成功信息
+     * @return ResponseParam<K>
+     */
+    public static JsonResponseEntity<?> success() {
+        return new JsonResponseEntity<>(ResultMsgEnum.SUCCESS);
+    }
 
-	/**
-	 * 返回成功信息
-	 * @param data		要携带的参数
-	 * @param <K>		携带的参数类型
-	 * @return			ResponseParam<K>
-	 */
-	public static <K> JsonResponseEntity<K> success(K data) {
-		return new JsonResponseEntity<>(ResultMsgEnum.SUCCESS, data, null);
-	}
+    /**
+     * 返回成功信息
+     * @param data        要携带的参数
+     * @param <K>		携带的参数类型
+     * @return ResponseParam<K>
+     */
+    public static <K> JsonResponseEntity<K> success(K data) {
+        return new JsonResponseEntity<>(ResultMsgEnum.SUCCESS, data, null);
+    }
 
-	/**
-	 * 返回成功信息
-	 * @param data		要携带的参数
-	 * @param msg		要携带的信息
-	 * @param <K>		携带的参数类型
-	 * @return			ResponseParam<K>
-	 */
-	public static <K> JsonResponseEntity<K> success(K data, String msg) {
-		return new JsonResponseEntity<>(ResultMsgEnum.SUCCESS.getResultCode(), msg, data, null);
-	}
+    /**
+     * 返回成功信息
+     * @param data        要携带的参数
+     * @param msg        要携带的信息
+     * @param <K>		携带的参数类型
+     * @return ResponseParam<K>
+     */
+    public static <K> JsonResponseEntity<K> success(K data, String msg) {
+        return new JsonResponseEntity<>(ResultMsgEnum.SUCCESS.getResultCode(), msg, data, null);
+    }
 
-	/**
-	 * 返回成功信息
-	 * @param data				要携带的参数
-	 * @param pagination		要携带的分页信息
-	 * @param <K>				携带的参数类型
-	 * @return					ResponseParam<K>
-	 */
-	public static <K> JsonResponseEntity<K> success(K data, Pagination pagination) {
-		return new JsonResponseEntity<>(ResultMsgEnum.SUCCESS, data, pagination);
-	}
+    /**
+     * 返回成功信息
+     * @param data                要携带的参数
+     * @param pagination        要携带的分页信息
+     * @param <K>				携带的参数类型
+     * @return ResponseParam<K>
+     */
+    public static <K> JsonResponseEntity<K> success(K data, Pagination pagination) {
+        return new JsonResponseEntity<>(ResultMsgEnum.SUCCESS, data, pagination);
+    }
 
-	/**
-	 * 返回系统代码错误信息（用于代码内部错误提示）
-	 * @return	ResponseParam
-	 */
-	public static JsonResponseEntity systemError(){
-		return new JsonResponseEntity<>(ResultMsgEnum.SYSTEM_ERROR,null,null);
-	}
+    /**
+     * 返回系统代码错误信息（用于代码内部错误提示）
+     * @return ResponseParam
+     */
+    public static JsonResponseEntity systemError() {
+        return new JsonResponseEntity<>(ResultMsgEnum.SYSTEM_ERROR, null, null);
+    }
 }

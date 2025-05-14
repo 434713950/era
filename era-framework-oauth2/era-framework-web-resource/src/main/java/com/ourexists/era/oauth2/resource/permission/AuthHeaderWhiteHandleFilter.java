@@ -18,7 +18,7 @@
 
 package com.ourexists.era.oauth2.resource.permission;
 
-import com.ourexists.era.framework.core.utils.AuthUtils;
+import com.ourexists.era.framework.core.EraSystemHeader;
 import com.ourexists.era.oauth2.core.PathRule;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,14 +27,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.RequestFacade;
-import org.omg.CORBA.Request;
+import org.apache.tomcat.util.http.MimeHeaders;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.ReflectionUtils;
 
-import javax.xml.soap.MimeHeaders;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -79,10 +79,10 @@ public class AuthHeaderWhiteHandleFilter extends HttpFilter {
                 org.apache.coyote.Request coyoteRequest = (org.apache.coyote.Request) coyoteField.get(connectorRequest);
 
                 // 从 org.apache.coyote.Request 中获取 MimeHeaders
-                Field mimeHeadersField =  ReflectionUtils.findField(org.apache.coyote.Request.class, "headers", MimeHeaders.class);
+                Field mimeHeadersField = ReflectionUtils.findField(org.apache.coyote.Request.class, "headers", MimeHeaders.class);
                 mimeHeadersField.setAccessible(true);
-                MimeHeaders mimeHeaders =  (MimeHeaders) mimeHeadersField.get(coyoteRequest);
-                mimeHeaders.removeHeader(AuthUtils.AUTH_HEADER);
+                MimeHeaders mimeHeaders = (MimeHeaders) mimeHeadersField.get(coyoteRequest);
+                mimeHeaders.removeHeader(EraSystemHeader.AUTH_HEADER);
                 mimeHeadersField.setAccessible(false);
                 coyoteField.setAccessible(false);
                 connectorField.setAccessible(false);

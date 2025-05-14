@@ -18,6 +18,8 @@
 
 package com.ourexists.era.framework.core.utils;
 
+import java.util.Arrays;
+
 /**
  * @author pengcheng
  * @date 2021/7/1 14:30
@@ -25,13 +27,14 @@ package com.ourexists.era.framework.core.utils;
  */
 public class DataMaskingUtils {
 
-    private DataMaskingUtils(){}
+    private DataMaskingUtils() {
+    }
 
     public static String maskIdCard(String idNo) {
         return mask(idNo, 6, 4);
     }
 
-    public static String maskMoblie(String idNo) {
+    public static String maskMobile(String idNo) {
         return mask(idNo, 3, 4);
     }
 
@@ -39,15 +42,13 @@ public class DataMaskingUtils {
     public static String mask(String str, int retainHeadLength, int retainTailLength) {
         int length = str.length();
         int remainderLength = length - retainHeadLength - retainTailLength;
-        if (remainderLength<= 0) {
+        if (remainderLength <= 0) {
             return str;
         }
         String s = str.substring(0, retainHeadLength);
         String e = str.substring(length - retainTailLength);
         byte[] mb = new byte[remainderLength];
-        for (int i=0; i<remainderLength; i++) {
-            mb[i]='*';
-        }
-        return s+new String(mb)+e;
+        Arrays.fill(mb, (byte) '*');
+        return s + new String(mb) + e;
     }
 }

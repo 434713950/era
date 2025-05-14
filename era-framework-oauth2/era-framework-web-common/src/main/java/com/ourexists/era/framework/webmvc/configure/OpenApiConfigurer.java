@@ -18,7 +18,7 @@
 
 package com.ourexists.era.framework.webmvc.configure;
 
-import com.ourexists.era.framework.core.utils.AuthUtils;
+import com.ourexists.era.framework.core.EraSystemHeader;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -34,17 +34,14 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * @Author: PengCheng
- * @Description:    swagger2配置
+ * @Description: swagger2配置
  * @Date: 23:27 2018/4/19/019
  */
 @Import(OpenApiProperties.class)
 public class OpenApiConfigurer {
 
-    @Autowired
-    public OpenApiProperties openApiProperties;
-
     @Bean
-    public OpenAPI openAPI() {
+    public OpenAPI openAPI(OpenApiProperties openApiProperties) {
         Contact contact = new Contact();
         contact.setName(openApiProperties.getContactName());
         contact.setUrl(openApiProperties.getContactUrl());
@@ -65,19 +62,24 @@ public class OpenApiConfigurer {
             operation.addParametersItem(new Parameter()
                             .in(ParameterIn.HEADER.toString())
                             .schema(new StringSchema())
-                            .name(AuthUtils.PLATFORM_HEADER)
+                            .name(EraSystemHeader.PLATFORM_HEADER)
                             .description("归属平台")
                             .required(true))
                     .addParametersItem(new Parameter()
                             .in(ParameterIn.HEADER.toString())
                             .schema(new StringSchema())
-                            .name(AuthUtils.TENANT_ROUTE)
+                            .name(EraSystemHeader.TENANT_ROUTE)
                             .description("归属租户"))
                     .addParametersItem(new Parameter()
                             .in(ParameterIn.HEADER.toString())
                             .schema(new StringSchema())
-                            .name(AuthUtils.AUTH_HEADER)
-                            .description("认证头"));
+                            .name(EraSystemHeader.AUTH_HEADER)
+                            .description("认证头"))
+                    .addParametersItem(new Parameter()
+                            .in(ParameterIn.HEADER.toString())
+                            .schema(new StringSchema())
+                            .name(EraSystemHeader.REAL_TENANT_ROUTE)
+                            .description("真实租户"));
             return operation;
         };
     }

@@ -25,6 +25,7 @@ import com.ourexists.era.framework.core.model.vo.JsonResponseEntity;
 import com.ourexists.era.framework.core.user.UserContext;
 import com.ourexists.era.framework.core.user.UserInfo;
 import com.ourexists.era.framework.core.user.TenantInfo;
+import com.ourexists.era.framework.core.utils.EraStandardUtils;
 import com.ourexists.era.oauth2.core.PathRule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -66,7 +67,7 @@ public class SimpleAuthHandlerInterceptor implements HandlerInterceptor {
         }
         //租户信息必须
         if (UserContext.getTenant() == null) {
-            output(response, ResultMsgEnum.PERMISSION_DENIED);
+            EraStandardUtils.exceptionView(response, ResultMsgEnum.PERMISSION_DENIED);
             return false;
         }
         TenantInfo tenantInfo = UserContext.getTenant();
@@ -85,17 +86,5 @@ public class SimpleAuthHandlerInterceptor implements HandlerInterceptor {
             UserContext.setUser(userInfo);
         }
         return true;
-    }
-
-    private void output(HttpServletResponse response, ResultMsgEnum resultMsgEnum) {
-        JsonResponseEntity jo = new JsonResponseEntity(resultMsgEnum.getResultCode(), resultMsgEnum.getResultMsg());
-        String json = JSONObject.toJSONString(jo);
-        response.setContentType(CommonConstant.CONTENT_TYPE);
-        try (PrintWriter out = response.getWriter()) {
-            out.write(json);
-            out.flush();
-        } catch (IOException e) {
-            log.error("PermissionHandlerInterceptor output error", e);
-        }
     }
 }

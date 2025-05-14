@@ -18,14 +18,12 @@
 
 package com.ourexists.era.oauth2.resource.permission;
 
-import com.alibaba.fastjson2.JSONObject;
-import com.ourexists.era.framework.core.constants.CommonConstant;
+import com.ourexists.era.framework.core.EraSystemHeader;
 import com.ourexists.era.framework.core.constants.ResultMsgEnum;
-import com.ourexists.era.framework.core.model.vo.JsonResponseEntity;
 import com.ourexists.era.framework.core.user.TenantInfo;
 import com.ourexists.era.framework.core.user.UserContext;
-import com.ourexists.era.framework.core.utils.AuthUtils;
 import com.ourexists.era.framework.core.utils.CollectionUtil;
+import com.ourexists.era.framework.core.utils.EraStandardUtils;
 import com.ourexists.era.oauth2.core.EraUser;
 import com.ourexists.era.oauth2.core.OAuth2Role;
 import com.ourexists.era.oauth2.core.authority.ApiPermission;
@@ -38,11 +36,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collection;
 
 /**
@@ -84,18 +79,18 @@ public class PermissionHandlerInterceptor implements HandlerInterceptor {
         if (authentication instanceof EraAuthenticationToken) {
             Object principal = authentication.getPrincipal();
             if (!(principal instanceof EraUser)) {
-                output(response, ResultMsgEnum.UN_LOGIN);
+                EraStandardUtils.exceptionView(response, ResultMsgEnum.UN_LOGIN);
+                ;
                 return false;
             }
             EraUser eraUser = (EraUser) principal;
             UserContext.setUser(eraUser.getUserInfo());
 
-            String tenantId = AuthUtils.extractTenant(request);
-            if (StringUtils.isEmpty(tenantId)) {
-                output(response, ResultMsgEnum.PERMISSION_DENIED);
+            String tenantId = EraSystemHeader.extractTenantId(request);
+            if (tenantId == null) {
+                EraStandardUtils.exceptionView(response, ResultMsgEnum.PERMISSION_DENIED);
                 return false;
             }
-
             //api权限白名单
             for (String authCheck : authWhiteListProperties.getApiCheck()) {
                 if (antPathMatcher.match(authCheck, request.getServletPath())) {
@@ -105,7 +100,7 @@ public class PermissionHandlerInterceptor implements HandlerInterceptor {
 
             TenantInfo tenantInfo = eraUser.getTenantInfoMap().get(tenantId);
             if (tenantInfo == null) {
-                output(response, ResultMsgEnum.PERMISSION_DENIED);
+                EraStandardUtils.exceptionView(response, ResultMsgEnum.PERMISSION_DENIED);
                 return false;
             }
             UserContext.setTenant(tenantInfo);
@@ -119,26 +114,12 @@ public class PermissionHandlerInterceptor implements HandlerInterceptor {
             if (!checkApiPermission(request,
                     allApiPermissions,
                     eraUser.getApiPermissions())) {
-                output(response, ResultMsgEnum.PERMISSION_DENIED);
+                EraStandardUtils.exceptionView(response, ResultMsgEnum.PERMISSION_DENIED);
                 return false;
             }
         }
         return true;
     }
-
-
-    private void output(HttpServletResponse response, ResultMsgEnum resultMsgEnum) {
-        JsonResponseEntity jo = new JsonResponseEntity(resultMsgEnum.getResultCode(), resultMsgEnum.getResultMsg());
-        String json = JSONObject.toJSONString(jo);
-        response.setContentType(CommonConstant.CONTENT_TYPE);
-        try (PrintWriter out = response.getWriter()) {
-            out.write(json);
-            out.flush();
-        } catch (IOException e) {
-            log.error("PermissionHandlerInterceptor output error", e);
-        }
-    }
-
 
     private boolean checkApiPermission(HttpServletRequest request,
                                        Collection<? extends ApiPermission> allApiPermissions,

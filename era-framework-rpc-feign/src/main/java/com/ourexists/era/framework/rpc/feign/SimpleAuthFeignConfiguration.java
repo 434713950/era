@@ -19,6 +19,8 @@
 package com.ourexists.era.framework.rpc.feign;
 
 import com.alibaba.fastjson2.JSON;
+import com.ourexists.era.framework.core.EraSystemHeader;
+import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.user.OperatorModel;
 import com.ourexists.era.framework.core.utils.CollectionUtil;
 import feign.RequestInterceptor;
@@ -36,7 +38,7 @@ import java.util.List;
 
 /**
  * @author pengcheng
- * @date 2021/4/12 17:03
+ * {@code @date 2021/4/12 17:03}
  * @since 2.0.0
  */
 @Slf4j
@@ -57,13 +59,12 @@ public class SimpleAuthFeignConfiguration {
                     while (headerNames.hasMoreElements()) {
                         String name = headerNames.nextElement();
                         String values = request.getHeader(name);
-                        if (name.equals("content-length") || name.equals("x-tenant-role") || name.equals("x-route-user")) {
-                            continue;
-                        }
-                        if (name.equals("x-route-tenant") && !StringUtils.isEmpty( manager.tenantId())) {
-                            continue;
-                        }
-                        if (name.equals("x-era-platform") && !StringUtils.isEmpty(manager.platform())) {
+                        if (name.equals("content-length")
+                                || name.equals(EraSystemHeader.AUTH_CONTRO_ROLE_HEADER)
+                                || name.equals(EraSystemHeader.AUTH_CONTRO_USER_HEADER)
+                                || (name.equals(EraSystemHeader.TENANT_ROUTE) && StringUtils.hasText(manager.tenantId()))
+                                || (name.equals(EraSystemHeader.PLATFORM_HEADER) && StringUtils.hasText(manager.platform()))
+                        ) {
                             continue;
                         }
                         requestTemplate.header(name, values);
@@ -71,23 +72,23 @@ public class SimpleAuthFeignConfiguration {
                 }
             }
             try {
-                if (!StringUtils.isEmpty( manager.tenantId())) {
-                    requestTemplate.header("x-route-tenant", manager.tenantId());
+                if (StringUtils.hasText(manager.tenantId())) {
+                    requestTemplate.header(EraSystemHeader.TENANT_ROUTE, manager.tenantId());
                 }
-                if (!StringUtils.isEmpty(manager.platform())) {
-                    requestTemplate.header("x-era-platform", manager.platform());
+                if (StringUtils.hasText(manager.platform())) {
+                    requestTemplate.header(EraSystemHeader.PLATFORM_HEADER, manager.platform());
                 }
-                requestTemplate.header("x-route-user", URLEncoder.encode(JSON.toJSONString(manager.userInfo()), "UTF-8"));
-                requestTemplate.header("x-tenant-role", manager.tenantRole());
-                requestTemplate.header("x-tenant-skipmain", manager.skipMain().toString());
-                log.info("【feign请求】请求头[{}]",JSON.toJSONString(requestTemplate.headers()));
+                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_USER_HEADER, URLEncoder.encode(JSON.toJSONString(manager.userInfo()), CommonConstant.CONTENT_ENCODE));
+                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_ROLE_HEADER, manager.tenantRole());
+                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_SKIPMAIN, manager.skipMain().toString());
+                log.debug("【feign请求】请求头[{}]", JSON.toJSONString(requestTemplate.headers()));
                 List<OperatorModel> operatorModels = manager.tenantDataAuth();
                 if (CollectionUtil.isNotBlank(operatorModels)) {
                     StringBuilder t = new StringBuilder();
                     for (OperatorModel operatorModel : operatorModels) {
                         t.append(operatorModel.name()).append(";");
                     }
-                    requestTemplate.header("x-route-tenant-data-auth", t.substring(0, t.length() - 1));
+                    requestTemplate.header(EraSystemHeader.AUTH_CONTRO_DATA_AUTH_HEADER, t.substring(0, t.length() - 1));
                 }
             } catch (UnsupportedEncodingException e) {
                 //nothing
