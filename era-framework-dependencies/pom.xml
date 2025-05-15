@@ -30,6 +30,13 @@
     <artifactId>era-framework-dependencies</artifactId>
     <packaging>pom</packaging>
 
+    <licenses>
+        <license>
+            <name>GNU Affero General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/agpl-3.0.html</url>
+        </license>
+    </licenses>
+
     <description>Era Framework Dependencies</description>
 
     <properties>
@@ -47,6 +54,9 @@
         <era-framework-rpc-feign.version>2024.0.1.0-SNAPSHOT</era-framework-rpc-feign.version>
         <era-framework-excel.version>2024.0.1.0-SNAPSHOT</era-framework-excel.version>
         <era-framework-tms.version>2024.0.1.0-SNAPSHOT</era-framework-tms.version>
+        <seata.version>1.8.0</seata.version>
+        <openapi.version>1.8.0</openapi.version>
+        <redission.version>3.45.1</redission.version>
     </properties>
 
     <dependencyManagement>
@@ -55,88 +65,106 @@
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-core</artifactId>
                 <version>${era-framework-core.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-orm-mybatisplus</artifactId>
                 <version>${era-framework-orm-mybatisplus.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-scheduler-xxljob</artifactId>
                 <version>${era-framework-scheduler-xxljob.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-oss</artifactId>
                 <version>${era-framework-aliyun-oss.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-oauth2-core</artifactId>
                 <version>${era-framework-oauth2.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-web-authorization</artifactId>
                 <version>${era-framework-oauth2.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-web-foundation</artifactId>
                 <version>${era-framework-oauth2.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-web-resource</artifactId>
                 <version>${era-framework-oauth2.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-distribution</artifactId>
                 <version>${era-framework-distribution.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-sharing-jdbc</artifactId>
                 <version>${era-framework-sharing-jdbc.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-orm-mongodb</artifactId>
                 <version>${era-framework-orm-mongodb.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-rpc-feign</artifactId>
                 <version>${era-framework-rpc-feign.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${openapi.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redission.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>io.seata</groupId>
                 <artifactId>seata-spring-boot-starter</artifactId>
-                <version>1.8.0</version>
+                <version>${seata.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
