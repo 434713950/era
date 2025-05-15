@@ -16,22 +16,24 @@
  *
  */
 
-package com.ourexists.era.framework.orm.mongodb.configure;
+package com.ourexists.era.framework.distribution.idempotent;
 
-import com.ourexists.era.framework.orm.mongodb.EraMongoTemplate;
+
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.MongoDatabaseFactory;
-import org.springframework.data.mongodb.core.convert.MongoConverter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @author pengcheng
- * @date 2022/7/29 13:41
+ * @date 2022/5/12 14:31
  * @since 1.0.0
  */
-public class EraMongodbConfigure {
+@Configuration
+public class IdempotentConfiguration {
 
     @Bean
-    EraMongoTemplate mongoTemplate(MongoDatabaseFactory factory, MongoConverter converter) {
-        return new EraMongoTemplate(factory, converter);
+    public IdempotentHandler idempotentHandler(RedisTemplate redisTemplate) {
+        return new IdempotentHandler(redisTemplate);
     }
+
 }

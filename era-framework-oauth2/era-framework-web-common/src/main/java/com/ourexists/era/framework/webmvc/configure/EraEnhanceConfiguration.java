@@ -22,6 +22,7 @@ import com.ourexists.era.framework.webmvc.I18nUtil;
 import com.ourexists.era.framework.webmvc.handler.ExceptionAnalysisHandler;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.AntPathMatcher;
@@ -34,6 +35,7 @@ import java.nio.charset.StandardCharsets;
  * @date 2022/2/21 15:51
  * @since 1.0.0
  */
+@Configuration
 @Import({OpenApiConfigurer.class,
         LocaleConfigurer.class,
         WebMvcConfiguration.class,

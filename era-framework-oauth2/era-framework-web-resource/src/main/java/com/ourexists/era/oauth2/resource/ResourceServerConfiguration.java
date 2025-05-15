@@ -27,6 +27,7 @@ import com.ourexists.era.oauth2.resource.permission.PermissionMvcConfigurer;
 import com.ourexists.era.oauth2.resource.permission.PermissionWhiteListProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,9 +43,9 @@ import java.util.List;
  * @date 2022/4/13 23:23
  * @since 1.0.0
  */
+@Configuration
 @EnableWebSecurity
 @Import({PermissionMvcConfigurer.class,
-//        AuthHeaderWhiteHandleFilter.class,
         PermissionWhiteListProperties.class})
 public class ResourceServerConfiguration {
 

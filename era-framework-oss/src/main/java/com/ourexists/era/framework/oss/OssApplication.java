@@ -22,6 +22,7 @@ import com.ourexists.era.framework.oss.template.AliOssTemplate;
 import com.ourexists.era.framework.oss.template.MinioOssTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -29,11 +30,12 @@ import org.springframework.context.annotation.Import;
  * @date 2022/3/2 15:32
  * @since 1.0.0
  */
+@Configuration
 @Import({OssProperties.class})
 public class OssApplication {
 
     @Bean
-    private OssTemplate ossTemplate(OssProperties ossProperties) {
+    public OssTemplate ossTemplate(OssProperties ossProperties) {
         if (StringUtils.isEmpty(ossProperties.getType()) ||
                 ossProperties.getType().equalsIgnoreCase(OssTypeEnum.ALI.name())) {
             return new AliOssTemplate(ossProperties);

@@ -25,6 +25,7 @@ import com.ourexists.era.framework.scheduler.core.accesstoken.template.JobOperat
 import com.ourexists.era.framework.scheduler.xxljob.XxlJobOperateTemplate;
 import com.ourexists.era.framework.scheduler.xxljob.XxlJobRemoteTokenRequester;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 2021/3/10 17:28
  * @since 1.1.0
  */
+@Configuration
 @EnableScheduling
 public class XxlJobAutoConfiguration {
 

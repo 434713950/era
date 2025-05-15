@@ -34,7 +34,7 @@ import java.util.List;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "era.permission.ignore")
-public class SimpleAuthWhiteListProperties {
+public class FoundationAuthWhiteListProperties {
 
     private List<String> authCheck = new ArrayList<>();
 }

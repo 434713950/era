@@ -32,9 +32,7 @@ era  分布式集成框架
 │   
 ├─[era-framework-core](era-framework-core) 框架核心包 [readme.md](era-framework-core/readme.md)    
 │   
-├─[era-framework-dependencies](era-framework-dependencies) 框架依赖管理包    
-│   
-├─[era-framework-distribution](era-framework-distribution) 分布式事务相关的集成包(seata为核心) [readme.md](era-framework-distribution/readme.md)  
+├─[era-framework-dependencies](era-framework-dependencies) 框架依赖管理包
 │   
 ├─[era-framework-excel](era-framework-excel) excel处理  [readme.md](era-framework-excel/readme.md)  
 │   

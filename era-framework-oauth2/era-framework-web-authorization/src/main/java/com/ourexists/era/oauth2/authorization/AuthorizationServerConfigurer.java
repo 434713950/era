@@ -32,6 +32,7 @@ import com.ourexists.era.oauth2.core.handler.EraAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -59,6 +60,7 @@ import java.time.Instant;
  * @author PengCheng
  * @date 2018/8/28
  */
+@Configuration
 @Order(Integer.MIN_VALUE)
 public class AuthorizationServerConfigurer {
 

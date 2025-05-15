@@ -34,7 +34,6 @@
         <module>era-framework-rpc-feign</module>
         <module>era-framework-oss</module>
         <module>era-framework-oauth2</module>
-        <module>era-framework-distribution</module>
         <module>era-framework-sharing-jdbc</module>
         <module>era-framework-orm-mongodb</module>
         <module>era-framework-idempotent</module>
@@ -45,7 +44,7 @@
 
     <properties>
         <spring-cloud-dependencies.version>2024.0.1</spring-cloud-dependencies.version>
-        <spring-cloud-alibaba-dependencies.version>2023.0.1.0</spring-cloud-alibaba-dependencies.version>
+        <spring-cloud-alibaba-dependencies.version>2023.0.3.2</spring-cloud-alibaba-dependencies.version>
         <openapi.version>1.8.0</openapi.version>
         <redission.version>3.45.1</redission.version>
     </properties>
@@ -55,6 +54,15 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.5</version>
     </parent>
+
+    <licenses>
+        <license>
+            <name>GNU Affero General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/agpl-3.0.html</url>
+            <distribution>repo</distribution>
+            <comments>A copy of the AGPL-3.0 license is available online.</comments>
+        </license>
+    </licenses>
 
     <dependencies>
         <dependency>

@@ -133,6 +133,11 @@
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redission.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-spring-boot-starter</artifactId>
+                <version>1.8.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

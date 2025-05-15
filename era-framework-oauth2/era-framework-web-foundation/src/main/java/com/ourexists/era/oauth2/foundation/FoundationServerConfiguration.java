@@ -19,6 +19,7 @@
 package com.ourexists.era.oauth2.foundation;
 
 import com.ourexists.era.oauth2.core.PathRule;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -29,16 +30,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2022/4/12 22:37
  * @since 1.0.0
  */
-@Import(SimpleAuthWhiteListProperties.class)
-public class SimpleAuthMvcConfigurer implements WebMvcConfigurer {
+@Configuration
+@Import(FoundationAuthWhiteListProperties.class)
+public class FoundationServerConfiguration implements WebMvcConfigurer {
 
-    private final SimpleAuthWhiteListProperties simpleAuthWhiteListProperties;
+    private final FoundationAuthWhiteListProperties foundationAuthWhiteListProperties;
 
     private final AntPathMatcher antPathMatcher;
 
-    public SimpleAuthMvcConfigurer(SimpleAuthWhiteListProperties simpleAuthWhiteListProperties,
-                                   AntPathMatcher antPathMatcher) {
-        this.simpleAuthWhiteListProperties = simpleAuthWhiteListProperties;
+    public FoundationServerConfiguration(FoundationAuthWhiteListProperties foundationAuthWhiteListProperties,
+                                         AntPathMatcher antPathMatcher) {
+        this.foundationAuthWhiteListProperties = foundationAuthWhiteListProperties;
         this.antPathMatcher = antPathMatcher;
     }
 
@@ -47,7 +49,7 @@ public class SimpleAuthMvcConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(new RegionHandlerInterceptor())
                 .addPathPatterns("/**")
                 .order(10);
-        registry.addInterceptor(new SimpleAuthHandlerInterceptor(simpleAuthWhiteListProperties, antPathMatcher))
+        registry.addInterceptor(new FoundationAuthHandlerInterceptor(foundationAuthWhiteListProperties, antPathMatcher))
                 .addPathPatterns("/**")
                 //swagger相关路径不走拦截器
                 .excludePathPatterns(PathRule.SYSTEM_WHITE_PATH)

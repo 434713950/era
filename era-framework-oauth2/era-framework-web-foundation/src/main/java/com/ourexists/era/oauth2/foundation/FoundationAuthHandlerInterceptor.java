@@ -39,15 +39,15 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * @since 1.0.0
  */
 @Slf4j
-public class SimpleAuthHandlerInterceptor implements HandlerInterceptor {
+public class FoundationAuthHandlerInterceptor implements HandlerInterceptor {
 
-    private final SimpleAuthWhiteListProperties simpleAuthWhiteListProperties;
+    private final FoundationAuthWhiteListProperties foundationAuthWhiteListProperties;
 
     private final AntPathMatcher antPathMatcher;
 
-    public SimpleAuthHandlerInterceptor(SimpleAuthWhiteListProperties simpleAuthWhiteListProperties,
-                                        AntPathMatcher antPathMatcher) {
-        this.simpleAuthWhiteListProperties = simpleAuthWhiteListProperties;
+    public FoundationAuthHandlerInterceptor(FoundationAuthWhiteListProperties foundationAuthWhiteListProperties,
+                                            AntPathMatcher antPathMatcher) {
+        this.foundationAuthWhiteListProperties = foundationAuthWhiteListProperties;
         this.antPathMatcher = antPathMatcher;
     }
 
@@ -55,7 +55,7 @@ public class SimpleAuthHandlerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         //先默认获取请求头的租户信息用于白名单路径
         String path = request.getServletPath();
-        for (String s : simpleAuthWhiteListProperties.getAuthCheck()) {
+        for (String s : foundationAuthWhiteListProperties.getAuthCheck()) {
             if (antPathMatcher.match(s, path)) {
                 return true;
             }

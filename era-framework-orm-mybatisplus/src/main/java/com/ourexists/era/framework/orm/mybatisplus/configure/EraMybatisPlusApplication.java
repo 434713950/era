@@ -27,6 +27,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import com.ourexists.era.framework.orm.mybatisplus.handler.EraTenantLineHandler;
 import com.ourexists.era.framework.orm.mybatisplus.tenant.EraTenantLineInnerInterceptor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>mybatis-plus一些常用配置</p>
@@ -34,6 +35,7 @@ import org.springframework.context.annotation.Bean;
  * @author pengcheng
  * @date 2018-11-06
  */
+@Configuration
 public class EraMybatisPlusApplication {
 
 
