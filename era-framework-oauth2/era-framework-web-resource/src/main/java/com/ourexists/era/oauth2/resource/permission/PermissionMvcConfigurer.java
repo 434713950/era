@@ -18,10 +18,13 @@
 
 package com.ourexists.era.oauth2.resource.permission;
 
-import com.ourexists.era.oauth2.core.PathRule;
+import com.ourexists.era.framework.core.PathRule;
+import com.ourexists.era.oauth2.core.interceptor.PermissionWhiteListProperties;
+import com.ourexists.era.oauth2.core.interceptor.RegionHandlerInterceptor;
 import com.ourexists.era.oauth2.core.store.PermissionStore;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -33,28 +36,32 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Import(PermissionWhiteListProperties.class)
 public class PermissionMvcConfigurer implements WebMvcConfigurer {
 
-    private final PermissionWhiteListProperties authWhiteListProperties;
+    private final PermissionWhiteListProperties whiteListProperties;
 
     private final PermissionStore permissionStore;
 
     private final Environment env;
 
-    public PermissionMvcConfigurer(PermissionWhiteListProperties authWhiteListProperties,
+    private final AntPathMatcher antPathMatcher;
+
+    public PermissionMvcConfigurer(PermissionWhiteListProperties whiteListProperties,
                                    PermissionStore permissionStore,
+                                   AntPathMatcher antPathMatcher,
                                    Environment env) {
-        this.authWhiteListProperties = authWhiteListProperties;
+        this.whiteListProperties = whiteListProperties;
         this.permissionStore = permissionStore;
+        this.antPathMatcher = antPathMatcher;
         this.env = env;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new RegionHandlerInterceptor(authWhiteListProperties))
+        registry.addInterceptor(new RegionHandlerInterceptor(antPathMatcher, whiteListProperties))
                 .addPathPatterns("/**")
                 //swagger相关路径不走拦截器
                 .excludePathPatterns(PathRule.HERDER_WHITE_PATHS)
                 .order(1);
-        registry.addInterceptor(new PermissionHandlerInterceptor(authWhiteListProperties, permissionStore, env))
+        registry.addInterceptor(new PermissionHandlerInterceptor(whiteListProperties, permissionStore, antPathMatcher, env))
                 .addPathPatterns("/**")
                 //swagger相关路径不走拦截器
                 .excludePathPatterns(PathRule.SYSTEM_WHITE_PATH)

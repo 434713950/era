@@ -27,6 +27,7 @@ import com.ourexists.era.framework.core.utils.EraStandardUtils;
 import com.ourexists.era.oauth2.core.EraUser;
 import com.ourexists.era.oauth2.core.OAuth2Role;
 import com.ourexists.era.oauth2.core.authority.ApiPermission;
+import com.ourexists.era.oauth2.core.interceptor.PermissionWhiteListProperties;
 import com.ourexists.era.oauth2.core.store.PermissionStore;
 import com.ourexists.era.oauth2.core.token.EraAuthenticationToken;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,9 +61,10 @@ public class PermissionHandlerInterceptor implements HandlerInterceptor {
 
     public PermissionHandlerInterceptor(PermissionWhiteListProperties authWhiteListProperties,
                                         PermissionStore permissionStore,
+                                        AntPathMatcher antPathMatcher,
                                         Environment env) {
         this.authWhiteListProperties = authWhiteListProperties;
-        this.antPathMatcher = new AntPathMatcher();
+        this.antPathMatcher = antPathMatcher;
         this.permissionStore = permissionStore;
         this.serverName = env.getProperty("spring.application.name");
     }

@@ -20,17 +20,43 @@ package com.ourexists.era.framework.rpc.feign;
 
 import com.ourexists.era.framework.core.user.OperatorModel;
 import com.ourexists.era.framework.core.user.UserInfo;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.List;
+import java.util.*;
 
 /**
+ * era生态的feign请求头传递
+ *
  * @author pengcheng
  * @date 2021/4/12 17:04
  * @since 2.0.0
  */
-public interface SimpleAuthRequestManager {
+public interface EraFeignHeaderTransfer {
 
     String tenantId();
+
+    default Map<String, String> requestHeaders() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes();
+        if (Objects.isNull(attributes)) {
+            return null;
+        }
+        HttpServletRequest request = attributes.getRequest();
+        Enumeration<String> headerNames = request.getHeaderNames();
+        if (headerNames == null) {
+            return null;
+        }
+        Map<String, String> headers = new HashMap<>();
+        while (headerNames.hasMoreElements()) {
+            String name = headerNames.nextElement();
+            String values = request.getHeader(name);
+            headers.put(name, values);
+        }
+        return headers;
+    }
+
 
     default String tenantRole() {
         return "COMMON";

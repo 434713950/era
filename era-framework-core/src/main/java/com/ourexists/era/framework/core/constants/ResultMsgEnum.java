@@ -34,7 +34,7 @@ public enum ResultMsgEnum {
     SYSTEM_ERROR(500,"系统错误,请联系管理员!"),
     VALIDATION_ERROR(406,"参数校验失败!"),
     PERMISSION_DENIED(405,"您没有访问权限!"),
-
+    SC_UNAUTHORIZED(401, ""),
     UNRECOGNIZED_HEADER(417, "无法辨识的请求头"),
     INIT_PASS(20,"当前密码为初始密码,请修改!"),
     UN_LOGIN(403,"未登录");

@@ -16,7 +16,7 @@
  *
  */
 
-package com.ourexists.era.oauth2.resource.permission;
+package com.ourexists.era.oauth2.core.interceptor;
 
 import lombok.Getter;
 import lombok.Setter;

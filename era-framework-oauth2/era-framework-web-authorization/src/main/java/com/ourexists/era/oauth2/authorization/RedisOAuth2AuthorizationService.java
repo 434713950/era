@@ -16,7 +16,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public RedisOAuth2AuthorizationService(RedisTemplate<String, Object> redisTemplate) {
+    public RedisOAuth2AuthorizationService(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

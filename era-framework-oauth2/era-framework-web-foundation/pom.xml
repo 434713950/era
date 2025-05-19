@@ -9,8 +9,6 @@
 
     <artifactId>era-framework-web-foundation</artifactId>
 
-    <name>era-framework-oauth2-foundation</name>
-
     <dependencies>
         <dependency>
             <groupId>com.ourexists.era</groupId>

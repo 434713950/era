@@ -98,16 +98,11 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>com.github.johnrengelman</groupId>
-                    <artifactId>shadow</artifactId>
-                    <version>7.0.0</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>shadow</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

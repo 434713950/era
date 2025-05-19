@@ -18,6 +18,7 @@
 
 package com.ourexists.era.framework.webmvc.configure;
 
+import com.ourexists.era.framework.core.PathRule;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -39,10 +40,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoggableHandlerInterceptor(applicationContext))
                 .addPathPatterns("/**")
-                //swagger相关路径不走拦截器
-                .excludePathPatterns("/swagger-resources/**")
-                .excludePathPatterns("/swagger-ui/**")
-                .excludePathPatterns("/webjars/**")
-                .excludePathPatterns("/v3/**");
+                .excludePathPatterns(PathRule.SYSTEM_WHITE_PATH);
     }
 }

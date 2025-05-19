@@ -24,7 +24,6 @@ import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.user.OperatorModel;
 import com.ourexists.era.framework.core.utils.CollectionUtil;
 import feign.RequestInterceptor;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.StringUtils;
@@ -33,8 +32,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author pengcheng
@@ -45,7 +44,7 @@ import java.util.List;
 public class SimpleAuthFeignConfiguration {
 
     @Bean
-    public RequestInterceptor requestInterceptor(SimpleAuthRequestManager manager) {
+    public RequestInterceptor requestInterceptor(EraFeignHeaderTransfer transfer) {
         return requestTemplate -> {
             if (log.isDebugEnabled()) {
                 log.debug("applet server request start");
@@ -53,36 +52,35 @@ public class SimpleAuthFeignConfiguration {
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
                     .getRequestAttributes();
             if (attributes != null) {
-                HttpServletRequest request = attributes.getRequest();
-                Enumeration<String> headerNames = request.getHeaderNames();
+                Map<String, String> headerNames = transfer.requestHeaders();
                 if (headerNames != null) {
-                    while (headerNames.hasMoreElements()) {
-                        String name = headerNames.nextElement();
-                        String values = request.getHeader(name);
+                    for (Map.Entry<String, String> headers : headerNames.entrySet()) {
+                        String name = headers.getKey();
+                        String value = headers.getValue();
                         if (name.equals("content-length")
                                 || name.equals(EraSystemHeader.AUTH_CONTRO_ROLE_HEADER)
                                 || name.equals(EraSystemHeader.AUTH_CONTRO_USER_HEADER)
-                                || (name.equals(EraSystemHeader.TENANT_ROUTE) && StringUtils.hasText(manager.tenantId()))
-                                || (name.equals(EraSystemHeader.PLATFORM_HEADER) && StringUtils.hasText(manager.platform()))
+                                || (name.equals(EraSystemHeader.TENANT_ROUTE) && StringUtils.hasText(transfer.tenantId()))
+                                || (name.equals(EraSystemHeader.PLATFORM_HEADER) && StringUtils.hasText(transfer.platform()))
                         ) {
                             continue;
                         }
-                        requestTemplate.header(name, values);
+                        requestTemplate.header(name, value);
                     }
                 }
             }
             try {
-                if (StringUtils.hasText(manager.tenantId())) {
-                    requestTemplate.header(EraSystemHeader.TENANT_ROUTE, manager.tenantId());
+                if (StringUtils.hasText(transfer.tenantId())) {
+                    requestTemplate.header(EraSystemHeader.TENANT_ROUTE, transfer.tenantId());
                 }
-                if (StringUtils.hasText(manager.platform())) {
-                    requestTemplate.header(EraSystemHeader.PLATFORM_HEADER, manager.platform());
+                if (StringUtils.hasText(transfer.platform())) {
+                    requestTemplate.header(EraSystemHeader.PLATFORM_HEADER, transfer.platform());
                 }
-                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_USER_HEADER, URLEncoder.encode(JSON.toJSONString(manager.userInfo()), CommonConstant.CONTENT_ENCODE));
-                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_ROLE_HEADER, manager.tenantRole());
-                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_SKIPMAIN, manager.skipMain().toString());
+                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_USER_HEADER, URLEncoder.encode(JSON.toJSONString(transfer.userInfo()), CommonConstant.CONTENT_ENCODE));
+                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_ROLE_HEADER, transfer.tenantRole());
+                requestTemplate.header(EraSystemHeader.AUTH_CONTRO_SKIPMAIN, transfer.skipMain().toString());
                 log.debug("【feign请求】请求头[{}]", JSON.toJSONString(requestTemplate.headers()));
-                List<OperatorModel> operatorModels = manager.tenantDataAuth();
+                List<OperatorModel> operatorModels = transfer.tenantDataAuth();
                 if (CollectionUtil.isNotBlank(operatorModels)) {
                     StringBuilder t = new StringBuilder();
                     for (OperatorModel operatorModel : operatorModels) {

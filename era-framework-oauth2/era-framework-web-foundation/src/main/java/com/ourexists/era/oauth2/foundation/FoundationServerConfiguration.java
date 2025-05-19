@@ -18,7 +18,8 @@
 
 package com.ourexists.era.oauth2.foundation;
 
-import com.ourexists.era.oauth2.core.PathRule;
+import com.ourexists.era.framework.core.PathRule;
+import com.ourexists.era.oauth2.core.interceptor.RegionHandlerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.AntPathMatcher;

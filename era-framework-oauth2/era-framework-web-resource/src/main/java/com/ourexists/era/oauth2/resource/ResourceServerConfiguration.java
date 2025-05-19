@@ -18,13 +18,13 @@
 
 package com.ourexists.era.oauth2.resource;
 
-import com.ourexists.era.oauth2.core.PathRule;
+import com.ourexists.era.framework.core.PathRule;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAuthenticationEntryPoint;
 import com.ourexists.era.oauth2.core.handler.EraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EraAuthenticationEntryPoint;
 import com.ourexists.era.oauth2.resource.permission.PermissionMvcConfigurer;
-import com.ourexists.era.oauth2.resource.permission.PermissionWhiteListProperties;
+import com.ourexists.era.oauth2.core.interceptor.PermissionWhiteListProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

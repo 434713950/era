@@ -9,9 +9,6 @@
 
     <artifactId>era-framework-web-resource</artifactId>
 
-    <name>era-framework-oauth2-resource</name>
-
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

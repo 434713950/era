@@ -16,21 +16,26 @@
  *
  */
 
-package com.ourexists.era.oauth2.resource.permission;
+package com.ourexists.era.oauth2.core.interceptor;
 
 import com.ourexists.era.framework.core.EraSystemHeader;
+import com.ourexists.era.framework.core.PathRule;
 import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.constants.ResultMsgEnum;
 import com.ourexists.era.framework.core.user.TenantInfo;
 import com.ourexists.era.framework.core.user.UserContext;
 import com.ourexists.era.framework.core.utils.EraStandardUtils;
-import com.ourexists.era.oauth2.core.PathRule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * @author pengcheng
@@ -41,47 +46,58 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Slf4j
 public class RegionHandlerInterceptor implements HandlerInterceptor {
 
-    private final PermissionWhiteListProperties authWhiteListProperties;
-
     private final AntPathMatcher antPathMatcher;
 
-    public RegionHandlerInterceptor(PermissionWhiteListProperties authWhiteListProperties) {
-        this.authWhiteListProperties = authWhiteListProperties;
-        this.antPathMatcher = new AntPathMatcher();
+    private final PermissionWhiteListProperties permissionWhiteListProperties;
+
+    public RegionHandlerInterceptor(AntPathMatcher antPathMatcher,
+                                    PermissionWhiteListProperties permissionWhiteListProperties) {
+        this.antPathMatcher = antPathMatcher;
+        this.permissionWhiteListProperties = permissionWhiteListProperties;
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        Enumeration<String> headerNames = request.getHeaderNames();
+        if (headerNames != null) {
+            Map<String, String> headers = new HashMap<>();
+            while (headerNames.hasMoreElements()) {
+                String name = headerNames.nextElement();
+                String values = request.getHeader(name);
+                headers.put(name, values);
+            }
+            UserContext.setRequestHeader(headers);
+        }
+        //先默认获取请求头的租户信息用于白名单路径
+        UserContext.setPlatform(EraSystemHeader.extractPlatform(request));
+        UserContext.setTenant(EraSystemHeader.extractTenant(request));
+        UserContext.setUser(EraSystemHeader.extractUserInfo(request));
+
         boolean ignore = false;
-        for (String whiteList : authWhiteListProperties.getAuthCheck()) {
+        for (String whiteList : permissionWhiteListProperties.getAuthCheck()) {
             if (antPathMatcher.match(whiteList, request.getServletPath())) {
                 //白名单设置默认的
                 ignore = true;
             }
         }
-        //先默认获取请求头的租户信息用于白名单路径
-        String platform = EraSystemHeader.extractPlatform(request);
-        if (!StringUtils.hasText(platform) && !ignore) {
+        if (!StringUtils.hasText(UserContext.getPlatForm()) && !ignore) {
             EraStandardUtils.exceptionView(response, ResultMsgEnum.UNRECOGNIZED_HEADER, "unrecognized platform");
             return false;
         }
-        UserContext.setPlatform(platform);
-        TenantInfo tenantInfo = EraSystemHeader.extractTenant(request);
-        if (tenantInfo == null) {
+        if (UserContext.getTenant() == null) {
             if (!ignore) {
                 EraStandardUtils.exceptionView(response, ResultMsgEnum.UNRECOGNIZED_HEADER, "unrecognized tenant");
                 return false;
             } else {
-                tenantInfo = new TenantInfo();
+                UserContext.defaultTenant();
             }
         }
         if (antPathMatcher.match(PathRule.OVERALL_PREFIX + "/**", request.getServletPath())) {
-            tenantInfo.setTenantId(CommonConstant.SYSTEM_TENANT);
+            UserContext.getTenant().setTenantId(CommonConstant.SYSTEM_TENANT);
         }
         if (antPathMatcher.match(PathRule.LIMIT_PREFIX + "/**", request.getServletPath())) {
-            tenantInfo.setSkipMain(false);
+            UserContext.getTenant().setSkipMain(false);
         }
-        UserContext.setTenant(tenantInfo);
         return true;
     }
 

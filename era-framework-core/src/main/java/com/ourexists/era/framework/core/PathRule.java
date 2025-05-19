@@ -1,7 +1,7 @@
 /*
  * Copyright © 2022 www.wondersgroup.com. All rights reserved.
  */
-package com.ourexists.era.oauth2.core;
+package com.ourexists.era.framework.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,13 +39,13 @@ public class PathRule {
      */
     public static final String LIMIT_PREFIX = "/limit";
 
-    public static final String[] OPEN_API_PATHS = {"/swagger-ui.html", "/v2/**", "/swagger-resources/**", "/swagger-ui.html/**", "/swagger-ui/**"};
+    public static final String[] OPEN_API_PATHS = {"/swagger-ui.html", "/v2/**", "/swagger-resources/**", "/swagger-ui.html/**", "/swagger-ui/**", "/v3/**"};
 
-    public static final String[] HEALTH_PATHS = {"/health", "/info", "/refresh"};
+    public static final String[] HEALTH_PATHS = {"/health", "/info", "/refresh", "/actuator/**"};
 
     public static final String[] STATIC_PATHS = {"/static/**", "/error", "/webjars/**"};
 
-    public static final String[] OAUTH_PATHS = {"/oauth/**"};
+    public static final String[] OAUTH_PATHS = {"/oauth/**", "/.well-known/**", "/connect/register","/oauth2/**"};
 
     /**
      * 请求头校验白名单路径

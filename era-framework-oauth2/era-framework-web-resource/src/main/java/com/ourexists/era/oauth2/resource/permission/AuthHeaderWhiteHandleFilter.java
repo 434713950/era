@@ -19,7 +19,7 @@
 //package com.ourexists.era.oauth2.resource.permission;
 //
 //import com.ourexists.era.framework.core.EraSystemHeader;
-//import com.ourexists.era.oauth2.core.PathRule;
+//import com.ourexists.era.framework.core.PathRule;
 //import jakarta.servlet.FilterChain;
 //import jakarta.servlet.ServletException;
 //import jakarta.servlet.http.HttpFilter;

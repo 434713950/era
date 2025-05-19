@@ -34,11 +34,16 @@ import java.util.List;
 public class TenantDataAuth {
 
     /**
+     * 租户编号的层级分割规则长度
+     */
+    public static final Integer TENANT_LEVEL_LEN = 3;
+
+    /**
      * 下级操作权
      */
     private final List<OperatorModel> lowerControlPower = Collections.synchronizedList(new ArrayList<>());
 
-    public void addLowControlPower(OperatorModel operatorModel){
+    public void addLowControlPower(OperatorModel operatorModel) {
         this.lowerControlPower.add(operatorModel);
     }
 

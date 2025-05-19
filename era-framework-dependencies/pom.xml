@@ -65,106 +65,76 @@
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-core</artifactId>
                 <version>${era-framework-core.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-orm-mybatisplus</artifactId>
                 <version>${era-framework-orm-mybatisplus.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-scheduler-xxljob</artifactId>
                 <version>${era-framework-scheduler-xxljob.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-oss</artifactId>
                 <version>${era-framework-aliyun-oss.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-oauth2-core</artifactId>
                 <version>${era-framework-oauth2.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-web-authorization</artifactId>
                 <version>${era-framework-oauth2.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-web-foundation</artifactId>
                 <version>${era-framework-oauth2.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-web-resource</artifactId>
                 <version>${era-framework-oauth2.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-distribution</artifactId>
                 <version>${era-framework-distribution.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-sharing-jdbc</artifactId>
                 <version>${era-framework-sharing-jdbc.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-orm-mongodb</artifactId>
                 <version>${era-framework-orm-mongodb.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-rpc-feign</artifactId>
                 <version>${era-framework-rpc-feign.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${openapi.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redission.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>io.seata</groupId>
                 <artifactId>seata-spring-boot-starter</artifactId>
                 <version>${seata.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

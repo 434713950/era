@@ -24,7 +24,7 @@ import com.ourexists.era.framework.core.user.TenantInfo;
 import com.ourexists.era.framework.core.user.UserContext;
 import com.ourexists.era.framework.core.user.UserInfo;
 import com.ourexists.era.framework.core.utils.EraStandardUtils;
-import com.ourexists.era.oauth2.core.PathRule;
+import com.ourexists.era.framework.core.PathRule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

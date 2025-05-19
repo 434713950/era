@@ -24,6 +24,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.ourexists.era.framework.core.PathRule;
 import com.ourexists.era.oauth2.core.EraPasswordEncoder;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAuthenticationEntryPoint;
@@ -36,7 +37,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -51,8 +51,13 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.text.ParseException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.time.Instant;
+import java.util.Base64;
 
 /**
  * 认证服务配置
@@ -65,47 +70,47 @@ import java.time.Instant;
 public class AuthorizationServerConfigurer {
 
     @Value("${era.jwt.privateKey:" +
-            "-----BEGIN PRIVATE KEY-----" +
-            "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDCJYCuldvXyMDl" +
-            "nyk5Pd0ST9t3AnUeBrMB1Pu35bVbHDwmbz95M4c4rOiTVvnwJDalgphyVFw4lj5V" +
-            "3GwBYwd+QUv68/VQE0L1C+dGIDHSXGWuO+wqvWVDedkDyB391v7R841BYfYjauEb" +
-            "v4niaju79T/MDSuyOdbffqiN2NQ9vQ3oEYcR2zzPyhAIoooO7J3ChELuze2u5e6L" +
-            "87NJDD4eD9E6miaqfHr+iRxcO5lxFu/NoCBLF6ufV5eWt0GtLtj6LFULCuXyHVn7" +
-            "lpg0oz1mnZvAwuZwlplgRGUDYU7rvUMNQ9jpPb4rusZ4lV7auu/r6w5vByTG+OC1" +
-            "FljUAxxjAgMBAAECggEAED1m2DO84f3u9MYtgpZEKcX4S6ou9cYFrz+LlsRmOSrR" +
-            "dT2VB6RhyUHdaoW5/nZpA8s6yUV5OVqH+FKpzivkcpEvs9w4Rux1i13liJ4kzL3h" +
-            "24MzrBePoudMWd6hc5xKUHGY/UEef7PvBI0vEXtlZ8GKBp2LbCseaC+GFedvSYKj" +
-            "nJF5VH1OkVQJ4Hi91Ty37A0fctkAS0UJwrUHinNaOZH0/uEb8VkXe5sRUWjV/61g" +
-            "B/us3D1esh0rgX8r2pf0BiYdpZVvmRvpbG7RFh6aV00Z9yurhilht3n8SYoyiR6D" +
-            "a4DfLf4c7l2n21inKxDrcs3yOYSkqNbBty8sM+pqMQKBgQDhW9M/rF/9Zz0y9ZMF" +
-            "oz1Av4wRWCZBOur7vnYoXjkzBCHPpELagBiWlHEGHGqCAgNPDh3ODwkdlNyGs/Yi" +
-            "83O7DOzvAi/7kWxj3VMtLzg5lRUSVAG08X7I9s8yKJGspjyfJWaRmp/sSiK472Ej" +
-            "Z4qCs2wv7lDQWWQenxIMiqQ+FQKBgQDci0I0z+x9BT3LNj4DuJ43td5YoTASncJ9" +
-            "IomsMNSBlBV8jS7pbI9gUbEe6bKsAP3JZ9LKKOZZw1Gdmm8OBLzE6kCfTPvsOF3o" +
-            "L5+3YDbI48WPG/vQXzPWuQur6znqZ9LN1woTtjnvjxjuA7duLWr2VvicN1r6yqGe" +
-            "+L3/vnYGlwKBgQCDUKprs9nLItk6VHZzFoeerv7DLIY+BELgpj7bjuvtmj7Ja4G5" +
-            "KGMrexvQ38YAM4QSELu1UnWRUyidJUgLXajWGdYF/1ROVpK+Lj1FWvp8My6wG1tT" +
-            "QFUMbSSWqaUY4VT5tyVpOpxtZ1WMRZBovPCs8DfeRhO5FB2O6knuHOtPcQKBgGVJ" +
-            "B2TdwMxB5fk3tg9bcD5BphWqITvLfBCgFf4ghtfjvGJxLIRDOS2RFvkNduMLqYIf" +
-            "zmzNj8zVqNvqmuojPtZohrkiT+hSkr4ZcQ50f3SPNqHcxi8SKeqJHVUdOIHwoJ2s" +
-            "DpKy87STUW2uA0X0UdVEZ/TGb2ASQ1uQ/SFAxU+NAoGAB7RrvSrxduXAIL1yWUso" +
-            "P9JvuNQSFSqrwvwxD0Z27okiQRtH5Witgc03HRhv2Hw42eCElqpiUJaEwSwogORg" +
-            "eoIb53tLStwhCrUbTKCHtvQZblVkrhHMxCeRdR02r2Lkh//64wsKO+tHT7Dv6RGr" +
-            "BU2YdA/9kIE11pw8bp3gOro=" +
-            "-----END PRIVATE KEY-----")
+            "-----BEGIN PRIVATE KEY-----\n" +
+            "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDc7MhMTDRJMFgj\n" +
+            "Ldsxg5iqJbxg5b/Dq7K527mFOtMvSuYQ9rEoVKOWaGD33kvKJw8vL8fO9L9sziY4\n" +
+            "+0/mOX8AI63uL69oC4hAZQ07RRMcn7/ZWkbEmwzGC6qxA0GymXy1mWTHQmR5WWWo\n" +
+            "SMAUqfEuyvunOpTMDGOPOc7mbeTuK637gwqTmfqn+/gEnPLNH4fHqjPGfv8mQNxd\n" +
+            "izqxGWpNCCm9EcmwcdxezHXfkiHxCG6gZnoX6bDfH7361atvhye5iuKwzDR6jEOM\n" +
+            "7PTiUvcyHkVQtriIUmtlTBXiUQ+X72TYW2GGrpNQ1+gyyc1woIR4MsK5Alk3LVJT\n" +
+            "BclhXIB5AgMBAAECggEARkWS2KIMp5MXFemKJU/EiaqDJxctTiIZMYEwm65AanSa\n" +
+            "hZ7Sbw+tETSWU4GD/gM6kznRhoTXNtbD1bAqlAKJ4RN4SaElXCT+6+y4rrekAqDV\n" +
+            "t189z1+6Smx/mNp+VT75KhJmufLmXqsO6N5rKqd7rfSm42SA2/681FwA8c7W2OK4\n" +
+            "oP31LsgY1OsGvFqiOrgG0qNqWy8rJzVLcpd4czA0FrKuKyhM38AVerSoIp03Gc3G\n" +
+            "x/VwPkrJwzKzkmjibU/t3uURUOtpSGhG/VoJ+bKMDYEpsPaKRF63J+i5kU+PXk/t\n" +
+            "UYUfmnuWWDjstu0mQEO2Hdj11XMlGpn6OZhHCIDU+QKBgQDwxJnicIQ537O3zOHM\n" +
+            "WZL0knANxxJ0qUDGQtEAjl1UkjHhz5a+auPpu1ZP5JgpXnhDUNXWnrhbwU+hIEm6\n" +
+            "hTRb9KXqJbRxHmI9vt3nxt//JVQbgkzytn8ymiutzEQ/+1tMNH0gwhP6gqmpe5mC\n" +
+            "s4fduo9v3GLTAQGg4SzBSYJbOwKBgQDq5s9XSQQfejRPv3aX1UyMyhB0wfpggkA7\n" +
+            "VyLrCnwjAZzSbfQtx4UXOY1yTPHYQx80pbKtf2TcZiO70ucNZ1wEM0jujBD7VkAV\n" +
+            "/sZ7RE/yq6LArvKWW0G6WG2I5jc+gaTHGqolKorRizYqrPLGzcYShSirbIn6N3WJ\n" +
+            "wmCZ2oAP2wKBgGiT3Itgd+5zXiptkX4jQhN9L7KsTzXg9kOnbgSh0aQURBpjAoT/\n" +
+            "BLPXLSxSjE0bvXzvtZIdKtKf6qh/z8Z2aUGvyAkmC3Q+0EkliFlOJqk6W4f/VtDt\n" +
+            "t94Q3PwGh3aLBSLagaci5W6gJnV5PDprJI6IpBjgTwR7oWtxovDprvdVAoGAevgB\n" +
+            "KuxqYCAVKnpMlwduX3WYT8cMT2FgRrBC81A11A2QDwjIfv6nyZSzW1a0dEYPG/xy\n" +
+            "ISlDn61In5a0peup2/kNAPQKH8jzG5CYTwdf4uW++aecDuIO8oJANR5vZSVxIVnw\n" +
+            "ICy5JyD9ZjHLlg861Y8nzzWutXI68bbz4xbjW2kCgYEAjDsUhCiDHjlMAwKs6sTD\n" +
+            "S1ZUYTvC91tG/MBjj93skn1peBvakHZQKlDfksbxyX9uYp5xRz7N/iGQ4FiyHleT\n" +
+            "cI71eVABbSGf5qPE00DRbICjwlUIZyDJrKgIAXk1ErF7hfaDoJvnJEnTHpyB9q9P\n" +
+            "frBu+ZvvK+e4NyDOVwk+trY=\n" +
+            "-----END PRIVATE KEY-----\n" +
+            "}")
     private String privateKey;
 
 
     @Value("${era.jwt.publicKey:" +
-            "-----BEGIN PUBLIC KEY-----" +
-            "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwiWArpXb18jA5Z8pOT3d" +
-            "Ek/bdwJ1HgazAdT7t+W1Wxw8Jm8/eTOHOKzok1b58CQ2pYKYclRcOJY+VdxsAWMH" +
-            "fkFL+vP1UBNC9QvnRiAx0lxlrjvsKr1lQ3nZA8gd/db+0fONQWH2I2rhG7+J4mo7" +
-            "u/U/zA0rsjnW336ojdjUPb0N6BGHEds8z8oQCKKKDuydwoRC7s3truXui/OzSQw+" +
-            "Hg/ROpomqnx6/okcXDuZcRbvzaAgSxern1eXlrdBrS7Y+ixVCwrl8h1Z+5aYNKM9" +
-            "Zp2bwMLmcJaZYERlA2FO671DDUPY6T2+K7rGeJVe2rrv6+sObwckxvjgtRZY1AMc" +
-            "YwIDAQAB" +
-            "-----END PUBLIC KEY-----}")
+            "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3OzITEw0STBYIy3bMYOY" +
+            "qiW8YOW/w6uyudu5hTrTL0rmEPaxKFSjlmhg995LyicPLy/HzvS/bM4mOPtP5jl/" +
+            "ACOt7i+vaAuIQGUNO0UTHJ+/2VpGxJsMxguqsQNBspl8tZlkx0JkeVllqEjAFKnx" +
+            "Lsr7pzqUzAxjjznO5m3k7iut+4MKk5n6p/v4BJzyzR+Hx6ozxn7/JkDcXYs6sRlq" +
+            "TQgpvRHJsHHcXsx135Ih8QhuoGZ6F+mw3x+9+tWrb4cnuYrisMw0eoxDjOz04lL3" +
+            "Mh5FULa4iFJrZUwV4lEPl+9k2Fthhq6TUNfoMsnNcKCEeDLCuQJZNy1SUwXJYVyA" +
+            "eQIDAQAB" +
+            "}")
     private String publicKey;
 
     @Value("${era.token.expire:2592000}")
@@ -117,7 +122,7 @@ public class AuthorizationServerConfigurer {
     }
 
     @Bean
-    public OAuth2AuthorizationService authorizationService(RedisTemplate<String, Object> redisTemplate) {
+    public OAuth2AuthorizationService authorizationService(RedisTemplate redisTemplate) {
         return new RedisOAuth2AuthorizationService(redisTemplate);
     }
 
@@ -131,14 +136,6 @@ public class AuthorizationServerConfigurer {
                 context.getClaims().expiresAt(now.plusSeconds(tokenValiditySeconds));
             }
         };
-    }
-
-    @Bean
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults()); // 默认登录页
-        return http.build();
     }
 
     @Bean
@@ -159,11 +156,23 @@ public class AuthorizationServerConfigurer {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() throws JOSEException, ParseException {
-        RSAKey rsaKey = RSAKey.parse(this.publicKey);
-        return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
+    public JwtDecoder jwtDecoder() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] encoded = Base64.getDecoder().decode(this.publicKey);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
+        return NimbusJwtDecoder.withPublicKey( (RSAPublicKey) keyFactory.generatePublic(keySpec)).build();
     }
 
+//    @Bean
+//    public SecurityFilterChain eraAuthorizationSecurityFilterChain(HttpSecurity http,
+//                                                          EraAuthenticationEntryPoint eraAuthenticationEntryPoint) throws Exception {
+//        http
+//                .securityMatcher(PathRule.OAUTH_PATHS)
+//                .exceptionHandling(exception -> exception
+//                        .authenticationEntryPoint(eraAuthenticationEntryPoint)
+//                );
+//        return http.build();
+//    }
 
     @Bean
     @ConditionalOnMissingBean(EraAuthenticationEntryPoint.class)

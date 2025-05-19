@@ -20,6 +20,10 @@ package com.ourexists.era.framework.core.user;
 
 import com.ourexists.era.framework.core.constants.CommonConstant;
 
+import java.util.Map;
+
+import static com.ourexists.era.framework.core.user.TenantDataAuth.TENANT_LEVEL_LEN;
+
 /**
  * @author pengcheng
  * @date 2020/4/23 23:15
@@ -32,6 +36,17 @@ public class UserContext {
     private static final ThreadLocal<TenantInfo> TENANT = new ThreadLocal<>();
 
     private static final ThreadLocal<String> PLATFORM_HOLDER = new ThreadLocal<>();
+
+    private static final ThreadLocal<Map<String, String>> REQUEST_HEADER_HOLDER = new ThreadLocal<>();
+
+    public static void setRequestHeader(Map<String, String> requestHeaders) {
+        REQUEST_HEADER_HOLDER.set(requestHeaders);
+    }
+
+    public static Map<String, String> getRequestHeader() {
+        return REQUEST_HEADER_HOLDER.get();
+    }
+
 
     public static void setUser(UserInfo userInfo) {
         USER_HOLDER.set(userInfo);
@@ -115,10 +130,10 @@ public class UserContext {
         TenantInfo tenantInfo = UserContext.getTenant();
         if (tenantInfo != null) {
             String tenantId = tenantInfo.getTenantId();
-            if (tenantId.length() <= 3) {
+            if (tenantId.length() <= TENANT_LEVEL_LEN) {
                 return;
             }
-            tenantId = tenantId.substring(0, level * 3);
+            tenantId = tenantId.substring(0, level * TENANT_LEVEL_LEN);
             tenantInfo.setTenantId(tenantId);
             subDataAuthSetUp();
         }
