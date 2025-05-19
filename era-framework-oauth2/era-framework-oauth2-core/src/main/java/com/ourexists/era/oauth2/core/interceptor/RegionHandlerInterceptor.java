@@ -18,11 +18,9 @@
 
 package com.ourexists.era.oauth2.core.interceptor;
 
-import com.ourexists.era.framework.core.EraSystemHeader;
 import com.ourexists.era.framework.core.PathRule;
 import com.ourexists.era.framework.core.constants.CommonConstant;
 import com.ourexists.era.framework.core.constants.ResultMsgEnum;
-import com.ourexists.era.framework.core.user.TenantInfo;
 import com.ourexists.era.framework.core.user.UserContext;
 import com.ourexists.era.framework.core.utils.EraStandardUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,10 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -58,21 +52,6 @@ public class RegionHandlerInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Enumeration<String> headerNames = request.getHeaderNames();
-        if (headerNames != null) {
-            Map<String, String> headers = new HashMap<>();
-            while (headerNames.hasMoreElements()) {
-                String name = headerNames.nextElement();
-                String values = request.getHeader(name);
-                headers.put(name, values);
-            }
-            UserContext.setRequestHeader(headers);
-        }
-        //先默认获取请求头的租户信息用于白名单路径
-        UserContext.setPlatform(EraSystemHeader.extractPlatform(request));
-        UserContext.setTenant(EraSystemHeader.extractTenant(request));
-        UserContext.setUser(EraSystemHeader.extractUserInfo(request));
-
         boolean ignore = false;
         for (String whiteList : permissionWhiteListProperties.getAuthCheck()) {
             if (antPathMatcher.match(whiteList, request.getServletPath())) {
@@ -101,8 +80,5 @@ public class RegionHandlerInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        UserContext.remove();
-    }
+
 }

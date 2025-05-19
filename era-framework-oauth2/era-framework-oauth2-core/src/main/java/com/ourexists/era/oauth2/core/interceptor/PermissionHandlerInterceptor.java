@@ -16,7 +16,7 @@
  *
  */
 
-package com.ourexists.era.oauth2.resource.permission;
+package com.ourexists.era.oauth2.core.interceptor;
 
 import com.ourexists.era.framework.core.EraSystemHeader;
 import com.ourexists.era.framework.core.constants.ResultMsgEnum;
@@ -27,7 +27,6 @@ import com.ourexists.era.framework.core.utils.EraStandardUtils;
 import com.ourexists.era.oauth2.core.EraUser;
 import com.ourexists.era.oauth2.core.OAuth2Role;
 import com.ourexists.era.oauth2.core.authority.ApiPermission;
-import com.ourexists.era.oauth2.core.interceptor.PermissionWhiteListProperties;
 import com.ourexists.era.oauth2.core.store.PermissionStore;
 import com.ourexists.era.oauth2.core.token.EraAuthenticationToken;
 import jakarta.servlet.http.HttpServletRequest;

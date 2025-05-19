@@ -77,6 +77,7 @@ public class UserContext {
         USER_HOLDER.remove();
         TENANT.remove();
         PLATFORM_HOLDER.remove();
+        REQUEST_HEADER_HOLDER.remove();
     }
 
     public static void defaultHandle() {

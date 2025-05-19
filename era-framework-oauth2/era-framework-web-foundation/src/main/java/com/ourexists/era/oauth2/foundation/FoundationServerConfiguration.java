@@ -19,6 +19,8 @@
 package com.ourexists.era.oauth2.foundation;
 
 import com.ourexists.era.framework.core.PathRule;
+import com.ourexists.era.oauth2.core.interceptor.HeaderHandlerInterceptor;
+import com.ourexists.era.oauth2.core.interceptor.PermissionWhiteListProperties;
 import com.ourexists.era.oauth2.core.interceptor.RegionHandlerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -32,28 +34,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 1.0.0
  */
 @Configuration
-@Import(FoundationAuthWhiteListProperties.class)
+@Import({PermissionWhiteListProperties.class})
 public class FoundationServerConfiguration implements WebMvcConfigurer {
 
-    private final FoundationAuthWhiteListProperties foundationAuthWhiteListProperties;
+    private final PermissionWhiteListProperties permissionWhiteListProperties;
 
     private final AntPathMatcher antPathMatcher;
 
-    public FoundationServerConfiguration(FoundationAuthWhiteListProperties foundationAuthWhiteListProperties,
-                                         AntPathMatcher antPathMatcher) {
-        this.foundationAuthWhiteListProperties = foundationAuthWhiteListProperties;
-        this.antPathMatcher = antPathMatcher;
+    public FoundationServerConfiguration(PermissionWhiteListProperties permissionWhiteListProperties) {
+        this.permissionWhiteListProperties = permissionWhiteListProperties;
+        this.antPathMatcher = new AntPathMatcher();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new RegionHandlerInterceptor())
-                .addPathPatterns("/**")
-                .order(10);
-        registry.addInterceptor(new FoundationAuthHandlerInterceptor(foundationAuthWhiteListProperties, antPathMatcher))
-                .addPathPatterns("/**")
+        registry.addInterceptor(new HeaderHandlerInterceptor()).addPathPatterns("/**").order(1);
+        registry.addInterceptor(new RegionHandlerInterceptor(antPathMatcher, permissionWhiteListProperties)).addPathPatterns("/**")
                 //swagger相关路径不走拦截器
-                .excludePathPatterns(PathRule.SYSTEM_WHITE_PATH)
-                .order(11);
+                .excludePathPatterns(PathRule.SYSTEM_WHITE_PATH).order(2);
     }
 }

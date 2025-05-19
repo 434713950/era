@@ -26,9 +26,8 @@ import com.ourexists.era.framework.core.utils.CollectionUtil;
 import feign.RequestInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -41,32 +40,34 @@ import java.util.Map;
  * @since 2.0.0
  */
 @Slf4j
-public class SimpleAuthFeignConfiguration {
+@Configuration
+public class EraFeignConfiguration {
+
+    @Bean
+    public EraFeignHeaderTransfer eraFeignHeaderTransfer() {
+        return new DefaultEraFeignHeaderTransfer();
+    }
 
     @Bean
     public RequestInterceptor requestInterceptor(EraFeignHeaderTransfer transfer) {
         return requestTemplate -> {
             if (log.isDebugEnabled()) {
-                log.debug("applet server request start");
+                log.debug("feign server request start");
             }
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
-                    .getRequestAttributes();
-            if (attributes != null) {
-                Map<String, String> headerNames = transfer.requestHeaders();
-                if (headerNames != null) {
-                    for (Map.Entry<String, String> headers : headerNames.entrySet()) {
-                        String name = headers.getKey();
-                        String value = headers.getValue();
-                        if (name.equals("content-length")
-                                || name.equals(EraSystemHeader.AUTH_CONTRO_ROLE_HEADER)
-                                || name.equals(EraSystemHeader.AUTH_CONTRO_USER_HEADER)
-                                || (name.equals(EraSystemHeader.TENANT_ROUTE) && StringUtils.hasText(transfer.tenantId()))
-                                || (name.equals(EraSystemHeader.PLATFORM_HEADER) && StringUtils.hasText(transfer.platform()))
-                        ) {
-                            continue;
-                        }
-                        requestTemplate.header(name, value);
+            Map<String, String> headerNames = transfer.requestHeaders();
+            if (headerNames != null) {
+                for (Map.Entry<String, String> headers : headerNames.entrySet()) {
+                    String name = headers.getKey();
+                    String value = headers.getValue();
+                    if (name.equals("content-length")
+                            || name.equals(EraSystemHeader.AUTH_CONTRO_ROLE_HEADER)
+                            || name.equals(EraSystemHeader.AUTH_CONTRO_USER_HEADER)
+                            || name.equals(EraSystemHeader.TENANT_ROUTE)
+                            || name.equals(EraSystemHeader.PLATFORM_HEADER)
+                    ) {
+                        continue;
                     }
+                    requestTemplate.header(name, value);
                 }
             }
             try {
@@ -79,7 +80,6 @@ public class SimpleAuthFeignConfiguration {
                 requestTemplate.header(EraSystemHeader.AUTH_CONTRO_USER_HEADER, URLEncoder.encode(JSON.toJSONString(transfer.userInfo()), CommonConstant.CONTENT_ENCODE));
                 requestTemplate.header(EraSystemHeader.AUTH_CONTRO_ROLE_HEADER, transfer.tenantRole());
                 requestTemplate.header(EraSystemHeader.AUTH_CONTRO_SKIPMAIN, transfer.skipMain().toString());
-                log.debug("【feign请求】请求头[{}]", JSON.toJSONString(requestTemplate.headers()));
                 List<OperatorModel> operatorModels = transfer.tenantDataAuth();
                 if (CollectionUtil.isNotBlank(operatorModels)) {
                     StringBuilder t = new StringBuilder();
@@ -88,6 +88,7 @@ public class SimpleAuthFeignConfiguration {
                     }
                     requestTemplate.header(EraSystemHeader.AUTH_CONTRO_DATA_AUTH_HEADER, t.substring(0, t.length() - 1));
                 }
+                log.debug("【feign请求】请求头[{}]", JSON.toJSONString(requestTemplate.headers()));
             } catch (UnsupportedEncodingException e) {
                 //nothing
             }
