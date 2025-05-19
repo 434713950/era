@@ -1,42 +1,42 @@
 {
   "properties": [
     {
-      "name": "era.aliyun.file.type",
+      "name": "era.oss.type",
       "type": "java.lang.String",
       "description": "上传类型选择,目前支持ALI,MINIO"
     },
     {
-      "name": "era.aliyun.file.upload_endpoint",
+      "name": "era.oss.upload_endpoint",
       "type": "java.lang.String",
       "description": "oss上传endpoint."
     },
     {
-      "name": "era.aliyun.file.access_endpoint",
+      "name": "era.oss.access_endpoint",
       "type": "java.lang.String",
       "description": "oss访问endpoint."
     },
     {
-      "name": "era.aliyun.file.bucket_name",
+      "name": "era.oss.bucket_name",
       "type": "java.lang.String",
       "description": "oss上传的bucketName."
     },
     {
-      "name": "era.aliyun.file.accesskey_id",
+      "name": "era.oss.accesskey_id",
       "type": "java.lang.String",
       "description": "oss密钥ID"
     },
     {
-      "name": "era.aliyun.file.accesskey_secret",
+      "name": "era.oss.accesskey_secret",
       "type": "java.lang.String",
       "description": "oss密钥密码."
     },
     {
-      "name": "era.aliyun.file.part_size",
+      "name": "era.oss.part_size",
       "type": "java.lang.Long",
       "description": "分片大小"
     },
     {
-      "name": "era.aliyun.file.access_expire",
+      "name": "era.oss.access_expire",
       "type": "java.lang.Long",
       "description": "令牌过期时间"
     }

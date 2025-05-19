@@ -25,7 +25,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2021/9/1 15:47
  * @since 1.0.0
  */
-@ConfigurationProperties(prefix = "era.aliyun.file")
+@ConfigurationProperties(prefix = "era.oss")
 public class OssProperties {
 
     private String type;
