@@ -80,7 +80,6 @@ public class ResourceServerConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new HeaderHandlerInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns(PathRule.HERDER_WHITE_PATHS)
                 .order(1);
         registry.addInterceptor(new RegionHandlerInterceptor(antPathMatcher, whiteListProperties))
                 .addPathPatterns("/**")
