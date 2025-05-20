@@ -129,43 +129,4 @@ public class ResourceServerConfiguration implements WebMvcConfigurer {
     public EraAccessDeniedHandler eraAccessDeniedHandler() {
         return new EmptyEraAccessDeniedHandler();
     }
-
-
-//    @Override
-//    public void configure(HttpSecurity http) throws Exception {
-//
-//        http
-//                .cors()
-//                .disable()
-//                .csrf()
-//                .disable()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(point)
-//                .accessDeniedHandler(accessDeniedHandler)
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(whites.toArray(new String[whites.size()]))
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated();
-//        // 禁用缓存
-//        http.headers().cacheControl();
-//        http.headers().frameOptions().sameOrigin();
-//    }
-
-//    @Override
-//    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-//        if (!StringUtils.isEmpty(resourceId)) {
-//            resources.resourceId(resourceId);
-//        }
-//        super.configure(resources);
-//    }
-//
-//    @Bean
-//    public UserManager userManager(TokenStore tokenStore) {
-//        return new UserManager(tokenStore);
-//    }
-
 }
