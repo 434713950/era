@@ -36,6 +36,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.AntPathMatcher;
@@ -98,8 +100,8 @@ public class ResourceServerConfiguration implements WebMvcConfigurer {
         whites.addAll(permissionWhiteListProperties.getAuthCheck());
         whites.addAll(PathRule.SYSTEM_WHITE_PATH);
         http
-//                .cors(Customizer.withDefaults())
-//                .csrf(Customizer.withDefaults())
+                .cors(CorsConfigurer::disable)
+                .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(whites.toArray(new String[whites.size()])).permitAll()
                         .anyRequest()

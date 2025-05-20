@@ -24,7 +24,6 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.ourexists.era.framework.core.PathRule;
 import com.ourexists.era.oauth2.core.EraPasswordEncoder;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAuthenticationEntryPoint;
@@ -37,7 +36,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -49,7 +47,6 @@ import org.springframework.security.oauth2.server.authorization.client.JdbcRegis
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
