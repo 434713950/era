@@ -110,7 +110,7 @@ public class AESEncrypt {
      * @return
      * @throws Exception
      */
-    public static String AESDncode(String key,String data) throws Exception {
+    public static String AESDecode(String key,String data) throws Exception {
         return desEncrypt(data, key, IV);
     }
 }
