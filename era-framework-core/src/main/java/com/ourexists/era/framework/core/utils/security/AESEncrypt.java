@@ -28,15 +28,8 @@ public class AESEncrypt {
 
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final String KEY_AES = "AES";
-    private static final String ECB_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
     private static final String CBC_CIPHER_NOPADDING = "AES/CBC/PKCS5Padding";
-
-    final private static String ENCODEKEY="eud239dhe@0de721";
-    final private static String IV="MLSNKNVZW9HDPRDC";
-
-    public static String getENCODEKEY() {
-        return ENCODEKEY;
-    }
+    final private static String IV = "MLSNKNVZW9HDPRDC";
 
     /**
      * 加密方法
@@ -49,15 +42,10 @@ public class AESEncrypt {
     public static String encrypt(String data, String key, String iv) throws Exception {
         Cipher cipher = Cipher.getInstance(CBC_CIPHER_NOPADDING);
         byte[] dataBytes = data.getBytes(DEFAULT_CHARSET);
-
         SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), KEY_AES);
-
         IvParameterSpec ivspec = new IvParameterSpec(iv.getBytes());
-
         cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
         byte[] encrypted = cipher.doFinal(dataBytes);
-
-
         return Base64.getEncoder().encodeToString(encrypted);
     }
 
@@ -70,17 +58,12 @@ public class AESEncrypt {
      * @throws Exception
      */
     private static String desEncrypt(String data, String key, String iv) throws Exception {
-
-        byte[] encrypted1 = Base64.getDecoder().decode(data);
-
-
+        byte[] encrypted = Base64.getDecoder().decode(data);
         Cipher cipher = Cipher.getInstance(CBC_CIPHER_NOPADDING);
         SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), KEY_AES);
-
         IvParameterSpec ivspec = new IvParameterSpec(iv.getBytes());
         cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
-
-        byte[] original = cipher.doFinal(encrypted1);
+        byte[] original = cipher.doFinal(encrypted);
         return new String(original, DEFAULT_CHARSET);
     }
 
@@ -90,18 +73,8 @@ public class AESEncrypt {
      * @return
      * @throws Exception
      */
-    public static String AESEncode(String key,String data) throws Exception {
+    public static String AESEncode(String key, String data) throws Exception {
         return encrypt(data, key, IV);
-    }
-
-    /**
-     * 获取key
-     *
-     * @return
-     * @throws Exception
-     */
-    public static String getKEY() {
-        return ENCODEKEY;
     }
 
     /**
@@ -110,7 +83,7 @@ public class AESEncrypt {
      * @return
      * @throws Exception
      */
-    public static String AESDecode(String key,String data) throws Exception {
+    public static String AESDecode(String key, String data) throws Exception {
         return desEncrypt(data, key, IV);
     }
 }
