@@ -24,6 +24,8 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.ourexists.era.framework.core.PathRule;
+import com.ourexists.era.framework.core.utils.CollectionUtil;
 import com.ourexists.era.oauth2.core.EraPasswordEncoder;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EmptyEraAuthenticationEntryPoint;
@@ -36,6 +38,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -45,8 +51,10 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -55,6 +63,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * 认证服务配置
@@ -157,19 +166,51 @@ public class AuthorizationServerConfigurer {
         byte[] encoded = Base64.getDecoder().decode(this.publicKey);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
-        return NimbusJwtDecoder.withPublicKey( (RSAPublicKey) keyFactory.generatePublic(keySpec)).build();
+        return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyFactory.generatePublic(keySpec)).build();
     }
 
-//    @Bean
-//    public SecurityFilterChain eraAuthorizationSecurityFilterChain(HttpSecurity http,
-//                                                          EraAuthenticationEntryPoint eraAuthenticationEntryPoint) throws Exception {
-//        http
-//                .securityMatcher(PathRule.OAUTH_PATHS)
-//                .exceptionHandling(exception -> exception
-//                        .authenticationEntryPoint(eraAuthenticationEntryPoint)
-//                );
-//        return http.build();
-//    }
+    @Bean
+    @Order(2)
+    public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http,
+                                                             OAuth2AuthorizationServerConfigurer configurer,
+                                                             EraAuthenticationEntryPoint eraAuthenticationEntryPoint, EraAccessDeniedHandler eraAccessDeniedHandler) throws Exception {
+        return http
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(PathRule.HERDER_WHITE_PATHS.toArray(new String[0])).permitAll() // 放行认证相关端点
+                        .anyRequest().authenticated() // 所有其他接口需要认证
+                )
+                .cors(CorsConfigurer::disable)
+                .csrf(CsrfConfigurer::disable)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(eraAuthenticationEntryPoint)
+                        .accessDeniedHandler(eraAccessDeniedHandler)
+                )
+                .with(configurer, Customizer.withDefaults())
+                .oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()))
+                .build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(OAuth2AuthorizationServerConfigurer.class)
+    public OAuth2AuthorizationServerConfigurer oAuth2AuthorizationServerConfigurer(List<EraAuthenticationConverter> eraAuthenticationConverters,
+                                                                                   List<EraAuthenticationProvider> eraAuthenticationProviders) {
+        OAuth2AuthorizationServerConfigurer configurer = OAuth2AuthorizationServerConfigurer.authorizationServer();
+        configurer.tokenEndpoint(tokenEndpoint -> {
+            if (CollectionUtil.isNotBlank(eraAuthenticationConverters)) {
+                tokenEndpoint
+                        .accessTokenRequestConverters(converters -> {
+                            converters.addAll(eraAuthenticationConverters);
+                        });
+            }
+            if (CollectionUtil.isNotBlank(eraAuthenticationProviders)) {
+                tokenEndpoint
+                        .authenticationProviders(providers -> {
+                            providers.addAll(eraAuthenticationProviders);
+                        });
+            }
+        });
+        return configurer;
+    }
 
     @Bean
     @ConditionalOnMissingBean(EraAuthenticationEntryPoint.class)
