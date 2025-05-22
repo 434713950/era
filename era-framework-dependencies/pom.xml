@@ -83,22 +83,22 @@
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-oauth2-core</artifactId>
+                <artifactId>era-framework-webserver-core</artifactId>
                 <version>${era-framework-oauth2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-web-authorization</artifactId>
+                <artifactId>era-framework-webserver-authorization</artifactId>
                 <version>${era-framework-oauth2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-web-foundation</artifactId>
+                <artifactId>era-framework-webserver-foundation</artifactId>
                 <version>${era-framework-oauth2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-web-resource</artifactId>
+                <artifactId>era-framework-webserver-resource</artifactId>
                 <version>${era-framework-oauth2.version}</version>
             </dependency>
             <dependency>

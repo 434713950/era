@@ -1,0 +1,118 @@
+/*
+ * Copyright (c) 2025. created by ourexists.https://gitee.com/ourexists
+ */
+
+package com.ourexists.era.framework.webserver.resource;
+
+import com.ourexists.era.framework.core.PathRule;
+import com.ourexists.era.oauth2.core.handler.DefaultEraAccessDeniedHandler;
+import com.ourexists.era.oauth2.core.handler.DefaultEraAuthenticationEntryPoint;
+import com.ourexists.era.oauth2.core.handler.EraAccessDeniedHandler;
+import com.ourexists.era.oauth2.core.handler.EraAuthenticationEntryPoint;
+import com.ourexists.era.oauth2.core.interceptor.HeaderHandlerInterceptor;
+import com.ourexists.era.oauth2.core.interceptor.RegionHandlerInterceptor;
+import com.ourexists.era.oauth2.core.store.PermissionStore;
+import com.ourexists.era.oauth2.core.interceptor.PermissionHandlerInterceptor;
+import com.ourexists.era.oauth2.core.interceptor.PermissionWhiteListProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author pengcheng
+ * @date 2022/4/13 23:23
+ * @since 1.0.0
+ */
+@Configuration
+@EnableWebSecurity
+@Import({PermissionWhiteListProperties.class})
+public class ResourceServerConfiguration implements WebMvcConfigurer {
+
+//    @Value("${spring.application.name}")
+//    private String resourceId;
+
+    private final PermissionWhiteListProperties whiteListProperties;
+
+    private final PermissionStore permissionStore;
+
+    private final Environment env;
+
+    private final AntPathMatcher antPathMatcher;
+
+    public ResourceServerConfiguration(PermissionWhiteListProperties whiteListProperties,
+                                       PermissionStore permissionStore,
+                                       Environment env) {
+        this.whiteListProperties = whiteListProperties;
+        this.permissionStore = permissionStore;
+        this.antPathMatcher = new AntPathMatcher();
+        this.env = env;
+    }
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new HeaderHandlerInterceptor())
+                .addPathPatterns("/**")
+                .order(1);
+        registry.addInterceptor(new RegionHandlerInterceptor(antPathMatcher, whiteListProperties))
+                .addPathPatterns("/**")
+                .excludePathPatterns(PathRule.HERDER_WHITE_PATHS)
+                .order(2);
+        registry.addInterceptor(new PermissionHandlerInterceptor(whiteListProperties, permissionStore, antPathMatcher, env))
+                .addPathPatterns("/**")
+                .excludePathPatterns(PathRule.SYSTEM_WHITE_PATH)
+                .order(3);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(PermissionWhiteListProperties permissionWhiteListProperties,
+                                                   HttpSecurity http) throws Exception {
+        List<String> whites = new ArrayList<>();
+        whites.addAll(permissionWhiteListProperties.getAuthCheck());
+        whites.addAll(PathRule.SYSTEM_WHITE_PATH);
+        http
+                .cors(CorsConfigurer::disable)
+                .csrf(CsrfConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(whites.toArray(new String[whites.size()])).permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(Customizer.withDefaults()) // 启用 JWT 解码
+                );
+        http.headers(headers -> headers
+                .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                .cacheControl(Customizer.withDefaults())
+        );
+        return http.build();
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean(EraAuthenticationEntryPoint.class)
+    public EraAuthenticationEntryPoint eraAuthenticationEntryPoint() {
+        return new DefaultEraAuthenticationEntryPoint();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(EraAccessDeniedHandler.class)
+    public EraAccessDeniedHandler eraAccessDeniedHandler() {
+        return new DefaultEraAccessDeniedHandler();
+    }
+}

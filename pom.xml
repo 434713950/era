@@ -33,7 +33,7 @@
         <module>era-framework-dependencies</module>
         <module>era-framework-rpc-feign</module>
         <module>era-framework-oss</module>
-        <module>era-framework-oauth2</module>
+        <module>era-framework-webserver</module>
         <module>era-framework-sharing-jdbc</module>
         <module>era-framework-orm-mongodb</module>
         <module>era-framework-idempotent</module>

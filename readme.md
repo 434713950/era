@@ -38,10 +38,12 @@ era  分布式集成框架
 │   
 ├─[era-framework-idempotent](era-framework-idempotent) 幂等处理 [readme.md](era-framework-idempotent/readme.md)   
 │   
-├─[era-framework-oauth2](era-framework-oauth2) 集成oath2的era认证体系 [readme.md](era-framework-oauth2/readme.md)   
-│ ├─[era-framework-oauth2-authorization](era-framework-oauth2/era-framework-oauth2-authorization)[era-framework-scheduler-core](era-framework-scheduler/era-framework-scheduler-core) 认证服务器   
-│ ├─[era-framework-scheduler-schedulerx2](era-framework-scheduler/era-framework-scheduler-schedulerx2)[era-framework-oauth2-core](era-framework-oauth2/era-framework-oauth2-core) 核心包   
-│ └─[era-framework-oauth2-resource](era-framework-oauth2/era-framework-oauth2-resource) 资源服务器    
+├─[era-framework-webserver](era-framework-oauth2) 集成oath2的era认证体系 [readme.md](era-framework-oauth2/readme.md)   
+│ ├─[era-framework-webserver-core](era-framework-webserver/era-framework-webserver-core) server端核心包   
+│ ├─[era-framework-webserver-enhance](era-framework-webserver/era-framework-webserver-enhance) server端增强配置   
+│ ├─[era-framework-webserver-foundation](era-framework-webserver/era-framework-webserver-foundation) server基础服务   
+│ ├─[era-framework-webserver-resource](era-framework-webserver/era-framework-webserver-resource) server资源聚合服务
+│ └─[era-framework-webserver-authorization](era-framework-webserver/era-framework-webserver-authorization) server认证服务    
 │   
 ├─[era-framework-orm-mongodb](era-framework-orm-mongodb) 集成mongodb二次开发框架 [readme.md](era-framework-orm-mongodb/readme.md)   
 │   

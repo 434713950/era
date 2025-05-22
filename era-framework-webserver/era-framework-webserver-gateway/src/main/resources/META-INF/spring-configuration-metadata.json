@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "era.xss.enabled",
+      "type": "java.lang.Boolean",
+      "description": "xss防护开关",
+      "defaultValue": false
+    },
+    {
+      "name": "era.masking.enabled",
+      "type": "java.lang.Boolean",
+      "description": "请求响应体加密开关",
+      "defaultValue": false
+    },
+    {
+      "name": "era.masking.ignore-urls",
+      "type": "java.util.List<java.lang.String>",
+      "description": "加解密路径白名单"
+    },
+    {
+      "name": "era.masking.secret-key",
+      "type": "java.lang.String",
+      "description": "加密密钥key,对应AES算法",
+      "defaultValue": "bHeGI91r"
+    },
+    {
+      "name": "era.masking.sign-key",
+      "type": "java.lang.String",
+      "description": "加密签名key,对应SHA1算法",
+      "defaultValue": "QGZUanoSaSy9DEVQFVULJQ=="
+    },
+    {
+      "name": "era.masking.secret-param-name",
+      "type": "java.lang.String",
+      "description": "用于传递加密后的数据的参数名",
+      "defaultValue": "data"
+    }
+  ]
+}

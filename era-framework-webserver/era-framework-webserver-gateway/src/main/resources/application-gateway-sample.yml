@@ -1,0 +1,97 @@
+spring:
+  data:
+    redis:
+      host: ${redis_host}
+      password: ${redis_password}
+      database: ${redis_db}
+      port: ${redis_port}
+
+  security:
+    oauth2:
+      client:
+        registration:
+          satellite-gateway:
+            client-id: ylcloud
+            client-secret: ylcloudxxdd
+            authorization-grant-type: client_credentials
+            provider: satellite-gateway
+        provider:
+          satellite-gateway:
+            token-uri: http://${auth_server_name}/oauth2/token
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: open-router
+          uri: lb://open-router
+          order: -1
+          predicates:
+            - Path=/*/open/**
+          filters:
+            - name: OAuth2TokenRelay
+              args:
+                clientRegistrationId: satellite-gateway  # 指定使用哪个 OAuth2 客户端
+            - name: RouteUriBasePredicatePath
+            - name: StripPrefix
+              args:
+                parts: 1
+      default-filters: #默认过滤器（对所有route均生效）
+        - name: DedupeResponseHeader
+          args:
+            Access-Control-Allow-Origin: RETAIN_UNIQUE
+            Access-Control-Allow-Credentials: RETAIN_UNIQUE
+            Vary: RETAIN_UNIQUE
+        # 请求限速配置
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10     # 每秒生成令牌数
+            redis-rate-limiter.burstCapacity: 100    # 桶最大容量
+            redis-rate-limiter.requestedTokens: 1    # 单次请求消费的token数量
+            key-resolver: "#{@apiKeyResolver}"
+        - name: CircuitBreaker
+          args:
+            name: circuitBreaker4j
+            fallbackUri: forward:/circuitBreakerFallback
+      # 全局的跨域处理
+      globalcors:
+        add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: # 允许哪些网站的跨域请求
+              - "*"
+            allowedMethods: # 允许的跨域ajax的请求方式
+              - "GET"
+              - "POST"
+              - "DELETE"
+              - "PUT"
+              - "OPTIONS"
+            allowedHeaders: "*" # 允许在请求中携带的头信息
+            allowCredentials: false
+            maxAge: 360000 # 这次跨域检测的有效期
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10             # 统计窗口大小（调用次数）
+        minimumNumberOfCalls: 5           # 触发熔断的最小调用次数
+        failureRateThreshold: 50          # 失败率达到多少百分比触发熔断
+        waitDurationInOpenState: 10s      # 熔断打开状态持续时间，过后进入半开状态尝试恢复
+        permittedNumberOfCallsInHalfOpenState: 3  # 半开状态允许多少次尝试调用
+        recordExceptions: # 触发失败计数的异常类型
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+    instances:
+      circuitBreaker4j:
+        baseConfig: default
+        failureRateThreshold: 30
+        waitDurationInOpenState: 20s
+
+era:
+  masking:
+    enabled: true
+  xss:
+    enabled: true
