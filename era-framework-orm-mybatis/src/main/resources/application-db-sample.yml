@@ -12,6 +12,5 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
   mapper-locations: classpath*:mappers/**/**.xml
-  type-aliases-package: com.ourexists.ylcloud.iot.uemc.*.pojo
   global-config:
     banner: false

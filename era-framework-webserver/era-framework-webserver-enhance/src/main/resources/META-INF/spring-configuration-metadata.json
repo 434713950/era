@@ -32,19 +32,19 @@
     },
     {
       "name": "era.security.cors.allowed_origins",
-      "type": "java.util.List<String>",
+      "type": "java.util.List<java.lang.String>",
       "description": "允许跨域请求的地址",
       "defaultValue": "{*}"
     },
     {
       "name": "era.security.cors.allowed_methods",
-      "type": "java.util.List<String>",
+      "type": "java.util.List<java.lang.String>",
       "description": "允许跨域请求的方法",
       "defaultValue": "{\"GET\", \"POST\", \"DELETE\", \"PUT\", \"OPTIONS\"}"
     },
     {
       "name": "era.security.cors.allowed_headers",
-      "type": "java.util.List<String>",
+      "type": "java.util.List<java.lang.String>",
       "description": "允许在请求中携带的头信息",
       "defaultValue": "{*}"
     },

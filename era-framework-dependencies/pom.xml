@@ -68,7 +68,7 @@
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
-                <artifactId>era-framework-orm-mybatisplus</artifactId>
+                <artifactId>era-framework-orm-mybatis</artifactId>
                 <version>${era-framework-orm-mybatisplus.version}</version>
             </dependency>
             <dependency>

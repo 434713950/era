@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.ourexists.era</groupId>
-            <artifactId>era-framework-orm-mybatisplus</artifactId>
+            <artifactId>era-framework-orm-mybatis</artifactId>
             <version>2024.0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

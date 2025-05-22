@@ -28,7 +28,7 @@
     <version>2024.0.1.0-SNAPSHOT</version>
     <modules>
         <module>era-framework-scheduler</module>
-        <module>era-framework-orm-mybatisplus</module>
+        <module>era-framework-orm-mybatis</module>
         <module>era-framework-core</module>
         <module>era-framework-dependencies</module>
         <module>era-framework-rpc-feign</module>
