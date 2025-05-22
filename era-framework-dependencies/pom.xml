@@ -103,6 +103,11 @@
             </dependency>
             <dependency>
                 <groupId>com.ourexists.era</groupId>
+                <artifactId>era-framework-webserver-gateway</artifactId>
+                <version>${era-framework-oauth2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ourexists.era</groupId>
                 <artifactId>era-framework-distribution</artifactId>
                 <version>${era-framework-distribution.version}</version>
             </dependency>
