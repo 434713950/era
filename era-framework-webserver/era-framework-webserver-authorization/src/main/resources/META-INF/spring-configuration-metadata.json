@@ -1,19 +1,26 @@
 {
   "properties": [
     {
-      "name": "era.jwt.privateKey",
+      "name": "era.token.jwt-privateKey",
       "type": "java.lang.String",
-      "description": "jwt签名私钥"
+      "description": "jwt签名私钥(默认有嵌入)"
     },
     {
-      "name": "era.jwt.publicKey",
+      "name": "era.token.jwt-publicKey",
       "type": "java.lang.String",
-      "description": "jwt签名公钥"
+      "description": "jwt签名公钥(默认有嵌入)"
     },
     {
       "name": "era.token.expire",
       "type": "java.lang.Long",
-      "description": "token过期时长"
+      "description": "token过期时长",
+      "defaultValue": "2592000"
+    },
+    {
+      "name": "era.token.store-type",
+      "type": "com.ourexists.era.framework.webserver.authorization.TokenStoreType",
+      "description": "token存储方式",
+      "defaultValue": "InMemory"
     }
   ]
 }

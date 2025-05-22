@@ -18,7 +18,10 @@ import com.ourexists.era.oauth2.core.handler.DefaultEraAuthenticationEntryPoint;
 import com.ourexists.era.oauth2.core.handler.EraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EraAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -33,6 +36,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
@@ -42,6 +47,7 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.sql.DataSource;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
@@ -61,7 +67,7 @@ import java.util.List;
 @Order(Integer.MIN_VALUE)
 public class AuthorizationServerConfigurer {
 
-    @Value("${era.jwt.privateKey:" +
+    @Value("${era.token.jwt-privateKey:" +
             "-----BEGIN PRIVATE KEY-----\n" +
             "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDc7MhMTDRJMFgj\n" +
             "Ldsxg5iqJbxg5b/Dq7K527mFOtMvSuYQ9rEoVKOWaGD33kvKJw8vL8fO9L9sziY4\n" +
@@ -94,7 +100,7 @@ public class AuthorizationServerConfigurer {
     private String privateKey;
 
 
-    @Value("${era.jwt.publicKey:" +
+    @Value("${era.token.jwt-publicKey:" +
             "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3OzITEw0STBYIy3bMYOY" +
             "qiW8YOW/w6uyudu5hTrTL0rmEPaxKFSjlmhg995LyicPLy/HzvS/bM4mOPtP5jl/" +
             "ACOt7i+vaAuIQGUNO0UTHJ+/2VpGxJsMxguqsQNBspl8tZlkx0JkeVllqEjAFKnx" +
@@ -114,9 +120,26 @@ public class AuthorizationServerConfigurer {
     }
 
     @Bean
-    public OAuth2AuthorizationService authorizationService(RedisTemplate redisTemplate) {
+    @ConditionalOnProperty(
+            prefix = "era.token",
+            name = "store-type",
+            havingValue = "Redis"
+    )
+    public OAuth2AuthorizationService redisAuthorizationService(RedisTemplate redisTemplate) {
         return new RedisOAuth2AuthorizationService(redisTemplate);
     }
+
+    @Bean
+    @ConditionalOnProperty(
+            prefix = "era.token",
+            name = "store-type",
+            havingValue = "Db"
+    )
+    public OAuth2AuthorizationService dbAuthorizationService(JdbcOperations jdbcOperations,
+                                                           RegisteredClientRepository registeredClientRepository) {
+        return new JdbcOAuth2AuthorizationService(jdbcOperations, registeredClientRepository);
+    }
+
 
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
