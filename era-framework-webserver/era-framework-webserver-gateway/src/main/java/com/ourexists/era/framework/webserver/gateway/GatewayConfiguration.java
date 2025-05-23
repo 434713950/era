@@ -83,7 +83,6 @@ class GatewayConfiguration {
                         .anyExchange().permitAll() // 所有请求放行
                 )
                 .oauth2Client(Customizer.withDefaults());
-//                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
 

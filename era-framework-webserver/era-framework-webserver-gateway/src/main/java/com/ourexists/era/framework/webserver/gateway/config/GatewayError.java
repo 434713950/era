@@ -2,12 +2,6 @@ package com.ourexists.era.framework.webserver.gateway.config;
 
 import lombok.Getter;
 
-/**
- * @Author: zhengcan
- * @Date: 2022/3/21
- * @Description: 系统异常描述
- * @Version: 1.0.0 创建
- */
 @Getter
 public enum GatewayError {
 
