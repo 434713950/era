@@ -11,13 +11,13 @@ spring:
       client:
         registration:
           satellite-gateway:
-            client-id: ylcloud
-            client-secret: ylcloudxxdd
-            authorization-grant-type: client_credentials
+            client-id: ${era_auth_client_id}
+            client-secret: ${era_auth_secret}
+            authorization-grant-type: ${era_auth_grant_type}
             provider: satellite-gateway
         provider:
           satellite-gateway:
-            token-uri: http://${auth_server_name}/oauth2/token
+            token-uri: http://${era_auth_server_name}/oauth2/token
   cloud:
     gateway:
       discovery:
@@ -41,8 +41,8 @@ spring:
       default-filters: #默认过滤器（对所有route均生效）
         - name: DedupeResponseHeader
           args:
-            Access-Control-Allow-Origin: RETAIN_UNIQUE
-            Access-Control-Allow-Credentials: RETAIN_UNIQUE
+            Access-Control-Allow-Origin: RETAIN_FIRST
+            Access-Control-Allow-Credentials: RETAIN_FIRST
             Vary: RETAIN_UNIQUE
         # 请求限速配置
         - name: RequestRateLimiter
