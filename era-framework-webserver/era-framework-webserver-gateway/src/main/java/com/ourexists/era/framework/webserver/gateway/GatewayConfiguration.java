@@ -4,7 +4,6 @@
 
 package com.ourexists.era.framework.webserver.gateway;
 
-import com.ourexists.era.framework.core.PathRule;
 import com.ourexists.era.framework.webserver.gateway.config.DefaultGatewayAccessDeniedHandler;
 import com.ourexists.era.framework.webserver.gateway.config.DefaultGatewayAuthenticationEntryPoint;
 import com.ourexists.era.framework.webserver.gateway.filter.EraGatewayFilterConfigurer;
@@ -74,23 +73,15 @@ class GatewayConfiguration {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
                                                             ServerAccessDeniedHandler serverAccessDeniedHandler,
                                                             ServerAuthenticationEntryPoint serverAuthenticationEntryPoint) {
-        for (int i = 0; i < PathRule.OAUTH_PATHS.length; i++) {
-            String s = PathRule.OAUTH_PATHS[i];
-            PathRule.HERDER_WHITE_PATHS.add("/*" + s);
-        }
         http
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(serverAuthenticationEntryPoint)
                         .accessDeniedHandler(serverAccessDeniedHandler)
                 )
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(ex -> ex
-                        .pathMatchers(PathRule.HERDER_WHITE_PATHS.toArray(new String[0])).permitAll()
-                        .anyExchange().authenticated()
+                .authorizeExchange(exchanges -> exchanges
+                        .anyExchange().permitAll() // 所有请求放行
                 )
-//                .authorizeExchange(exchanges -> exchanges
-//                        .anyExchange().permitAll() // 所有请求放行
-//                )
                 .oauth2Client(Customizer.withDefaults());
 //                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();

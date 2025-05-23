@@ -18,10 +18,8 @@ import com.ourexists.era.oauth2.core.handler.DefaultEraAuthenticationEntryPoint;
 import com.ourexists.era.oauth2.core.handler.EraAccessDeniedHandler;
 import com.ourexists.era.oauth2.core.handler.EraAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -36,7 +34,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
@@ -46,14 +43,17 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import javax.sql.DataSource;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -136,7 +136,7 @@ public class AuthorizationServerConfigurer {
             havingValue = "Db"
     )
     public OAuth2AuthorizationService dbAuthorizationService(JdbcOperations jdbcOperations,
-                                                           RegisteredClientRepository registeredClientRepository) {
+                                                             RegisteredClientRepository registeredClientRepository) {
         return new JdbcOAuth2AuthorizationService(jdbcOperations, registeredClientRepository);
     }
 
@@ -179,22 +179,51 @@ public class AuthorizationServerConfigurer {
     }
 
     @Bean
-    @Order(2)
+    @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http,
                                                              OAuth2AuthorizationServerConfigurer configurer,
-                                                             EraAuthenticationEntryPoint eraAuthenticationEntryPoint, EraAccessDeniedHandler eraAccessDeniedHandler) throws Exception {
+                                                             EraAuthenticationEntryPoint eraAuthenticationEntryPoint,
+                                                             EraAccessDeniedHandler eraAccessDeniedHandler) throws Exception {
         return http
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(PathRule.HERDER_WHITE_PATHS.toArray(new String[0])).permitAll() // 放行认证相关端点
-                        .anyRequest().authenticated() // 所有其他接口需要认证
-                )
                 .cors(CorsConfigurer::disable)
                 .csrf(CsrfConfigurer::disable)
+                .securityMatcher(PathRule.OAUTH_PATHS)
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated() // 所有其他接口需要认证
+                )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(eraAuthenticationEntryPoint)
                         .accessDeniedHandler(eraAccessDeniedHandler)
                 )
                 .with(configurer, Customizer.withDefaults())
+                .oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()))
+                .build();
+    }
+
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain resourceSecurityFilterChain(HttpSecurity http,
+                                                           EraAuthenticationEntryPoint eraAuthenticationEntryPoint,
+                                                           EraAccessDeniedHandler eraAccessDeniedHandler) throws Exception {
+        return http
+                .securityMatchers(requestMatcherConfigurer -> {
+                            List<RequestMatcher> r = new ArrayList<>();
+                            for (String oauthPath : PathRule.OAUTH_PATHS) {
+                                r.add(new NegatedRequestMatcher(new AntPathRequestMatcher(oauthPath)));
+                            }
+                            requestMatcherConfigurer.requestMatchers(r.toArray(new RequestMatcher[0]));
+                        }
+                )
+                .cors(CorsConfigurer::disable)
+                .csrf(CsrfConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated() // 所有其他接口需要认证
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(eraAuthenticationEntryPoint)
+                        .accessDeniedHandler(eraAccessDeniedHandler)
+                )
                 .oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()))
                 .build();
     }
