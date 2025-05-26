@@ -18,6 +18,12 @@ public interface ExportDataHandler<T, R> {
     List<R> exportData(T condition, ExportPartDataResult exportPartDataResult);
 
     /**
+     * 上传后的文件路径
+     * @return
+     */
+    String filePath();
+
+    /**
      * 导出的数据类型
      * @return
      */

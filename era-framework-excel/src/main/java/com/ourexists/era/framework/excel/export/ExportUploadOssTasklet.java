@@ -1,5 +1,6 @@
 package com.ourexists.era.framework.excel.export;
 
+import com.ourexists.era.framework.excel.ExportDataHandler;
 import com.ourexists.era.framework.oss.OssTemplate;
 import com.ourexists.era.framework.oss.exception.UploadException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +17,14 @@ import java.io.IOException;
 @Slf4j
 public class ExportUploadOssTasklet implements Tasklet {
 
+    private ExportDataHandler exportDataHandler;
 
     private OssTemplate ossTemplate;
 
-    public ExportUploadOssTasklet(OssTemplate ossTemplate) {
+    public ExportUploadOssTasklet(
+            ExportDataHandler exportDataHandler,
+            OssTemplate ossTemplate) {
+        this.exportDataHandler = exportDataHandler;
         this.ossTemplate = ossTemplate;
     }
 
@@ -28,16 +33,19 @@ public class ExportUploadOssTasklet implements Tasklet {
         ExecutionContext context = chunkContext.getStepContext().getStepExecution()
                 .getJobExecution()
                 .getExecutionContext();
-        String filPath = context.getString(ExportJobKey.RUNNING_FILE);
-        File file = null;
-        if (filPath != null) {
-            file = new File(filPath);
-        }
-        if (file != null && file.exists()) {
+        String tempFile = context.getString(ExportJobKey.RUNNING_FILE);
+        File file = new File(tempFile);
+        if (file.exists()) {
             FileInputStream fileInputStream = null;
             try {
                 fileInputStream = new FileInputStream(file);
-                ossTemplate.upload(fileInputStream, filPath);
+                String uploadFilePath = exportDataHandler.filePath();
+                if (!exportDataHandler.filePath().endsWith("/")) {
+                    uploadFilePath += "/";
+                }
+                String finalFilePath = uploadFilePath + file.getName();
+                ossTemplate.upload(fileInputStream, finalFilePath);
+                context.put(ExportJobKey.RUNNING_FINAL_FILE_NAME, finalFilePath);
             } catch (IOException e) {
                 log.error("临时文件异常！", e);
             } catch (UploadException e) {

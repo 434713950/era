@@ -2,6 +2,8 @@ package com.ourexists.era.framework.excel;
 
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSON;
+import com.ourexists.era.framework.core.exceptions.BusinessException;
+import com.ourexists.era.framework.excel.export.ExportJobKey;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -24,11 +26,22 @@ public class ExcelJobExecutor {
         this.jobMaps = jobMaps;
     }
 
-    public <T> JobExecution execute(String executorName,
-                                    String exportId,
-                                    T condition,
-                                    String fileName,
-                                    ExcelTypeEnum excelType) throws Exception {
+
+    public <T> String export(String executorName,
+                             String exportId,
+                             T condition,
+                             String fileName,
+                             ExcelTypeEnum excelType) {
+        JobExecution jobExecution = export_c(executorName, exportId, condition, fileName, excelType);
+        return jobExecution.getExecutionContext().getString(ExportJobKey.RUNNING_FINAL_FILE_NAME);
+    }
+
+
+    public <T> JobExecution export_c(String executorName,
+                                     String exportId,
+                                     T condition,
+                                     String fileName,
+                                     ExcelTypeEnum excelType) {
         JobParametersBuilder builder = new JobParametersBuilder()
                 .addString("exportId", exportId)
                 .addString("condition", JSON.toJSONString(condition))
@@ -36,6 +49,10 @@ public class ExcelJobExecutor {
                 .addString("excelType", excelType.name())
                 .addLong("timestamp", System.currentTimeMillis());//保证唯一
         JobParameters jobParameters = builder.toJobParameters();
-        return jobLauncher.run(jobMaps.get(JOB_BEAN_PREFIX + executorName), jobParameters);
+        try {
+            return jobLauncher.run(jobMaps.get(JOB_BEAN_PREFIX + executorName), jobParameters);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 }

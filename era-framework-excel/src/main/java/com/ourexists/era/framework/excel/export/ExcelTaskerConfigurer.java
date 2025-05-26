@@ -49,7 +49,7 @@ public class ExcelTaskerConfigurer implements BeanDefinitionRegistryPostProcesso
                     .listener(new ExportRwTaskletListener(exportDataHandler))
                     .build();
             Step three = stepBuilderFactory.get("era_exportUploadStep")
-                    .tasklet(new ExportUploadOssTasklet(ossTemplate))
+                    .tasklet(new ExportUploadOssTasklet(exportDataHandler, ossTemplate))
                     .listener(new ExportUploadOssTaskletListener(exportDataHandler))
                     .build();
             BeanDefinitionBuilder jobBeanBuilder = BeanDefinitionBuilder
