@@ -22,8 +22,6 @@ public class ExportRwTasklet implements Tasklet {
 
     private ExportDataHandler exportDataHandler;
 
-    private static final String TMP_DIR = "/tmp/era/export/";
-
     public ExportRwTasklet(ExportDataHandler exportDataHandler) {
         this.exportDataHandler = exportDataHandler;
     }
@@ -51,8 +49,8 @@ public class ExportRwTasklet implements Tasklet {
     public <T, R> File partExportData(T condition, Class<R> head, ExcelTypeEnum excelType, ExportPartDataResult exportPartDataResult, List<WriteHandler> writeHandlers) throws EraCommonException {
         List<R> ossList = exportDataHandler.exportData(condition, exportPartDataResult);
         String[] fileNames = exportPartDataResult.getFileName().split("/");
-        String sourceFileName = TMP_DIR + fileNames[fileNames.length - 1] + "-" + (exportPartDataResult.getPartNum() - 1);
-        String targetFileName = TMP_DIR + fileNames[fileNames.length - 1] + "-" + exportPartDataResult.getPartNum();
+        String sourceFileName = fileNames[fileNames.length - 1] + "-" + (exportPartDataResult.getPartNum() - 1);
+        String targetFileName = fileNames[fileNames.length - 1] + "-" + exportPartDataResult.getPartNum();
         ExcelWriterBuilder excelWriterBuilder;
         if (exportPartDataResult.getPartNum() < 2) {
             //导出文件输出流
