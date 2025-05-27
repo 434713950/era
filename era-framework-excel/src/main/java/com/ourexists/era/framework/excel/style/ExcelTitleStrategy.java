@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.*;
  */
 public class ExcelTitleStrategy implements SheetWriteHandler {
 
-    private final String title;
+    private String title;
 
     private int rowNum = 0;
 
