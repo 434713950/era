@@ -26,7 +26,11 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.ourexists.era.framework.orm.mybatisplus.handler.EraTenantLineHandler;
 import com.ourexists.era.framework.orm.mybatisplus.tenant.EraTenantLineInnerInterceptor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
 /**
  * <p>mybatis-plus一些常用配置</p>
@@ -34,16 +38,28 @@ import org.springframework.context.annotation.Bean;
  * @author pengcheng
  * @date 2018-11-06
  */
+@Slf4j
 public class EraMybatisPlusApplication {
 
-
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    public MybatisPlusInterceptor mybatisPlusInterceptor(DataSource dataSource) throws SQLException {
+        DbType dbType = DbType.MYSQL;
+        String dbProductName = dataSource
+                .getConnection()
+                .getMetaData()
+                .getDatabaseProductName()
+                .toLowerCase();
+        for (DbType value : DbType.values()) {
+            if (dbProductName.contains(value.getDb())) {
+                dbType = value;
+                break;
+            }
+        }
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         //多租户插件
         interceptor.addInnerInterceptor(new EraTenantLineInnerInterceptor(new EraTenantLineHandler()));
         //分页插件
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(dbType));
         //防止全表更新与删除插件: BlockAttackInnerInterceptor
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         //乐观锁插件
