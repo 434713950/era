@@ -45,7 +45,6 @@
     <properties>
         <spring-cloud-dependencies.version>2024.0.1</spring-cloud-dependencies.version>
         <spring-cloud-alibaba-dependencies.version>2023.0.3.2</spring-cloud-alibaba-dependencies.version>
-        <openapi.version>1.8.0</openapi.version>
         <redission.version>3.45.1</redission.version>
     </properties>
 

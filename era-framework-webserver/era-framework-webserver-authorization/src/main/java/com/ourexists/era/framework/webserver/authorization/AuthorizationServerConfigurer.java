@@ -45,6 +45,7 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.security.KeyFactory;
@@ -209,10 +210,10 @@ public class AuthorizationServerConfigurer {
         return http
                 .securityMatchers(requestMatcherConfigurer -> {
                             List<RequestMatcher> r = new ArrayList<>();
-                            for (String oauthPath : PathRule.OAUTH_PATHS) {
-                                r.add(new NegatedRequestMatcher(new AntPathRequestMatcher(oauthPath)));
+                            for (String oauthPath : PathRule.HERDER_WHITE_PATHS) {
+                                r.add(new AntPathRequestMatcher(oauthPath));
                             }
-                            requestMatcherConfigurer.requestMatchers(r.toArray(new RequestMatcher[0]));
+                            requestMatcherConfigurer.requestMatchers(new NegatedRequestMatcher(new OrRequestMatcher(r)));
                         }
                 )
                 .cors(CorsConfigurer::disable)
